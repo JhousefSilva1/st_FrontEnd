@@ -1,0 +1,1 @@
+ D:\\Amor\\smarttolls\\.dart_tool\\flutter_build\\145c8a3247b82fc42f4b5eee6691f744\\native_assets.yaml: 
