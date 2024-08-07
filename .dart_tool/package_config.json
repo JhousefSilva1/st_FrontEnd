@@ -62,6 +62,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "flutter_localizations",
+      "rootUri": "file:///C:/flutter_sdk/flutter/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "flutter_svg",
       "rootUri": "file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_svg-2.0.10+1",
       "packageUri": "lib/",
@@ -94,6 +100,12 @@
     {
       "name": "http_parser",
       "rootUri": "file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -272,7 +284,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-07-22T01:44:19.343611Z",
+  "generated": "2024-08-07T04:28:12.817316Z",
   "generator": "pub",
   "generatorVersion": "3.3.3"
 }

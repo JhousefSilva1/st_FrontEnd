@@ -50,6 +50,10 @@ http_parser
 2.12
 file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2/
 file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2/lib/
+intl
+2.12
+file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1/
+file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1/lib/
 leak_tracker
 3.1
 file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.0/
@@ -166,6 +170,10 @@ flutter
 3.2
 file:///C:/flutter_sdk/flutter/packages/flutter/
 file:///C:/flutter_sdk/flutter/packages/flutter/lib/
+flutter_localizations
+3.2
+file:///C:/flutter_sdk/flutter/packages/flutter_localizations/
+file:///C:/flutter_sdk/flutter/packages/flutter_localizations/lib/
 flutter_test
 3.2
 file:///C:/flutter_sdk/flutter/packages/flutter_test/

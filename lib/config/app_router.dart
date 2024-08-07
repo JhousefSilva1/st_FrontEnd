@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:smarttolls/providers/login_provider.dart';
-import 'package:smarttolls/views/login/login_view.dart';
-import 'package:smarttolls/views/signup/signup_view.dart';
-import 'package:smarttolls/views/welcome/welcome_view.dart';
+import 'package:smarttolls/providers/providers.dart';
+import 'package:smarttolls/views/views.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -19,6 +17,11 @@ class AppRouter {
         name: LoginView.routerName,
         path: LoginView.routerPath,
         builder: (context, state) => const LoginView(),
+      ),
+      GoRoute(
+        name: SignUpStepTwoView.routerName,
+        path: SignUpStepTwoView.routerPath,
+        builder: (context, state) => const SignUpStepTwoView(),
       ),
       GoRoute(
         name: SignupView.routerName,
@@ -35,5 +38,6 @@ class AppRouter {
 
   static final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(create: (_) => LoginProvider()),
+    ChangeNotifierProvider(create: (_) => SignUpProvider()),
   ];
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smarttolls/providers/login_provider.dart';
+import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/assets_images.dart';
-import 'package:smarttolls/widgets/custom_button.dart';
+import 'package:smarttolls/widgets/widgets.dart';
 
 class WelcomeView extends StatelessWidget {
   static const String routerName = 'welcome';
@@ -27,13 +28,13 @@ class WelcomeView extends StatelessWidget {
                 const SizedBox(height: 20),
                 CustomButton(
                   onPressed: () => loginProvider.login(context),  
-                  text: 'Iniciar Sesión',
+                  text: S.of(context).login,
                 ),
                 const SizedBox(height: 20),
                 CustomButton(
                   backgroundColor: AppStyle.primaryLigth,
                   onPressed: () => loginProvider.signup(context),  
-                  text: 'Registrate',
+                  text: S.of(context).signUp,
                 ),
               ],
             ),

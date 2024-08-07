@@ -1,0 +1,20 @@
+{
+    "appName": "Smart Tolls",
+    "createAccount": "Create a new account in Smart Tolls",
+    "confirmPassword": "Confirm Password",
+    "dni": "DNI",
+    "email": "Email",
+    "login": "Login",
+    "lastNameF": "Last Name (Father)",
+    "lastNameM": "Last Name (Mother)",
+    "lastOneStep": "Last One Step",
+    "name": "Name",
+    "next": "Next",
+    "password": "Password",
+    "phone": "Phone",
+    "register": "Register",
+    "stepOne": "Step 1",
+    "stepTwo": "Step 2",
+    "signUp": "Sign Up",
+    "welcome": "Welcome!"
+}
