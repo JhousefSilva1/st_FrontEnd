@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smarttolls/views/login/login_view.dart';
-import 'package:smarttolls/views/signup/signup_view.dart';
+import 'package:smarttolls/views/views.dart';
 
 class LoginProvider extends ChangeNotifier {
+  void goHome(BuildContext context){
+    context.goNamed(HomeView.routerName);
+  }
+
   void login(BuildContext context) {
     context.pushNamed(LoginView.routerName);
   }

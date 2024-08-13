@@ -220,6 +220,16 @@ class S {
     );
   }
 
+  /// `Vehicles`
+  String get vehicles {
+    return Intl.message(
+      'Vehicles',
+      name: 'vehicles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Welcome!`
   String get welcome {
     return Intl.message(

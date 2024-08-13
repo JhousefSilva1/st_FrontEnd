@@ -7,6 +7,7 @@ import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/views/views.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 class AppRouter {
   static final router = GoRouter(
@@ -17,6 +18,24 @@ class AppRouter {
         name: LoginView.routerName,
         path: LoginView.routerPath,
         builder: (context, state) => const LoginView(),
+      ),
+      ShellRoute(
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return NavBarView(child: child);
+        },
+        navigatorKey: shellNavigatorKey,
+        routes: <RouteBase>[
+          GoRoute(
+            name: HomeView.routerName,
+            path: HomeView.routerPath,
+            builder: (context, state) => const HomeView(),
+          ),
+          GoRoute(
+            name: VehiclesView.routerName,
+            path: VehiclesView.routerPath,
+            builder: (context, state) => const VehiclesView(),
+          ),
+        ]
       ),
       GoRoute(
         name: SignUpStepTwoView.routerName,
@@ -37,6 +56,7 @@ class AppRouter {
   );
 
   static final List<SingleChildWidget> providers = [
+    ChangeNotifierProvider(create: (_) => HomeProvider()),
     ChangeNotifierProvider(create: (_) => LoginProvider()),
     ChangeNotifierProvider(create: (_) => SignUpProvider()),
   ];

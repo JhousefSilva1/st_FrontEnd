@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/assets_images.dart';
 import 'package:smarttolls/widgets/widgets.dart';
@@ -13,6 +15,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LoginProvider loginProvider = Provider.of<LoginProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -61,7 +64,7 @@ class LoginView extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 CustomButton(
-                  onPressed: () {}, 
+                  onPressed: () => loginProvider.goHome(context), 
                   text: S.of(context).login,
                 )
               ],

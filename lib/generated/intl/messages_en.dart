@@ -41,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Step 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Step 2"),
+        "vehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome!")
       };
 }
