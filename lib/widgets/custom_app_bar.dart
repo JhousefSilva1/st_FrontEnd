@@ -16,14 +16,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: leading == null? true:false,
       actions: actions,
-      backgroundColor: backgroundColor?? AppStyle.primary,
+      backgroundColor: backgroundColor?? AppStyle.white,
       centerTitle: centerTitle,
       elevation: 0,
       title: Text(
         text,
-        style: textStyle ?? const TextStyle(color: Colors.white),
+        style: textStyle ?? const TextStyle(color: AppStyle.primary, fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      iconTheme: iconThemeData ?? const IconThemeData(color: Colors.white),
+      iconTheme: iconThemeData ?? const IconThemeData(color: AppStyle.primary),
       leading: leading,
       surfaceTintColor: Colors.transparent,
     );
