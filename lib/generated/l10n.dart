@@ -60,6 +60,16 @@ class S {
     );
   }
 
+  /// `Add New Vehicle`
+  String get addVehicles {
+    return Intl.message(
+      'Add New Vehicle',
+      name: 'addVehicles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Create a new account in Smart Tolls`
   String get createAccount {
     return Intl.message(
@@ -190,6 +200,16 @@ class S {
     );
   }
 
+  /// `Start`
+  String get start {
+    return Intl.message(
+      'Start',
+      name: 'start',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Step 1`
   String get stepOne {
     return Intl.message(
@@ -235,6 +255,16 @@ class S {
     return Intl.message(
       'Welcome!',
       name: 'welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wallet`
+  String get wallet {
+    return Intl.message(
+      'Wallet',
+      name: 'wallet',
       desc: '',
       args: [],
     );

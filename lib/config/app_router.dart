@@ -26,6 +26,11 @@ class AppRouter {
         navigatorKey: shellNavigatorKey,
         routes: <RouteBase>[
           GoRoute(
+            name: AddVehiclesView.routerName,
+            path: AddVehiclesView.routerPath,
+            builder: (context, state) => const AddVehiclesView(),
+          ),
+          GoRoute(
             name: HomeView.routerName,
             path: HomeView.routerPath,
             builder: (context, state) => const HomeView(),
@@ -34,6 +39,11 @@ class AppRouter {
             name: VehiclesView.routerName,
             path: VehiclesView.routerPath,
             builder: (context, state) => const VehiclesView(),
+          ),
+          GoRoute(
+            name: WalletView.routerName,
+            path: WalletView.routerPath,
+            builder: (context, state) => const WalletView(),
           ),
         ]
       ),
@@ -59,5 +69,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => HomeProvider()),
     ChangeNotifierProvider(create: (_) => LoginProvider()),
     ChangeNotifierProvider(create: (_) => SignUpProvider()),
+    ChangeNotifierProvider(create: (_) => VehiclesProvider()),
   ];
 }

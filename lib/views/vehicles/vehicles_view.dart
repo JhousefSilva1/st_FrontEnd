@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
@@ -10,12 +12,13 @@ class VehiclesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final VehiclesProvider vehiclesProvider = Provider.of<VehiclesProvider>(context);
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
           actions: [
             IconButton(
-              onPressed: () => print('add'), 
+              onPressed: () => vehiclesProvider.goToAddVehicle(context), 
               icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
             )
           ],

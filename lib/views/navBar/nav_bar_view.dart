@@ -29,7 +29,7 @@ class NavBarView extends StatelessWidget {
           children: [
             CustomIcon(icon: Icon(Icons.home, color: AppStyle.primary), index: 0, label: 'Inicio', route: HomeView.routerName),
             CustomIcon(icon: Icon(Icons.car_repair_rounded, color: AppStyle.primary), index: 1, label: 'Vehiculos', route: VehiclesView.routerName),
-            CustomIcon(icon: Icon(Icons.wallet_rounded, color: AppStyle.primary), index: 2, label: 'Billetera', route: HomeView.routerName),
+            CustomIcon(icon: Icon(Icons.wallet_rounded, color: AppStyle.primary), index: 2, label: 'Billetera', route: WalletView.routerName),
             CustomIcon(icon: Icon(Icons.notifications, color: AppStyle.primary), index: 3, label: 'Notificaciones', route: HomeView.routerName),
           ],
         ),

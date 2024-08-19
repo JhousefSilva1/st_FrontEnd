@@ -1,5 +1,6 @@
 {
     "appName": "Smart Tolls",
+    "addVehicles": "Agregar Nuevo Vehiculo",
     "createAccount": "Crea una nueva cuenta en Smart Tolls",
     "confirmPassword": "Confirmar contraseña",
     "dni": "Carnet de identidad",
@@ -13,9 +14,11 @@
     "password": "Contraseña",
     "phone": "Telefono",
     "register": "Registrarse",
+    "start": "Inicio",
     "stepOne": "Paso 1",
     "stepTwo": "Paso 2",
     "signUp": "Registrate",
     "vehicles": "Vehiculos",
-    "welcome": "¡Bienvenido!"
+    "welcome": "¡Bienvenido!",
+    "wallet": "Billetera"
 }

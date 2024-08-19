@@ -1,4 +1,4 @@
-#Tue Aug 13 15:31:31 BOT 2024
+#Mon Aug 19 16:25:57 BOT 2024
 base.0=D\:\\Amor\\smarttolls\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
