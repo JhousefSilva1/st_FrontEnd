@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:smarttolls/generated/l10n.dart';
 // import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -32,6 +32,7 @@ class SignUpStepTwoView extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back_ios)
                     ),
                   ),
+                  const SizedBox(height: 12),
                   AssetsImages.logo(height: 100, width: 200),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -50,44 +51,25 @@ class SignUpStepTwoView extends StatelessWidget {
                   const SizedBox(height: 12),
                   const CustomProgressIndicator(current: 2, height: 4),
                   const SizedBox(height: 24),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).email,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
                   CustomField(
                     hintText: S.of(context).email,
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.email),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).password,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 8),
                   CustomField(
                     hintText: S.of(context).password,
                     keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.lock),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).confirmPassword,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 8),
                   CustomField(
                     hintText: S.of(context).confirmPassword,
                     keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.lock),
                   ),
                   const SizedBox(height: 16),
                   CustomButton(

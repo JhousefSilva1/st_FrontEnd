@@ -57,7 +57,7 @@ class CustomField extends StatelessWidget {
           ),
           hintText: hintText ?? '',
           labelStyle: const TextStyle(color: AppStyle.primary),
-          labelText: label ?? '',
+          labelText: hintText ?? '',
           prefixIcon: prefixIcon,
          prefixIconColor: AppStyle.primary
         ),

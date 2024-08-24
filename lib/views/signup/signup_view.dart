@@ -32,6 +32,7 @@ class SignupView extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back_ios, color: AppStyle.primary)
                     ),
                   ),
+                  const SizedBox(height: 12),
                   AssetsImages.logo(height: 100, width: 200),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -50,72 +51,41 @@ class SignupView extends StatelessWidget {
                   const SizedBox(height: 12),
                   const CustomProgressIndicator(current: 1, height: 4),
                   const SizedBox(height: 24),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).password,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
                   CustomField(
-                    hintText: S.of(context).password,
+                    hintText: S.of(context).lastNameF,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.person),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).lastNameM,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 8),
                   CustomField(
                     hintText: S.of(context).lastNameM,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.person),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).name,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 8),
                   CustomField(
                     hintText: S.of(context).name,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.person),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).dni,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 8),
                   CustomField(
                     hintText: S.of(context).dni,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.credit_card),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      S.of(context).phone,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 8),
                   CustomField(
                     hintText: S.of(context).phone,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
+                    prefixIcon: const Icon(Icons.phone),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   CustomButton(
                     backgroundColor: AppStyle.primaryLigth,
                     onPressed: () => signUpProvider.signUpStepTwo(context), 

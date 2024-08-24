@@ -33,6 +33,7 @@ class WelcomeView extends StatelessWidget {
                 const SizedBox(height: 20),
                 CustomButton(
                   backgroundColor: AppStyle.primaryLigth,
+                  borderColor: AppStyle.primaryLigth,
                   onPressed: () => loginProvider.signup(context),  
                   text: S.of(context).signUp,
                 ),
