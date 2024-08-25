@@ -60,6 +60,16 @@ class S {
     );
   }
 
+  /// `Add`
+  String get add {
+    return Intl.message(
+      'Add',
+      name: 'add',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add New Vehicle`
   String get addVehicles {
     return Intl.message(
@@ -70,11 +80,11 @@ class S {
     );
   }
 
-  /// `Create a new account in Smart Tolls`
-  String get createAccount {
+  /// `Chassis`
+  String get chassis {
     return Intl.message(
-      'Create a new account in Smart Tolls',
-      name: 'createAccount',
+      'Chassis',
+      name: 'chassis',
       desc: '',
       args: [],
     );
@@ -85,6 +95,16 @@ class S {
     return Intl.message(
       'Confirm Password',
       name: 'confirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a new account in Smart Tolls`
+  String get createAccount {
+    return Intl.message(
+      'Create a new account in Smart Tolls',
+      name: 'createAccount',
       desc: '',
       args: [],
     );
@@ -195,6 +215,16 @@ class S {
     return Intl.message(
       'Password',
       name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Plate`
+  String get plate {
+    return Intl.message(
+      'Plate',
+      name: 'plate',
       desc: '',
       args: [],
     );

@@ -25,47 +25,50 @@ class VehiclesView extends StatelessWidget {
           centerTitle: true,
           text: S.of(context).vehicles,
         ),
+        backgroundColor: AppStyle.ligthGrey,
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: ListView.builder(
-              primary: true,
-              shrinkWrap: true,
+            padding: const EdgeInsets.all(16),
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
               itemCount: 10,
               itemBuilder: (context, index) {
-                return Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppStyle.white, width: 1),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    color: AppStyle.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        spreadRadius: 1
+                      ),
+                    ]
+                  ),
+                  child: Row(
                     children: [
-                      Image.asset('assets/car.jpg'),
-                      const ListTile(
-                        leading: Icon(Icons.car_repair_outlined, color: AppStyle.primary, size: 30),
-                        title: Text('5617-KNK'),
-                        subtitle: Column(
+                      const SizedBox(width: 8),
+                      Image.asset('assets/car.jpg', height: 120, width: 120),
+                      const SizedBox(width: 8),
+                      const Expanded(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Suzuki, Dzire',
-                                  style: TextStyle(fontSize: 16.0),
-                                ),
-                                Text(
-                                  '2022',
-                                  style: TextStyle(fontSize: 14.0),
-                                ),
-                              ],
-                            )
+                            Text('Suzuki, Dzire', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                            Text('5617-KNK', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                            Text('2022', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                           ],
-                        )
-                      ),
+                        ),
+                      )
                     ],
                   ),
                 );
               },
+              physics: const NeverScrollableScrollPhysics(),
+              primary: true,
+              shrinkWrap: true,
             ),
           ),
         ),
