@@ -240,11 +240,31 @@ class S {
     );
   }
 
+  /// `Recharge Wallet`
+  String get rechargeWallet {
+    return Intl.message(
+      'Recharge Wallet',
+      name: 'rechargeWallet',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Register`
   String get register {
     return Intl.message(
       'Register',
       name: 'register',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See All`
+  String get seeAll {
+    return Intl.message(
+      'See All',
+      name: 'seeAll',
       desc: '',
       args: [],
     );
@@ -285,6 +305,16 @@ class S {
     return Intl.message(
       'Sign Up',
       name: 'signUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction History`
+  String get transactionHistory {
+    return Intl.message(
+      'Transaction History',
+      name: 'transactionHistory',
       desc: '',
       args: [],
     );

@@ -36,9 +36,19 @@ class AppRouter {
             builder: (context, state) => const HomeView(),
           ),
           GoRoute(
+            name: RechargeWalletView.routerName,
+            path: RechargeWalletView.routerPath,
+            builder: (context, state) => const RechargeWalletView(),
+          ),
+          GoRoute(
             name: VehiclesView.routerName,
             path: VehiclesView.routerPath,
             builder: (context, state) => const VehiclesView(),
+          ),
+          GoRoute(
+            name: WalletListView.routerName,
+            path: WalletListView.routerPath,
+            builder: (context, state) => const WalletListView(),
           ),
           GoRoute(
             name: WalletView.routerName,
@@ -70,5 +80,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => LoginProvider()),
     ChangeNotifierProvider(create: (_) => SignUpProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesProvider()),
+    ChangeNotifierProvider(create: (_) => WalletProvider()),
   ];
 }

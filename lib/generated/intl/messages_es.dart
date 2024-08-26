@@ -42,11 +42,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "phone": MessageLookupByLibrary.simpleMessage("Telefono"),
         "plate": MessageLookupByLibrary.simpleMessage("Matrícula"),
+        "rechargeWallet":
+            MessageLookupByLibrary.simpleMessage("Recargar Billetera"),
         "register": MessageLookupByLibrary.simpleMessage("Registrarse"),
+        "seeAll": MessageLookupByLibrary.simpleMessage("Ver Todo"),
         "signUp": MessageLookupByLibrary.simpleMessage("Registrate"),
         "start": MessageLookupByLibrary.simpleMessage("Inicio"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Paso 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Paso 2"),
+        "transactionHistory":
+            MessageLookupByLibrary.simpleMessage("Historial de transacciones"),
         "vehicles": MessageLookupByLibrary.simpleMessage("Vehiculos"),
         "wallet": MessageLookupByLibrary.simpleMessage("Billetera"),
         "welcome": MessageLookupByLibrary.simpleMessage("¡Bienvenido!")

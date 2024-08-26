@@ -30,8 +30,7 @@ class VehiclesView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(height: 8),
-              itemCount: 10,
+              itemCount: 5,
               itemBuilder: (context, index) {
                 return Container(
                   decoration: BoxDecoration(
@@ -61,7 +60,11 @@ class VehiclesView extends StatelessWidget {
                             Text('2022', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                           ],
                         ),
-                      )
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.payment_outlined, color: AppStyle.primary),
+                        onPressed: () {},
+                      ),
                     ],
                   ),
                 );
@@ -69,6 +72,7 @@ class VehiclesView extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               primary: true,
               shrinkWrap: true,
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
             ),
           ),
         ),
