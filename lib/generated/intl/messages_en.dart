@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "addVehicles": MessageLookupByLibrary.simpleMessage("Add New Vehicle"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
+        "brand": MessageLookupByLibrary.simpleMessage("Brand"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chassis"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
@@ -33,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dni": MessageLookupByLibrary.simpleMessage("DNI"),
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account? "),
+        "download": MessageLookupByLibrary.simpleMessage("Download"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Introduce amount"),
@@ -42,9 +44,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loginToYourAccount":
             MessageLookupByLibrary.simpleMessage("Login to your account"),
+        "model": MessageLookupByLibrary.simpleMessage("Model"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "payWithQr": MessageLookupByLibrary.simpleMessage("Pay with QR"),
         "phone": MessageLookupByLibrary.simpleMessage("Phone"),
         "plate": MessageLookupByLibrary.simpleMessage("Plate"),
         "rechargeWallet":
@@ -59,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Transaction History"),
         "vehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),
         "wallet": MessageLookupByLibrary.simpleMessage("Wallet"),
-        "welcome": MessageLookupByLibrary.simpleMessage("Welcome!")
+        "welcome": MessageLookupByLibrary.simpleMessage("Welcome!"),
+        "year": MessageLookupByLibrary.simpleMessage("Year")
       };
 }

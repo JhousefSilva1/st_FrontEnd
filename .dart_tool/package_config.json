@@ -188,6 +188,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "qr",
+      "rootUri": "file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/qr-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "qr_flutter",
+      "rootUri": "file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/qr_flutter-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///C:/flutter_sdk/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -290,7 +302,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-08-26T23:52:47.559346Z",
+  "generated": "2024-09-01T17:56:50.161434Z",
   "generator": "pub",
   "generatorVersion": "3.3.3"
 }

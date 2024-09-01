@@ -6,6 +6,10 @@ class WalletProvider extends ChangeNotifier {
   int _itemSelectOpt = 6;
   int get itemSelectOpt => _itemSelectOpt;
   
+  void goToQr(BuildContext context) {
+    context.pushNamed(QrView.routerName);
+  }
+
   void goToRechargeWallet(BuildContext context) {
     context.pushNamed(RechargeWalletView.routerName);
   }

@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Brand`
+  String get brand {
+    return Intl.message(
+      'Brand',
+      name: 'brand',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Chassis`
   String get chassis {
     return Intl.message(
@@ -125,6 +135,16 @@ class S {
     return Intl.message(
       'Don\'t have an account? ',
       name: 'dontHaveAnAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Download`
+  String get download {
+    return Intl.message(
+      'Download',
+      name: 'download',
       desc: '',
       args: [],
     );
@@ -200,6 +220,16 @@ class S {
     );
   }
 
+  /// `Model`
+  String get model {
+    return Intl.message(
+      'Model',
+      name: 'model',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Name`
   String get name {
     return Intl.message(
@@ -225,6 +255,16 @@ class S {
     return Intl.message(
       'Password',
       name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pay with QR`
+  String get payWithQr {
+    return Intl.message(
+      'Pay with QR',
+      name: 'payWithQr',
       desc: '',
       args: [],
     );
@@ -355,6 +395,16 @@ class S {
     return Intl.message(
       'Wallet',
       name: 'wallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Year`
+  String get year {
+    return Intl.message(
+      'Year',
+      name: 'year',
       desc: '',
       args: [],
     );

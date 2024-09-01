@@ -2,11 +2,13 @@
     "appName": "Smart Tolls",
     "add": "Add",
     "addVehicles": "Add New Vehicle",
+    "brand": "Brand",
     "chassis": "Chassis",
     "confirmPassword": "Confirm Password",
     "createAccount": "Create a new account in Smart Tolls",
     "dni": "DNI",
     "dontHaveAnAccount": "Don't have an account? ",
+    "download": "Download",
     "email": "Email",
     "introduceAmount": "Introduce amount",
     "login": "Login",
@@ -14,9 +16,11 @@
     "lastNameM": "Last Name (Mother)",
     "lastOneStep": "Last One Step",
     "loginToYourAccount": "Login to your account",
+    "model": "Model",
     "name": "Name",
     "next": "Next",
     "password": "Password",
+    "payWithQr": "Pay with QR",
     "plate": "Plate",
     "phone": "Phone",
     "rechargeWallet": "Recharge Wallet",
@@ -29,5 +33,6 @@
     "transactionHistory": "Transaction History",
     "vehicles": "Vehicles",
     "welcome": "Welcome!",
-    "wallet": "Wallet"
+    "wallet": "Wallet",
+    "year": "Year"
 }

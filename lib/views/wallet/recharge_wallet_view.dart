@@ -128,7 +128,7 @@ class RechargeWalletView extends StatelessWidget {
                       height: 32,
                     ),
                     CustomButton(
-                      onPressed: () {}, 
+                      onPressed: () => walletProvider.goToQr(context), 
                       text: S.of(context).next,
                     )
                   ],

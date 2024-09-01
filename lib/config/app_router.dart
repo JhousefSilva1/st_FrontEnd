@@ -36,6 +36,11 @@ class AppRouter {
             builder: (context, state) => const HomeView(),
           ),
           GoRoute(
+            name: QrView.routerName,
+            path: QrView.routerPath,
+            builder: (context, state) => const QrView(),
+          ),
+          GoRoute(
             name: RechargeWalletView.routerName,
             path: RechargeWalletView.routerPath,
             builder: (context, state) => const RechargeWalletView(),
