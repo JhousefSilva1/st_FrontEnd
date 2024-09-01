@@ -32,11 +32,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "createAccount": MessageLookupByLibrary.simpleMessage(
             "Crea una nueva cuenta en Smart Tolls"),
         "dni": MessageLookupByLibrary.simpleMessage("Carnet de identidad"),
+        "dontHaveAnAccount":
+            MessageLookupByLibrary.simpleMessage("¿No tienes una cuenta? "),
         "email": MessageLookupByLibrary.simpleMessage("Correo electrónico"),
+        "introduceAmount":
+            MessageLookupByLibrary.simpleMessage("Ingrese monto"),
         "lastNameF": MessageLookupByLibrary.simpleMessage("Apellido Paterno"),
         "lastNameM": MessageLookupByLibrary.simpleMessage("Apellido Materno"),
         "lastOneStep": MessageLookupByLibrary.simpleMessage("¡Ya casi!"),
         "login": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
+        "loginToYourAccount":
+            MessageLookupByLibrary.simpleMessage("Inicie sesión en su cuenta"),
         "name": MessageLookupByLibrary.simpleMessage("Nombres"),
         "next": MessageLookupByLibrary.simpleMessage("Siguiente"),
         "password": MessageLookupByLibrary.simpleMessage("Contraseña"),

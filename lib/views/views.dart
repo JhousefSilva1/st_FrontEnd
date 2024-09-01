@@ -7,5 +7,6 @@ export 'package:smarttolls/views/signup/signup_view.dart';
 export 'package:smarttolls/views/signup/signup_step_two_view.dart';
 export 'package:smarttolls/views/vehicles/vehicles_view.dart';
 export 'package:smarttolls/views/welcome/welcome_view.dart';
+export 'package:smarttolls/views/wallet/transaction_history_view.dart';
 export 'package:smarttolls/views/wallet/wallet_list_view.dart';
 export 'package:smarttolls/views/wallet/wallet_view.dart';

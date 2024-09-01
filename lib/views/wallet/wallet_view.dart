@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 import 'package:u_credit_card/u_credit_card.dart';
@@ -13,6 +13,7 @@ class WalletView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WalletProvider walletProvider = Provider.of<WalletProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
@@ -25,7 +26,7 @@ class WalletView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
             child: Column(
               children: [
-                const Align(
+                Align(
                   alignment: Alignment.center,
                   child: CreditCardUi(
                     autoHideBalance: false,
@@ -44,6 +45,14 @@ class WalletView extends StatelessWidget {
                     validFrom: '',
                     validThru: '',
                     width: double.infinity,
+                    cardProviderLogo: InkWell(
+                      onTap: () => walletProvider.goToRechargeWallet(context),
+                      child: const Chip(
+                        labelStyle: TextStyle(color: AppStyle.primary),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16)), side: BorderSide(color: AppStyle.primary, width: 1)),
+                        label: Text('Recargar')
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -58,11 +67,14 @@ class WalletView extends StatelessWidget {
                         ),
                       )
                     ),
-                    Text(S.of(context).seeAll,
-                      style: const TextStyle(
-                        color: AppStyle.primary,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                    GestureDetector(
+                      onTap: () => walletProvider.goToTransactionHistory(context),
+                      child: Text(S.of(context).seeAll,
+                        style: const TextStyle(
+                          color: AppStyle.primary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ],

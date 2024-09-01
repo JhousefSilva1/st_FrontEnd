@@ -140,6 +140,16 @@ class S {
     );
   }
 
+  /// `Introduce amount`
+  String get introduceAmount {
+    return Intl.message(
+      'Introduce amount',
+      name: 'introduceAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Login`
   String get login {
     return Intl.message(
