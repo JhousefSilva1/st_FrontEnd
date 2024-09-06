@@ -33,7 +33,7 @@ class AppRouter {
           GoRoute(
             name: HomeView.routerName,
             path: HomeView.routerPath,
-            builder: (context, state) => HomeView(),
+            builder: (context, state) => const HomeView(),
           ),
           GoRoute(
             name: NotificationView.routerName,

@@ -8,7 +8,7 @@ import 'package:smarttolls/style/app_style.dart';
 class HomeView extends StatelessWidget {
   static const String routerName = 'home';
   static const String routerPath = '/home';
-  HomeView({super.key});
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
