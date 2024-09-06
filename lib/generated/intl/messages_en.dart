@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
         "brand": MessageLookupByLibrary.simpleMessage("Brand"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chassis"),
+        "completedTransactions":
+            MessageLookupByLibrary.simpleMessage("Completed Transactions"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
         "createAccount": MessageLookupByLibrary.simpleMessage(
@@ -36,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Don\'t have an account? "),
         "download": MessageLookupByLibrary.simpleMessage("Download"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Introduce amount"),
         "lastNameF": MessageLookupByLibrary.simpleMessage("Last Name (Father)"),
@@ -47,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "model": MessageLookupByLibrary.simpleMessage("Model"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "notification": MessageLookupByLibrary.simpleMessage("Notification"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pay with QR"),
         "phone": MessageLookupByLibrary.simpleMessage("Phone"),
@@ -54,11 +58,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "rechargeWallet":
             MessageLookupByLibrary.simpleMessage("Recharge Wallet"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
+        "registerCars": MessageLookupByLibrary.simpleMessage("Register Cars"),
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Step 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Step 2"),
+        "tollsUsed": MessageLookupByLibrary.simpleMessage("Tolls Used"),
+        "totalPaid": MessageLookupByLibrary.simpleMessage("Total Paid"),
         "transactionHistory":
             MessageLookupByLibrary.simpleMessage("Transaction History"),
         "vehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),

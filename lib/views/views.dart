@@ -1,6 +1,7 @@
 export 'package:smarttolls/views/vehicles/add_vehicles_view.dart';
 export 'package:smarttolls/views/home/home_view.dart';
 export 'package:smarttolls/views/login/login_view.dart';
+export 'package:smarttolls/views/notification/notification_view.dart';
 export 'package:smarttolls/views/navBar/nav_bar_view.dart';
 export 'package:smarttolls/views/wallet/qr_view.dart';
 export 'package:smarttolls/views/wallet/recharge_wallet_view.dart';

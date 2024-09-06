@@ -100,6 +100,16 @@ class S {
     );
   }
 
+  /// `Completed Transactions`
+  String get completedTransactions {
+    return Intl.message(
+      'Completed Transactions',
+      name: 'completedTransactions',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Confirm Password`
   String get confirmPassword {
     return Intl.message(
@@ -155,6 +165,16 @@ class S {
     return Intl.message(
       'Email',
       name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
       desc: '',
       args: [],
     );
@@ -250,6 +270,16 @@ class S {
     );
   }
 
+  /// `Notification`
+  String get notification {
+    return Intl.message(
+      'Notification',
+      name: 'notification',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get password {
     return Intl.message(
@@ -310,6 +340,16 @@ class S {
     );
   }
 
+  /// `Register Cars`
+  String get registerCars {
+    return Intl.message(
+      'Register Cars',
+      name: 'registerCars',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `See All`
   String get seeAll {
     return Intl.message(
@@ -355,6 +395,26 @@ class S {
     return Intl.message(
       'Sign Up',
       name: 'signUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tolls Used`
+  String get tollsUsed {
+    return Intl.message(
+      'Tolls Used',
+      name: 'tollsUsed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Paid`
+  String get totalPaid {
+    return Intl.message(
+      'Total Paid',
+      name: 'totalPaid',
       desc: '',
       args: [],
     );
