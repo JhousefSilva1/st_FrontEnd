@@ -46,13 +46,6 @@ class LoginMobileView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: IconButton(
-            onPressed: () => context.pop(), 
-            icon: const Icon(Icons.arrow_back_ios, color: AppStyle.primary)
-          ),
-        ),
         const SizedBox(height: 80),
         AssetsImages.map(height: 100, width: 100),
         AssetsImages.logo(height: 100, width: 200),
@@ -79,6 +72,7 @@ class LoginTabletView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 80),
             AssetsImages.map(height: isDesktop? MediaQuery.of(context).size.width * .2: MediaQuery.of(context).size.width * .3),
             AssetsImages.logo(height: isDesktop? MediaQuery.of(context).size.width * .1: MediaQuery.of(context).size.width * .15),
           ],

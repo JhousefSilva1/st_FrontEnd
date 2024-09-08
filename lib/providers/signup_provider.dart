@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smarttolls/views/home/home_view.dart';
-import 'package:smarttolls/views/signup/signup_step_two_view.dart';
+import 'package:smarttolls/views/views.dart';
 
 class SignUpProvider extends ChangeNotifier {
-  void signUpStepTwo(BuildContext context) {	
+  void goHome(BuildContext context){
+    context.goNamed(HomeView.routerName);
+  }
+
+  void goToSignUp(BuildContext context) {	
+    context.pushNamed(SignupView.routerName);
+  }
+
+  void goToSignUpStepTwo(BuildContext context) {	
     context.pushNamed(SignUpStepTwoView.routerName);
   }
 
-  void goHome(BuildContext context){
-    context.goNamed(HomeView.routerName);
+  void goToWelcome(BuildContext context) {	
+    context.pushNamed(WelcomeView.routerName);
   }
 }

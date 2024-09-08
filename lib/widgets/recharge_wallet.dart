@@ -6,6 +6,7 @@ class RechargeWallet extends StatelessWidget {
   final bool active;
   final VoidCallback? onPressed;
   const RechargeWallet({
+    super.key, 
     required this.text,
     required this.active,
     this.onPressed,
