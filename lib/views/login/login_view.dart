@@ -118,7 +118,7 @@ class LoginForm extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         CustomButton(
-          onPressed: () => loginProvider.goHome(context), 
+          onPressed: () => loginProvider.goToSelectMode(context), 
           text: S.of(context).login,
         ),
         const SizedBox(height: 8),

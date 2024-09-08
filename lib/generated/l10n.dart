@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Administration`
+  String get administration {
+    return Intl.message(
+      'Administration',
+      name: 'administration',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Brand`
   String get brand {
     return Intl.message(
@@ -130,6 +140,16 @@ class S {
     );
   }
 
+  /// `Customer`
+  String get customer {
+    return Intl.message(
+      'Customer',
+      name: 'customer',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `DNI`
   String get dni {
     return Intl.message(
@@ -165,6 +185,16 @@ class S {
     return Intl.message(
       'Email',
       name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Operator`
+  String get employee {
+    return Intl.message(
+      'Operator',
+      name: 'employee',
       desc: '',
       args: [],
     );
@@ -355,6 +385,26 @@ class S {
     return Intl.message(
       'See All',
       name: 'seeAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select User Type`
+  String get selectUserType {
+    return Intl.message(
+      'Select User Type',
+      name: 'selectUserType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, select your user`
+  String get selectYourUser {
+    return Intl.message(
+      'Please, select your user',
+      name: 'selectYourUser',
       desc: '',
       args: [],
     );

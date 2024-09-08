@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "add": MessageLookupByLibrary.simpleMessage("Agregar"),
         "addVehicles":
             MessageLookupByLibrary.simpleMessage("Agregar Nuevo Vehiculo"),
+        "administration": MessageLookupByLibrary.simpleMessage("Administrador"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
         "brand": MessageLookupByLibrary.simpleMessage("Marca"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chasis"),
@@ -34,11 +35,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Confirmar contraseña"),
         "createAccount": MessageLookupByLibrary.simpleMessage(
             "Crea una nueva cuenta en Smart Tolls"),
+        "customer": MessageLookupByLibrary.simpleMessage("Cliente"),
         "dni": MessageLookupByLibrary.simpleMessage("Carnet de identidad"),
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("¿No tienes una cuenta? "),
         "download": MessageLookupByLibrary.simpleMessage("Descargar"),
         "email": MessageLookupByLibrary.simpleMessage("Correo electrónico"),
+        "employee": MessageLookupByLibrary.simpleMessage("Operador"),
         "home": MessageLookupByLibrary.simpleMessage("Inicio"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Ingrese monto"),
@@ -62,6 +65,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "registerCars":
             MessageLookupByLibrary.simpleMessage("Automoviles Registrados"),
         "seeAll": MessageLookupByLibrary.simpleMessage("Ver Todo"),
+        "selectUserType":
+            MessageLookupByLibrary.simpleMessage("Seleccionar Tipo de Usuario"),
+        "selectYourUser": MessageLookupByLibrary.simpleMessage(
+            "Por favor, seleccione su usuario"),
         "signUp": MessageLookupByLibrary.simpleMessage("Registrate"),
         "start": MessageLookupByLibrary.simpleMessage("Inicio"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Paso 1"),

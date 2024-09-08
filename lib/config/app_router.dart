@@ -73,6 +73,11 @@ class AppRouter {
         ]
       ),
       GoRoute(
+        name: SelectModeView.routerName,
+        path: SelectModeView.routerPath,
+        builder: (context, state) => const SelectModeView(),
+      ),
+      GoRoute(
         name: SignUpStepTwoView.routerName,
         path: SignUpStepTwoView.routerPath,
         builder: (context, state) => const SignUpStepTwoView(),
@@ -93,6 +98,7 @@ class AppRouter {
   static final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(create: (_) => HomeProvider()),
     ChangeNotifierProvider(create: (_) => LoginProvider()),
+    ChangeNotifierProvider(create: (_) => SelectModeProvider()),
     ChangeNotifierProvider(create: (_) => SignUpProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesProvider()),
     ChangeNotifierProvider(create: (_) => WalletProvider()),

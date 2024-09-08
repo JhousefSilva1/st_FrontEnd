@@ -7,6 +7,10 @@ class LoginProvider extends ChangeNotifier {
     context.goNamed(HomeView.routerName);
   }
 
+  void goToSelectMode(BuildContext context){
+    context.goNamed(SelectModeView.routerName);
+  }
+
   void login(BuildContext context) {
     context.pushNamed(LoginView.routerName);
   }

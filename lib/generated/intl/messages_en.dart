@@ -24,6 +24,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "addVehicles": MessageLookupByLibrary.simpleMessage("Add New Vehicle"),
+        "administration":
+            MessageLookupByLibrary.simpleMessage("Administration"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
         "brand": MessageLookupByLibrary.simpleMessage("Brand"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chassis"),
@@ -33,11 +35,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
         "createAccount": MessageLookupByLibrary.simpleMessage(
             "Create a new account in Smart Tolls"),
+        "customer": MessageLookupByLibrary.simpleMessage("Customer"),
         "dni": MessageLookupByLibrary.simpleMessage("DNI"),
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account? "),
         "download": MessageLookupByLibrary.simpleMessage("Download"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "employee": MessageLookupByLibrary.simpleMessage("Operator"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Introduce amount"),
@@ -60,6 +64,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "register": MessageLookupByLibrary.simpleMessage("Register"),
         "registerCars": MessageLookupByLibrary.simpleMessage("Register Cars"),
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
+        "selectUserType":
+            MessageLookupByLibrary.simpleMessage("Select User Type"),
+        "selectYourUser":
+            MessageLookupByLibrary.simpleMessage("Please, select your user"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Step 1"),

@@ -22,6 +22,33 @@ abstract class AssetsImages{
     );
   }
 
+  static Widget admin({double? height, double? width}){
+    return getImage(
+      ext: 'jpg',
+      path: 'assets/admin.jpg',
+      height: height,
+      width: width
+    );
+  }
+  
+  static Widget customer({double? height, double? width}){
+    return getImage(
+      ext: 'jpg',
+      path: 'assets/customer.jpg',
+      height: height,
+      width: width
+    );
+  }
+
+  static Widget employee({double? height, double? width}){
+    return getImage(
+      ext: 'jpg',
+      path: 'assets/employee.jpg',
+      height: height,
+      width: width
+    );
+  }
+
   static Widget logo({double? height, double? width}){
     return getImage(
       ext: 'png',
