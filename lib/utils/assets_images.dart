@@ -31,6 +31,15 @@ abstract class AssetsImages{
     );
   }
 
+  static Widget logoAvatar({double? height, double? width}){
+    return getImage(
+      ext: 'png',
+      path: 'assets/logoAvatar.png',
+      height: height,
+      width: width
+    );
+  }
+
   static Widget map({double? height, double? width}){
     return getImage(
       ext: 'png',
