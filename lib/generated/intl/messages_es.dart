@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
         "loginToYourAccount":
             MessageLookupByLibrary.simpleMessage("Inicie sesión en su cuenta"),
+        "logout": MessageLookupByLibrary.simpleMessage("Cerrar sesión"),
         "model": MessageLookupByLibrary.simpleMessage("Modelo"),
         "name": MessageLookupByLibrary.simpleMessage("Nombres"),
         "next": MessageLookupByLibrary.simpleMessage("Siguiente"),
@@ -59,20 +60,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pago con QR"),
         "phone": MessageLookupByLibrary.simpleMessage("Telefono"),
         "plate": MessageLookupByLibrary.simpleMessage("Matrícula"),
+        "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
         "rechargeWallet":
             MessageLookupByLibrary.simpleMessage("Recargar Billetera"),
         "register": MessageLookupByLibrary.simpleMessage("Registrarse"),
         "registerCars":
             MessageLookupByLibrary.simpleMessage("Automoviles Registrados"),
+        "reports": MessageLookupByLibrary.simpleMessage("Reportes"),
+        "search": MessageLookupByLibrary.simpleMessage("Buscar"),
         "seeAll": MessageLookupByLibrary.simpleMessage("Ver Todo"),
         "selectUserType":
             MessageLookupByLibrary.simpleMessage("Seleccionar Tipo de Usuario"),
         "selectYourUser": MessageLookupByLibrary.simpleMessage(
             "Por favor, seleccione su usuario"),
         "signUp": MessageLookupByLibrary.simpleMessage("Registrate"),
+        "staff": MessageLookupByLibrary.simpleMessage("Personal"),
         "start": MessageLookupByLibrary.simpleMessage("Inicio"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Paso 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Paso 2"),
+        "tolls": MessageLookupByLibrary.simpleMessage("Peajes"),
         "tollsUsed": MessageLookupByLibrary.simpleMessage("Peajes Utilizados"),
         "totalPaid": MessageLookupByLibrary.simpleMessage("Monto Total Pagado"),
         "transactionHistory":

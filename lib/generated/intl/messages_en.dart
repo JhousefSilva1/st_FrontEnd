@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loginToYourAccount":
             MessageLookupByLibrary.simpleMessage("Login to your account"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "model": MessageLookupByLibrary.simpleMessage("Model"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
@@ -59,19 +60,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pay with QR"),
         "phone": MessageLookupByLibrary.simpleMessage("Phone"),
         "plate": MessageLookupByLibrary.simpleMessage("Plate"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "rechargeWallet":
             MessageLookupByLibrary.simpleMessage("Recharge Wallet"),
         "register": MessageLookupByLibrary.simpleMessage("Register"),
         "registerCars": MessageLookupByLibrary.simpleMessage("Register Cars"),
+        "reports": MessageLookupByLibrary.simpleMessage("Reports"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
         "selectUserType":
             MessageLookupByLibrary.simpleMessage("Select User Type"),
         "selectYourUser":
             MessageLookupByLibrary.simpleMessage("Please, select your user"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
+        "staff": MessageLookupByLibrary.simpleMessage("Staff"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Step 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Step 2"),
+        "tolls": MessageLookupByLibrary.simpleMessage("Tolls"),
         "tollsUsed": MessageLookupByLibrary.simpleMessage("Tolls Used"),
         "totalPaid": MessageLookupByLibrary.simpleMessage("Total Paid"),
         "transactionHistory":

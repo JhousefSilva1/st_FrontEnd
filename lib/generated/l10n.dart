@@ -220,16 +220,6 @@ class S {
     );
   }
 
-  /// `Login`
-  String get login {
-    return Intl.message(
-      'Login',
-      name: 'login',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Last Name (Father)`
   String get lastNameF {
     return Intl.message(
@@ -260,11 +250,31 @@ class S {
     );
   }
 
+  /// `Login`
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Login to your account`
   String get loginToYourAccount {
     return Intl.message(
       'Login to your account',
       name: 'loginToYourAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
       desc: '',
       args: [],
     );
@@ -330,6 +340,16 @@ class S {
     );
   }
 
+  /// `Phone`
+  String get phone {
+    return Intl.message(
+      'Phone',
+      name: 'phone',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Plate`
   String get plate {
     return Intl.message(
@@ -340,11 +360,11 @@ class S {
     );
   }
 
-  /// `Phone`
-  String get phone {
+  /// `Profile`
+  String get profile {
     return Intl.message(
-      'Phone',
-      name: 'phone',
+      'Profile',
+      name: 'profile',
       desc: '',
       args: [],
     );
@@ -375,6 +395,26 @@ class S {
     return Intl.message(
       'Register Cars',
       name: 'registerCars',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reports`
+  String get reports {
+    return Intl.message(
+      'Reports',
+      name: 'reports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
       desc: '',
       args: [],
     );
@@ -420,6 +460,16 @@ class S {
     );
   }
 
+  /// `Staff`
+  String get staff {
+    return Intl.message(
+      'Staff',
+      name: 'staff',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Step 1`
   String get stepOne {
     return Intl.message(
@@ -445,6 +495,16 @@ class S {
     return Intl.message(
       'Sign Up',
       name: 'signUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tolls`
+  String get tolls {
+    return Intl.message(
+      'Tolls',
+      name: 'tolls',
       desc: '',
       args: [],
     );

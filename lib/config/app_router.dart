@@ -8,6 +8,7 @@ import 'package:smarttolls/views/views.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
+final GlobalKey<NavigatorState> adminNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 class AppRouter {
   static final router = GoRouter(
@@ -18,6 +19,34 @@ class AppRouter {
         name: LoginView.routerName,
         path: LoginView.routerPath,
         builder: (context, state) => const LoginView(),
+      ),
+      ShellRoute(
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return NavBarAdminView(child: child);
+        },
+        navigatorKey: adminNavigatorKey,
+        routes: <RouteBase>[
+          GoRoute(
+            name: EmployeeAdminView.routerName,
+            path: EmployeeAdminView.routerPath,
+            builder: (context, state) => const EmployeeAdminView(),
+          ),
+          GoRoute(
+            name: HomeAdminView.routerName,
+            path: HomeAdminView.routerPath,
+            builder: (context, state) => const HomeAdminView(),
+          ),
+          GoRoute(
+            name: TollAdminView.routerName,
+            path: TollAdminView.routerPath,
+            builder: (context, state) => const TollAdminView(),
+          ),
+          GoRoute(
+            name: VehiclesAdminView.routerName,
+            path: VehiclesAdminView.routerPath,
+            builder: (context, state) => const VehiclesAdminView(),
+          ),
+        ]
       ),
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
