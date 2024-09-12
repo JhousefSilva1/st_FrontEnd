@@ -90,6 +90,16 @@ class S {
     );
   }
 
+  /// `Back`
+  String get back {
+    return Intl.message(
+      'Back',
+      name: 'back',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Brand`
   String get brand {
     return Intl.message(
@@ -110,6 +120,16 @@ class S {
     );
   }
 
+  /// `Circulation Square`
+  String get circulationSquare {
+    return Intl.message(
+      'Circulation Square',
+      name: 'circulationSquare',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Completed Transactions`
   String get completedTransactions {
     return Intl.message(
@@ -125,6 +145,16 @@ class S {
     return Intl.message(
       'Confirm Password',
       name: 'confirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Country`
+  String get country {
+    return Intl.message(
+      'Country',
+      name: 'country',
       desc: '',
       args: [],
     );
@@ -195,6 +225,26 @@ class S {
     return Intl.message(
       'Operator',
       name: 'employee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Engine Number`
+  String get engineNumber {
+    return Intl.message(
+      'Engine Number',
+      name: 'engineNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fuel`
+  String get fuel {
+    return Intl.message(
+      'Fuel',
+      name: 'fuel',
       desc: '',
       args: [],
     );
@@ -335,6 +385,16 @@ class S {
     return Intl.message(
       'Pay with QR',
       name: 'payWithQr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Person Data`
+  String get personData {
+    return Intl.message(
+      'Person Data',
+      name: 'personData',
       desc: '',
       args: [],
     );
@@ -500,6 +560,26 @@ class S {
     );
   }
 
+  /// `Type of Document`
+  String get typeOfDocument {
+    return Intl.message(
+      'Type of Document',
+      name: 'typeOfDocument',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type of Vehicle`
+  String get typeOfVehicle {
+    return Intl.message(
+      'Type of Vehicle',
+      name: 'typeOfVehicle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Tolls`
   String get tolls {
     return Intl.message(
@@ -540,6 +620,16 @@ class S {
     );
   }
 
+  /// `Vehicle data`
+  String get vehicleData {
+    return Intl.message(
+      'Vehicle data',
+      name: 'vehicleData',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Vehicles`
   String get vehicles {
     return Intl.message(
@@ -550,11 +640,11 @@ class S {
     );
   }
 
-  /// `Welcome!`
-  String get welcome {
+  /// `Vehicle Service`
+  String get vehicleService {
     return Intl.message(
-      'Welcome!',
-      name: 'welcome',
+      'Vehicle Service',
+      name: 'vehicleService',
       desc: '',
       args: [],
     );
@@ -565,6 +655,26 @@ class S {
     return Intl.message(
       'Wallet',
       name: 'wallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weight`
+  String get weight {
+    return Intl.message(
+      'Weight',
+      name: 'weight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome!`
+  String get welcome {
+    return Intl.message(
+      'Welcome!',
+      name: 'welcome',
       desc: '',
       args: [],
     );

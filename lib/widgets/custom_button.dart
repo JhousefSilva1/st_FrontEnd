@@ -4,6 +4,7 @@ import 'package:smarttolls/style/app_style.dart';
 class CustomButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? borderColor;
+  final Color? color;
   final double? height;
   final VoidCallback? onPressed;
   final String text;
@@ -13,6 +14,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     this.backgroundColor,
     this.borderColor,
+    this.color = AppStyle.white,
     this.height = 50,
     required this.onPressed,
     required this.text,
@@ -45,7 +47,8 @@ class CustomButton extends StatelessWidget {
           shadowColor: Colors.black,
         ),
         child: Text(text,
-          style: const TextStyle(
+          style: TextStyle(
+            color: color,
             fontSize: 16, 
             fontWeight: FontWeight.w600
           ),

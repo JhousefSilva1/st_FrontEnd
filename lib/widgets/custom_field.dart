@@ -15,6 +15,7 @@ class CustomField extends StatelessWidget {
   final GestureTapCallback? onTap;
   final Widget? prefixIcon;
   final FormFieldValidator? validator;
+  final double? width;
   
   const CustomField({
     super.key,
@@ -30,12 +31,14 @@ class CustomField extends StatelessWidget {
     this.onTap,
     this.prefixIcon,
     this.validator,
+    this.width = double.infinity
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 56,
+      width: width,
       child: TextField(
         decoration: InputDecoration(
           border: OutlineInputBorder(

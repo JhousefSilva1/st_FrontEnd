@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
@@ -11,13 +13,14 @@ class VehiclesAdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final VehiclesProvider vehiclesProvider = Provider.of<VehiclesProvider>(context);
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => vehiclesProvider.goToAddVehicleAdmin(context),
               icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
             )
           ],

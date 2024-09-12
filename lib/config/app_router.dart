@@ -27,6 +27,11 @@ class AppRouter {
         navigatorKey: adminNavigatorKey,
         routes: <RouteBase>[
           GoRoute(
+            name: AddVehiclesAdminView.routerName,
+            path: AddVehiclesAdminView.routerPath,
+            builder: (context, state) => const AddVehiclesAdminView(),
+          ),
+          GoRoute(
             name: EmployeeAdminView.routerName,
             path: EmployeeAdminView.routerPath,
             builder: (context, state) => const EmployeeAdminView(),

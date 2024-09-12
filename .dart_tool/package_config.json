@@ -212,6 +212,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "responsive_framework",
+      "rootUri": "file:///C:/Users/Mery%20Melendez/AppData/Local/Pub/Cache/hosted/pub.dev/responsive_framework-1.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///C:/flutter_sdk/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -314,7 +320,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-09-04T17:27:39.602259Z",
+  "generated": "2024-09-08T12:26:53.047758Z",
   "generator": "pub",
   "generatorVersion": "3.3.3"
 }

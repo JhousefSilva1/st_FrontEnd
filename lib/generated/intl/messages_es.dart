@@ -27,12 +27,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Agregar Nuevo Vehiculo"),
         "administration": MessageLookupByLibrary.simpleMessage("Administrador"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
+        "back": MessageLookupByLibrary.simpleMessage("Volver"),
         "brand": MessageLookupByLibrary.simpleMessage("Marca"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chasis"),
+        "circulationSquare":
+            MessageLookupByLibrary.simpleMessage("Plaza de circulación"),
         "completedTransactions":
             MessageLookupByLibrary.simpleMessage("Transacciones Realizadas"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirmar contraseña"),
+        "country": MessageLookupByLibrary.simpleMessage("Pais"),
         "createAccount": MessageLookupByLibrary.simpleMessage(
             "Crea una nueva cuenta en Smart Tolls"),
         "customer": MessageLookupByLibrary.simpleMessage("Cliente"),
@@ -42,6 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "download": MessageLookupByLibrary.simpleMessage("Descargar"),
         "email": MessageLookupByLibrary.simpleMessage("Correo electrónico"),
         "employee": MessageLookupByLibrary.simpleMessage("Operador"),
+        "engineNumber": MessageLookupByLibrary.simpleMessage("Numero de motor"),
+        "fuel": MessageLookupByLibrary.simpleMessage("Combustible"),
         "home": MessageLookupByLibrary.simpleMessage("Inicio"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Ingrese monto"),
@@ -58,6 +64,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "notification": MessageLookupByLibrary.simpleMessage("Notificaciones"),
         "password": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pago con QR"),
+        "personData": MessageLookupByLibrary.simpleMessage(
+            "Datos de la persona que solicita el registro"),
         "phone": MessageLookupByLibrary.simpleMessage("Telefono"),
         "plate": MessageLookupByLibrary.simpleMessage("Matrícula"),
         "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
@@ -83,8 +91,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalPaid": MessageLookupByLibrary.simpleMessage("Monto Total Pagado"),
         "transactionHistory":
             MessageLookupByLibrary.simpleMessage("Historial de transacciones"),
+        "typeOfDocument":
+            MessageLookupByLibrary.simpleMessage("Tipo de Documento"),
+        "typeOfVehicle":
+            MessageLookupByLibrary.simpleMessage("Tipo de vehiculo"),
+        "vehicleData":
+            MessageLookupByLibrary.simpleMessage("Datos del vehiculo"),
+        "vehicleService":
+            MessageLookupByLibrary.simpleMessage("Servicio de vehiculo"),
         "vehicles": MessageLookupByLibrary.simpleMessage("Vehiculos"),
         "wallet": MessageLookupByLibrary.simpleMessage("Billetera"),
+        "weight": MessageLookupByLibrary.simpleMessage("Peso"),
         "welcome": MessageLookupByLibrary.simpleMessage("¡Bienvenido!"),
         "year": MessageLookupByLibrary.simpleMessage("Año")
       };

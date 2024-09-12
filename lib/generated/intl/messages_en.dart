@@ -27,12 +27,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "administration":
             MessageLookupByLibrary.simpleMessage("Administration"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
+        "back": MessageLookupByLibrary.simpleMessage("Back"),
         "brand": MessageLookupByLibrary.simpleMessage("Brand"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chassis"),
+        "circulationSquare":
+            MessageLookupByLibrary.simpleMessage("Circulation Square"),
         "completedTransactions":
             MessageLookupByLibrary.simpleMessage("Completed Transactions"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
+        "country": MessageLookupByLibrary.simpleMessage("Country"),
         "createAccount": MessageLookupByLibrary.simpleMessage(
             "Create a new account in Smart Tolls"),
         "customer": MessageLookupByLibrary.simpleMessage("Customer"),
@@ -42,6 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "download": MessageLookupByLibrary.simpleMessage("Download"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "employee": MessageLookupByLibrary.simpleMessage("Operator"),
+        "engineNumber": MessageLookupByLibrary.simpleMessage("Engine Number"),
+        "fuel": MessageLookupByLibrary.simpleMessage("Fuel"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Introduce amount"),
@@ -58,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notification": MessageLookupByLibrary.simpleMessage("Notification"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pay with QR"),
+        "personData": MessageLookupByLibrary.simpleMessage("Person Data"),
         "phone": MessageLookupByLibrary.simpleMessage("Phone"),
         "plate": MessageLookupByLibrary.simpleMessage("Plate"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
@@ -82,8 +89,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalPaid": MessageLookupByLibrary.simpleMessage("Total Paid"),
         "transactionHistory":
             MessageLookupByLibrary.simpleMessage("Transaction History"),
+        "typeOfDocument":
+            MessageLookupByLibrary.simpleMessage("Type of Document"),
+        "typeOfVehicle":
+            MessageLookupByLibrary.simpleMessage("Type of Vehicle"),
+        "vehicleData": MessageLookupByLibrary.simpleMessage("Vehicle data"),
+        "vehicleService":
+            MessageLookupByLibrary.simpleMessage("Vehicle Service"),
         "vehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),
         "wallet": MessageLookupByLibrary.simpleMessage("Wallet"),
+        "weight": MessageLookupByLibrary.simpleMessage("Weight"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome!"),
         "year": MessageLookupByLibrary.simpleMessage("Year")
       };
