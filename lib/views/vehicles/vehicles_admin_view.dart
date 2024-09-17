@@ -59,7 +59,7 @@ class VehiclesAdminMobileView extends StatelessWidget {
           onChanged: (value) {},
         ),
         ListView.separated(
-          itemCount: 5,
+          itemCount: 10,
           itemBuilder: (context, index) {
             return const VehiclesCard();
           },
@@ -96,7 +96,7 @@ class VehiclesAdminTabletView extends StatelessWidget {
                     onChanged: (value) {},
                   ),
                   ListView.separated(
-                    itemCount: 5,
+                    itemCount: 10,
                     itemBuilder: (context, index) {
                       return const VehiclesCard();
                     },

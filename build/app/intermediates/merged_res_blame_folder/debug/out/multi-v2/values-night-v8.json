@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.smarttolls.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.smarttolls.app-mergeDebugResources-25:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\Amor\\smarttolls\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "D:\\Proyecto de grado Jhousef_MyLove\\FrontEnd\\st_FrontEnd\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

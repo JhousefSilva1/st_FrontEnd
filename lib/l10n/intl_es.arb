@@ -1,8 +1,9 @@
 {
-    "appName": "Smart Tolls",
+    "accountNumber": "Numero de cuenta",
     "add": "Agregar",
     "addVehicles": "Agregar Nuevo Vehiculo",
     "administration": "Administrador",
+    "appName": "Smart Tolls",
     "back": "Volver",
     "brand": "Marca",
     "chassis": "Chasis",

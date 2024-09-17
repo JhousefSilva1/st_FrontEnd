@@ -50,11 +50,11 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Smart Tolls`
-  String get appName {
+  /// `Account Number`
+  String get accountNumber {
     return Intl.message(
-      'Smart Tolls',
-      name: 'appName',
+      'Account Number',
+      name: 'accountNumber',
       desc: '',
       args: [],
     );
@@ -85,6 +85,16 @@ class S {
     return Intl.message(
       'Administration',
       name: 'administration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Smart Tolls`
+  String get appName {
+    return Intl.message(
+      'Smart Tolls',
+      name: 'appName',
       desc: '',
       args: [],
     );

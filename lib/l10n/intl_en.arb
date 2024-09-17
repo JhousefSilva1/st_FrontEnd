@@ -1,8 +1,9 @@
 {
-    "appName": "Smart Tolls",
+    "accountNumber": "Account Number",
     "add": "Add",
     "addVehicles": "Add New Vehicle",
     "administration": "Administration",
+    "appName": "Smart Tolls",
     "back": "Back",
     "brand": "Brand",
     "chassis": "Chassis",
