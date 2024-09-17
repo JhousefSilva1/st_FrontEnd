@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Add Vehicle Type`
+  String get addVehicleType {
+    return Intl.message(
+      'Add Vehicle Type',
+      name: 'addVehicleType',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Administration`
   String get administration {
     return Intl.message(
@@ -380,6 +390,26 @@ class S {
     );
   }
 
+  /// `Number of Doors`
+  String get numberOfDoors {
+    return Intl.message(
+      'Number of Doors',
+      name: 'numberOfDoors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of Passengers`
+  String get numberOfPassengers {
+    return Intl.message(
+      'Number of Passengers',
+      name: 'numberOfPassengers',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get password {
     return Intl.message(
@@ -540,6 +570,16 @@ class S {
     );
   }
 
+  /// `Status`
+  String get status {
+    return Intl.message(
+      'Status',
+      name: 'status',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Step 1`
   String get stepOne {
     return Intl.message(
@@ -655,6 +695,16 @@ class S {
     return Intl.message(
       'Vehicle Service',
       name: 'vehicleService',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicle Type`
+  String get vehicleType {
+    return Intl.message(
+      'Vehicle Type',
+      name: 'vehicleType',
       desc: '',
       args: [],
     );
