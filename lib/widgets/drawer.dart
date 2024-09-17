@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/assets_images.dart';
 
@@ -8,6 +10,7 @@ class SmartTollsDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DrawerProvider drawerProvider = Provider.of<DrawerProvider>(context);
     return Drawer(
       backgroundColor: AppStyle.white,
       surfaceTintColor: AppStyle.white,
@@ -32,11 +35,12 @@ class SmartTollsDrawer extends StatelessWidget {
           DrawerListTile(icon: Icons.home, onTap: () => print('1'), title: S.of(context).home),
           DrawerListTile(icon: Icons.account_circle_rounded, onTap: () => print('2'), title: S.of(context).profile),
           DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => print('3'), title: S.of(context).vehicles),
-          DrawerListTile(icon: Icons.supervised_user_circle_rounded, onTap: () => print('4'), title: S.of(context).staff),
-          DrawerListTile(icon: Icons.business_outlined, onTap: () => print('5'), title: S.of(context).tolls),
-          DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () => print('6'), title: S.of(context).reports),
+          DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehicleTypeAdmin(context), title: S.of(context).vehicleType),
+          DrawerListTile(icon: Icons.supervised_user_circle_rounded, onTap: () => print('5'), title: S.of(context).staff),
+          DrawerListTile(icon: Icons.business_outlined, onTap: () => print('6'), title: S.of(context).tolls),
+          DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () => print('7'), title: S.of(context).reports),
           const Spacer(),
-          DrawerListTile(icon: Icons.logout_rounded, onTap: () => print('7'), title: S.of(context).logout),
+          DrawerListTile(icon: Icons.logout_rounded, onTap: () => print('8'), title: S.of(context).logout),
         ],
       ),
     );

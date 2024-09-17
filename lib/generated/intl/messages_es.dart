@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("Agregar"),
+        "addVehicleType":
+            MessageLookupByLibrary.simpleMessage("Agregar tipo de vehiculo"),
         "addVehicles":
             MessageLookupByLibrary.simpleMessage("Agregar Nuevo Vehiculo"),
         "administration": MessageLookupByLibrary.simpleMessage("Administrador"),
@@ -62,6 +64,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Nombres"),
         "next": MessageLookupByLibrary.simpleMessage("Siguiente"),
         "notification": MessageLookupByLibrary.simpleMessage("Notificaciones"),
+        "numberOfDoors":
+            MessageLookupByLibrary.simpleMessage("Numero de puertas"),
+        "numberOfPassengers":
+            MessageLookupByLibrary.simpleMessage("Numero de pasajeros"),
         "password": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pago con QR"),
         "personData": MessageLookupByLibrary.simpleMessage(
@@ -84,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signUp": MessageLookupByLibrary.simpleMessage("Registrate"),
         "staff": MessageLookupByLibrary.simpleMessage("Personal"),
         "start": MessageLookupByLibrary.simpleMessage("Inicio"),
+        "status": MessageLookupByLibrary.simpleMessage("Estado"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Paso 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Paso 2"),
         "tolls": MessageLookupByLibrary.simpleMessage("Peajes"),
@@ -99,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Datos del vehiculo"),
         "vehicleService":
             MessageLookupByLibrary.simpleMessage("Servicio de vehiculo"),
+        "vehicleType": MessageLookupByLibrary.simpleMessage("Tipo de vehiculo"),
         "vehicles": MessageLookupByLibrary.simpleMessage("Vehiculos"),
         "wallet": MessageLookupByLibrary.simpleMessage("Billetera"),
         "weight": MessageLookupByLibrary.simpleMessage("Peso"),

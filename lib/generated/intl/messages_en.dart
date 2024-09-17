@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("Add"),
+        "addVehicleType":
+            MessageLookupByLibrary.simpleMessage("Add Vehicle Type"),
         "addVehicles": MessageLookupByLibrary.simpleMessage("Add New Vehicle"),
         "administration":
             MessageLookupByLibrary.simpleMessage("Administration"),
@@ -62,6 +64,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "notification": MessageLookupByLibrary.simpleMessage("Notification"),
+        "numberOfDoors":
+            MessageLookupByLibrary.simpleMessage("Number of Doors"),
+        "numberOfPassengers":
+            MessageLookupByLibrary.simpleMessage("Number of Passengers"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pay with QR"),
         "personData": MessageLookupByLibrary.simpleMessage("Person Data"),
@@ -82,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "staff": MessageLookupByLibrary.simpleMessage("Staff"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
+        "status": MessageLookupByLibrary.simpleMessage("Status"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Step 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Step 2"),
         "tolls": MessageLookupByLibrary.simpleMessage("Tolls"),
@@ -96,6 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "vehicleData": MessageLookupByLibrary.simpleMessage("Vehicle data"),
         "vehicleService":
             MessageLookupByLibrary.simpleMessage("Vehicle Service"),
+        "vehicleType": MessageLookupByLibrary.simpleMessage("Vehicle Type"),
         "vehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),
         "wallet": MessageLookupByLibrary.simpleMessage("Wallet"),
         "weight": MessageLookupByLibrary.simpleMessage("Weight"),

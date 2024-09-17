@@ -27,6 +27,11 @@ class AppRouter {
         navigatorKey: adminNavigatorKey,
         routes: <RouteBase>[
           GoRoute(
+            name: AddVehicleTypeAdminView.routerName,
+            path: AddVehicleTypeAdminView.routerPath,
+            builder: (context, state) => const AddVehicleTypeAdminView(),
+          ),
+          GoRoute(
             name: AddVehiclesAdminView.routerName,
             path: AddVehiclesAdminView.routerPath,
             builder: (context, state) => const AddVehiclesAdminView(),
@@ -50,6 +55,11 @@ class AppRouter {
             name: VehiclesAdminView.routerName,
             path: VehiclesAdminView.routerPath,
             builder: (context, state) => const VehiclesAdminView(),
+          ),
+          GoRoute(
+            name: VehicleTypeAdminView.routerName,
+            path: VehicleTypeAdminView.routerPath,
+            builder: (context, state) => const VehicleTypeAdminView(),
           ),
         ]
       ),
@@ -130,10 +140,12 @@ class AppRouter {
   );
 
   static final List<SingleChildWidget> providers = [
+    ChangeNotifierProvider(create: (_) => DrawerProvider()),
     ChangeNotifierProvider(create: (_) => HomeProvider()),
     ChangeNotifierProvider(create: (_) => LoginProvider()),
     ChangeNotifierProvider(create: (_) => SelectModeProvider()),
     ChangeNotifierProvider(create: (_) => SignUpProvider()),
+    ChangeNotifierProvider(create: (_) => VehicleTypeProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesProvider()),
     ChangeNotifierProvider(create: (_) => WalletProvider()),
   ];
