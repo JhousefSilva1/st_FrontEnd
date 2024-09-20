@@ -78,8 +78,9 @@ class SignUpTabletView extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDesktop = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
     return GridView.count(
+      childAspectRatio: (0.85),
       shrinkWrap: true,
-      primary: true,childAspectRatio: (0.7),
+      primary: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
       children: [
@@ -110,6 +111,7 @@ class SignUpForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 100),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(

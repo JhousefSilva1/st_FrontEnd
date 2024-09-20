@@ -1,9 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/widgets/drawer.dart';
 
 class HomeView extends StatelessWidget {
   static const String routerName = 'home';
@@ -12,7 +13,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeProvider homeProvider = Provider.of<HomeProvider>(context);
+    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -29,240 +30,64 @@ class HomeView extends StatelessWidget {
             ],
           ),
         ),
+        drawer: isMobile? const SmartTollsDrawer(): null,
         backgroundColor: AppStyle.ligthGrey,
-        body: SingleChildScrollView(
+        // body: SingleChildScrollView(
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(16),
+        //     child: SizedBox(
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.center,
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           const SizedBox(height: 16),
+        //           Container(
+        //             decoration: BoxDecoration(
+        //               border: Border.all(color: AppStyle.white, width: 1),
+        //               borderRadius: const BorderRadius.all(Radius.circular(8)),
+        //               color: AppStyle.white,
+        //               boxShadow: [
+        //                 BoxShadow(
+        //                   color: Colors.black.withOpacity(0.1),
+        //                   blurRadius: 4,
+        //                   spreadRadius: 1
+        //                 ),
+        //               ]
+        //             ),
+        //             width: double.infinity,
+        //             child: Padding(
+        //               padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+        //               child: AspectRatio(
+        //                 aspectRatio: 1.70,
+        //                 child: Padding(
+        //                   padding: const EdgeInsets.only(
+        //                     right: 18,
+        //                     left: 12,
+        //                     top: 24,
+        //                     bottom: 12,
+        //                   ),
+        //                   child: LineChart(
+        //                     mainData(homeProvider),
+        //                   ),
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        body: isMobile? const SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: SizedBox(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppStyle.white, width: 1),
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      color: AppStyle.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 4,
-                          spreadRadius: 1
-                        ),
-                      ]
-                    ),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-                      child: Text(S.of(context).appName, style: const TextStyle(color: AppStyle.primary, fontSize: 24.0, fontWeight: FontWeight.w700), textAlign: TextAlign.center),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppStyle.white, width: 1),
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: AppStyle.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                              spreadRadius: 1
-                            ),
-                          ]
-                        ),
-                        width: MediaQuery.of(context).size.width * .44,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).registerCars, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                                    const Align(
-                                      alignment: Alignment.center,
-                                      child: Text('2', style: TextStyle(color: AppStyle.primary, fontSize: 18.0, fontWeight: FontWeight.w800), textAlign: TextAlign.center)
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.electric_car_rounded, color: AppStyle.primary, size: 30),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppStyle.white, width: 1),
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: AppStyle.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                              spreadRadius: 1
-                            ),
-                          ]
-                        ),
-                        width: MediaQuery.of(context).size.width * .44,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).completedTransactions, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                                    const Align(
-                                      alignment: Alignment.center,
-                                      child: Text('20', style: TextStyle(color: AppStyle.primary, fontSize: 18.0, fontWeight: FontWeight.w800), textAlign: TextAlign.center)
-                                    )
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.wallet, color: AppStyle.primary, size: 30),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppStyle.white, width: 1),
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: AppStyle.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                              spreadRadius: 1
-                            ),
-                          ]
-                        ),
-                        width: MediaQuery.of(context).size.width * .44,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).tollsUsed, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                                    const Align(
-                                      alignment: Alignment.center,
-                                      child: Text('5', style: TextStyle(color: AppStyle.primary, fontSize: 18.0, fontWeight: FontWeight.w800), textAlign: TextAlign.center)
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.business_outlined, color: AppStyle.primary, size: 30),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppStyle.white, width: 1),
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: AppStyle.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                              spreadRadius: 1
-                            ),
-                          ]
-                        ),
-                        width: MediaQuery.of(context).size.width * .44,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).totalPaid, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                                    const Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Bs. 15', style: TextStyle(color: AppStyle.primary, fontSize: 18.0, fontWeight: FontWeight.w800), textAlign: TextAlign.center)
-                                    )
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.paid_rounded, color: AppStyle.primary, size: 30),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppStyle.white, width: 1),
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      color: AppStyle.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 4,
-                          spreadRadius: 1
-                        ),
-                      ]
-                    ),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-                      child: AspectRatio(
-                        aspectRatio: 1.70,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 18,
-                            left: 12,
-                            top: 24,
-                            bottom: 12,
-                          ),
-                          child: LineChart(
-                            mainData(homeProvider),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                HomeMobileView()
+              ],
             ),
           ),
-        ),
+        ): const HomeTabletView(),
       ),
     );
   }
@@ -389,6 +214,168 @@ class HomeView extends StatelessWidget {
         show: true,
         topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
+        ),
+      ),
+    );
+  }
+}
+
+class HomeMobileView extends StatelessWidget {
+  const HomeMobileView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        Home()
+      ],
+    );
+  }
+}
+
+class HomeTabletView extends StatelessWidget {
+  const HomeTabletView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      children: [
+        SmartTollsDrawer(),
+        Expanded(
+          flex: 2,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Home()
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: AppStyle.white, width: 1),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            color: AppStyle.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 4,
+                spreadRadius: 1
+              ),
+            ]
+          ),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+            child: Text(S.of(context).appName, style: const TextStyle(color: AppStyle.primary, fontSize: 30, fontWeight: FontWeight.w700), textAlign: TextAlign.center),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: HomeCard(
+                data: '2',
+                icon: const Icon(Icons.electric_car_rounded, color: AppStyle.primary, size: 30),
+                title: S.of(context).registerCars
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 2,
+              child: HomeCard(
+                data: '20',
+                icon: const Icon(Icons.wallet, color: AppStyle.primary, size: 30),
+                title: S.of(context).completedTransactions
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: HomeCard(
+                data: '5',
+                icon: const Icon(Icons.business_outlined, color: AppStyle.primary, size: 30),
+                title: S.of(context).tollsUsed
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 2,
+              child: HomeCard(
+                data: 'Bs. 15',
+                icon: const Icon(Icons.paid_rounded, color: AppStyle.primary, size: 30),
+                title: S.of(context).totalPaid
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+class HomeCard extends StatelessWidget {
+  const HomeCard({super.key, required this.data, required this.icon, required this.title});
+  final String data;
+  final Widget icon;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: AppStyle.white, width: 1),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: AppStyle.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            spreadRadius: 1
+          ),
+        ]
+      ),
+      width: MediaQuery.of(context).size.width * .44,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(data, style: const TextStyle(color: AppStyle.primary, fontSize: 26, fontWeight: FontWeight.w800), textAlign: TextAlign.center)
+                  )
+                ],
+              ),
+            ),
+            icon
+          ],
         ),
       ),
     );

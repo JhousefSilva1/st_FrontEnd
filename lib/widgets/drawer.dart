@@ -14,34 +14,36 @@ class SmartTollsDrawer extends StatelessWidget {
     return Drawer(
       backgroundColor: AppStyle.white,
       surfaceTintColor: AppStyle.white,
-      child: Column(
-        children: [
-          DrawerHeader(
-            child: Column(
-              children: [
-                AssetsImages.logoAvatar(height: 70),
-                const SizedBox(height: 8),
-                const Text(
-                  'Jose Pozo',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'Administrador',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
-            )
-          ),
-          DrawerListTile(icon: Icons.home, onTap: () => print('1'), title: S.of(context).home),
-          DrawerListTile(icon: Icons.account_circle_rounded, onTap: () => print('2'), title: S.of(context).profile),
-          DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => print('3'), title: S.of(context).vehicles),
-          DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehicleTypeAdmin(context), title: S.of(context).vehicleType),
-          DrawerListTile(icon: Icons.supervised_user_circle_rounded, onTap: () => print('5'), title: S.of(context).staff),
-          DrawerListTile(icon: Icons.business_outlined, onTap: () => print('6'), title: S.of(context).tolls),
-          DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () => print('7'), title: S.of(context).reports),
-          const Spacer(),
-          DrawerListTile(icon: Icons.logout_rounded, onTap: () => print('8'), title: S.of(context).logout),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            DrawerHeader(
+              child: Column(
+                children: [
+                  AssetsImages.logoAvatar(height: 70),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Jose Pozo',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const Text(
+                    'Administrador',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              )
+            ),
+            DrawerListTile(icon: Icons.home, onTap: () => print('1'), title: S.of(context).home),
+            DrawerListTile(icon: Icons.account_circle_rounded, onTap: () => print('2'), title: S.of(context).profile),
+            DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => print('3'), title: S.of(context).vehicles),
+            DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehicleTypeAdmin(context), title: S.of(context).vehicleType),
+            DrawerListTile(icon: Icons.supervised_user_circle_rounded, onTap: () => print('5'), title: S.of(context).staff),
+            DrawerListTile(icon: Icons.business_outlined, onTap: () => print('6'), title: S.of(context).tolls),
+            DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () => print('7'), title: S.of(context).reports),
+            // const Spacer(),
+            DrawerListTile(icon: Icons.logout_rounded, onTap: () => print('8'), title: S.of(context).logout),
+          ],
+        ),
       ),
     );
   }

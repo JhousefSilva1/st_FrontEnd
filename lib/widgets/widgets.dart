@@ -6,5 +6,6 @@ export 'package:smarttolls/widgets/custom_progress_indicator.dart';
 export 'package:smarttolls/widgets/drawer.dart';
 export 'package:smarttolls/widgets/extra_data.dart';
 export 'package:smarttolls/widgets/recharge_wallet.dart';
+export 'package:smarttolls/widgets/vehicle_card.dart';
 export 'package:smarttolls/widgets/vehicles_card.dart';
 export 'package:smarttolls/widgets/vehicle_type_card.dart';

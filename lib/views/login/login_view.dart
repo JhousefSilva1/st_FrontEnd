@@ -64,7 +64,7 @@ class LoginTabletView extends StatelessWidget {
     bool isDesktop = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
     return GridView.count(
       shrinkWrap: true,
-      primary: true,childAspectRatio: (0.7),
+      primary: true,childAspectRatio: (0.8),
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
       children: [
@@ -101,14 +101,14 @@ class LoginForm extends StatelessWidget {
             fontWeight: FontWeight.bold
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 32),
         CustomField(
           hintText: S.of(context).email,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {},
           prefixIcon: const Icon(Icons.email),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         CustomField(
           hintText: S.of(context).password,
           keyboardType: TextInputType.visiblePassword,
@@ -116,12 +116,12 @@ class LoginForm extends StatelessWidget {
           onChanged: (value) {},
           prefixIcon: const Icon(Icons.lock),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         CustomButton(
           onPressed: () => loginProvider.goToSelectMode(context), 
           text: S.of(context).login,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         GestureDetector(
           onTap: () => context.go(SignupView.routerPath),
           child: RichText(
