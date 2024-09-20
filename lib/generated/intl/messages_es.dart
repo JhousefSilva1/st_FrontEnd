@@ -23,12 +23,12 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountNumber":
-            MessageLookupByLibrary.simpleMessage("Numero de cuenta"),
+            MessageLookupByLibrary.simpleMessage("Número de cuenta"),
         "add": MessageLookupByLibrary.simpleMessage("Agregar"),
         "addVehicleType":
-            MessageLookupByLibrary.simpleMessage("Agregar tipo de vehiculo"),
+            MessageLookupByLibrary.simpleMessage("Agregar tipo de vehículo"),
         "addVehicles":
-            MessageLookupByLibrary.simpleMessage("Agregar Nuevo Vehiculo"),
+            MessageLookupByLibrary.simpleMessage("Agregar Nuevo Vehículo"),
         "administration": MessageLookupByLibrary.simpleMessage("Administrador"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
         "back": MessageLookupByLibrary.simpleMessage("Volver"),
@@ -50,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "download": MessageLookupByLibrary.simpleMessage("Descargar"),
         "email": MessageLookupByLibrary.simpleMessage("Correo electrónico"),
         "employee": MessageLookupByLibrary.simpleMessage("Operador"),
-        "engineNumber": MessageLookupByLibrary.simpleMessage("Numero de motor"),
+        "engineNumber": MessageLookupByLibrary.simpleMessage("Número de motor"),
         "fuel": MessageLookupByLibrary.simpleMessage("Combustible"),
         "home": MessageLookupByLibrary.simpleMessage("Inicio"),
         "introduceAmount":
@@ -67,21 +67,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "next": MessageLookupByLibrary.simpleMessage("Siguiente"),
         "notification": MessageLookupByLibrary.simpleMessage("Notificaciones"),
         "numberOfDoors":
-            MessageLookupByLibrary.simpleMessage("Numero de puertas"),
+            MessageLookupByLibrary.simpleMessage("Número de puertas"),
         "numberOfPassengers":
-            MessageLookupByLibrary.simpleMessage("Numero de pasajeros"),
+            MessageLookupByLibrary.simpleMessage("Número de pasajeros"),
         "password": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "payWithQr": MessageLookupByLibrary.simpleMessage("Pago con QR"),
         "personData": MessageLookupByLibrary.simpleMessage(
             "Datos de la persona que solicita el registro"),
-        "phone": MessageLookupByLibrary.simpleMessage("Telefono"),
+        "phone": MessageLookupByLibrary.simpleMessage("Teléfono"),
         "plate": MessageLookupByLibrary.simpleMessage("Matrícula"),
         "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
         "rechargeWallet":
             MessageLookupByLibrary.simpleMessage("Recargar Billetera"),
         "register": MessageLookupByLibrary.simpleMessage("Registrarse"),
         "registerCars":
-            MessageLookupByLibrary.simpleMessage("Automoviles Registrados"),
+            MessageLookupByLibrary.simpleMessage("Automóviles Registrados"),
         "reports": MessageLookupByLibrary.simpleMessage("Reportes"),
         "search": MessageLookupByLibrary.simpleMessage("Buscar"),
         "seeAll": MessageLookupByLibrary.simpleMessage("Ver Todo"),
@@ -103,13 +103,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "typeOfDocument":
             MessageLookupByLibrary.simpleMessage("Tipo de Documento"),
         "typeOfVehicle":
-            MessageLookupByLibrary.simpleMessage("Tipo de vehiculo"),
+            MessageLookupByLibrary.simpleMessage("Tipo de vehículo"),
         "vehicleData":
-            MessageLookupByLibrary.simpleMessage("Datos del vehiculo"),
+            MessageLookupByLibrary.simpleMessage("Datos del vehículo"),
         "vehicleService":
-            MessageLookupByLibrary.simpleMessage("Servicio de vehiculo"),
-        "vehicleType": MessageLookupByLibrary.simpleMessage("Tipo de vehiculo"),
-        "vehicles": MessageLookupByLibrary.simpleMessage("Vehiculos"),
+            MessageLookupByLibrary.simpleMessage("Servicio de vehículo"),
+        "vehicleType": MessageLookupByLibrary.simpleMessage("Tipo de vehículo"),
+        "vehicles": MessageLookupByLibrary.simpleMessage("Vehículos"),
         "wallet": MessageLookupByLibrary.simpleMessage("Billetera"),
         "weight": MessageLookupByLibrary.simpleMessage("Peso"),
         "welcome": MessageLookupByLibrary.simpleMessage("¡Bienvenido!"),
