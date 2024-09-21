@@ -52,7 +52,7 @@ class VehiclesCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => vehiclesProvider.goToVehicleAdmin(context),
                     child: const Icon(Icons.remove_red_eye_sharp, color: AppStyle.primary)
                   ),
                   GestureDetector(

@@ -29,4 +29,8 @@ class VehiclesProvider extends ChangeNotifier {
   void goToEditVehicleAdmin(BuildContext context) {
     context.pushNamed(EditVehicleAdminView.routerName);
   }
+
+  void goToVehicleAdmin(BuildContext context) {
+    context.pushNamed(VehicleAdminView.routerName);
+  }
 }

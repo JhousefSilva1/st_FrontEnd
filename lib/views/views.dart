@@ -3,6 +3,7 @@ export 'package:smarttolls/views/admin/navBar/nav_bar_admin_view.dart';
 export 'package:smarttolls/views/admin/toll/toll_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicles/add_vehicles_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicles/edit_vehicle_admin_view.dart';
+export 'package:smarttolls/views/admin/vehicles/vehicle_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicleType/add_vehicle_type_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicleType/vehicle_type_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicles/vehicles_admin_view.dart';

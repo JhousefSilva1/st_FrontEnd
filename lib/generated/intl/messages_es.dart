@@ -106,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tipo de Documento"),
         "typeOfVehicle":
             MessageLookupByLibrary.simpleMessage("Tipo de vehículo"),
+        "vehicle": MessageLookupByLibrary.simpleMessage("Vehículo"),
         "vehicleData":
             MessageLookupByLibrary.simpleMessage("Datos del vehículo"),
         "vehicleService":

@@ -700,6 +700,16 @@ class S {
     );
   }
 
+  /// `Vehicle`
+  String get vehicle {
+    return Intl.message(
+      'Vehicle',
+      name: 'vehicle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Vehicles`
   String get vehicles {
     return Intl.message(
