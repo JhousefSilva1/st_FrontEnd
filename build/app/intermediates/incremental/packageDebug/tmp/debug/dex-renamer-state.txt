@@ -1,4 +1,4 @@
-#Fri Sep 20 06:41:07 BOT 2024
+#Fri Sep 20 23:56:01 BOT 2024
 base.0=D\:\\Proyecto de grado Jhousef_MyLove\\FrontEnd\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=D\:\\Proyecto de grado Jhousef_MyLove\\FrontEnd\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.2=D\:\\Proyecto de grado Jhousef_MyLove\\FrontEnd\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex

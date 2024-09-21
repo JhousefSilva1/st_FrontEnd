@@ -37,6 +37,11 @@ class AppRouter {
             builder: (context, state) => const AddVehiclesAdminView(),
           ),
           GoRoute(
+            name: EditVehicleAdminView.routerName,
+            path: EditVehicleAdminView.routerPath,
+            builder: (context, state) => const EditVehicleAdminView(),
+          ),
+          GoRoute(
             name: EmployeeAdminView.routerName,
             path: EmployeeAdminView.routerPath,
             builder: (context, state) => const EmployeeAdminView(),

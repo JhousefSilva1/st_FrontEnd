@@ -230,6 +230,26 @@ class S {
     );
   }
 
+  /// `Edit`
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Vehicle`
+  String get editVehicle {
+    return Intl.message(
+      'Edit Vehicle',
+      name: 'editVehicle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email`
   String get email {
     return Intl.message(

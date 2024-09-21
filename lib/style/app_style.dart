@@ -6,5 +6,6 @@ class AppStyle{
   static const Color ligthGrey = Color(0xFFF9FAFB);
   static const Color primary = Color(0xFF1570A4);
   static const Color primaryLigth = Color(0xFF00A3FF);
+  static const Color red = Color(0xFFCB4335);
   static const Color white = Color(0xFFFFFFFF);
 }

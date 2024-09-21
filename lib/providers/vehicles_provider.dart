@@ -4,10 +4,17 @@ import 'package:smarttolls/views/views.dart';
 
 class VehiclesProvider extends ChangeNotifier {
   int _currentForm = 0;
+  int _editCurrentForm = 0;
   int get currentForm => _currentForm;
+  int get editCurrentForm => _editCurrentForm;
 
   void setCurrentForm(int form) {
     _currentForm = form;
+    notifyListeners();
+  }
+
+  void setEditCurrentForm(int form) {
+    _editCurrentForm = form;
     notifyListeners();
   }
 
@@ -17,5 +24,9 @@ class VehiclesProvider extends ChangeNotifier {
 
   void goToAddVehicleAdmin(BuildContext context) {
     context.pushNamed(AddVehiclesAdminView.routerName);
+  }
+
+  void goToEditVehicleAdmin(BuildContext context) {
+    context.pushNamed(EditVehicleAdminView.routerName);
   }
 }

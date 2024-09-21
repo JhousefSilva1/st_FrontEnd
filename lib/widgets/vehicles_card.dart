@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 
 class VehiclesCard extends StatelessWidget {
@@ -7,6 +8,7 @@ class VehiclesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final VehiclesProvider vehiclesProvider = Provider.of<VehiclesProvider>(context);
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: AppStyle.white, width: 1),
@@ -20,62 +22,17 @@ class VehiclesCard extends StatelessWidget {
           ),
         ]
       ),
-      child: Slidable(
-        startActionPane: ActionPane(
-          // A motion is a widget used to control how the pane animates.
-          motion: const ScrollMotion(),
-
-          // A pane can dismiss the Slidable.
-          dismissible: DismissiblePane(onDismissed: () {}),
-
-          // All actions are defined in the children parameter.
-          children: const [
-            // A SlidableAction can have an icon and/or a label.
-            SlidableAction(
-              onPressed: null,
-              backgroundColor: Color(0xFFFE4A49),
-              foregroundColor: Colors.white,
-              icon: Icons.delete,
-              label: 'Delete',
-            ),
-            SlidableAction(
-              onPressed: null,
-              backgroundColor: Color(0xFF21B7CA),
-              foregroundColor: Colors.white,
-              icon: Icons.share,
-              label: 'Share',
-            ),
-          ],
-        ),
-
-        // The end action pane is the one at the right or the bottom side.
-        endActionPane: ActionPane(
-          motion: const ScrollMotion(),
-          children: [
-            SlidableAction(
-              // An action can be bigger than the others.
-              flex: 2,
-              onPressed: null,//controller.openEndActionPane(),
-              backgroundColor: const Color(0xFF7BC043),
-              foregroundColor: Colors.white,
-              icon: Icons.archive,
-              label: 'Archive',
-            ),
-            SlidableAction(
-              onPressed: null,//controller.close(),
-              backgroundColor: const Color(0xFF0392CF),
-              foregroundColor: Colors.white,
-              icon: Icons.save,
-              label: 'Save',
-            ),
-          ],
-        ),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
-            const SizedBox(width: 8),
-            Image.asset('assets/car.jpg', height: 120, width: 120),
+            Expanded(
+              flex: 2,
+              child: Image.asset('assets/car.jpg', height: 120, width: 120),
+            ),
             const SizedBox(width: 8),
             const Expanded(
+              flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -89,9 +46,25 @@ class VehiclesCard extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.check_circle_sharp, color: AppStyle.primary),
-              onPressed: () {},
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Icon(Icons.remove_red_eye_sharp, color: AppStyle.primary)
+                  ),
+                  GestureDetector(
+                    onTap: () => vehiclesProvider.goToEditVehicleAdmin(context),
+                    child: const Icon(Icons.edit, color: AppStyle.primary)
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Icon(Icons.delete, color: AppStyle.primary)
+                  ),
+                ],
+              ),
             ),
           ],
         ),

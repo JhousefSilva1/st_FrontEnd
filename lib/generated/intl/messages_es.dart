@@ -48,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("¿No tienes una cuenta? "),
         "download": MessageLookupByLibrary.simpleMessage("Descargar"),
+        "edit": MessageLookupByLibrary.simpleMessage("Editar"),
+        "editVehicle": MessageLookupByLibrary.simpleMessage("Editar Vehículo"),
         "email": MessageLookupByLibrary.simpleMessage("Correo electrónico"),
         "employee": MessageLookupByLibrary.simpleMessage("Operador"),
         "engineNumber": MessageLookupByLibrary.simpleMessage("Número de motor"),
