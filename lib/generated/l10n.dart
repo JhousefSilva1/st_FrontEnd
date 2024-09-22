@@ -100,6 +100,16 @@ class S {
     );
   }
 
+  /// `Add Toll`
+  String get addToll {
+    return Intl.message(
+      'Add Toll',
+      name: 'addToll',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add New Vehicle`
   String get addVehicles {
     return Intl.message(
@@ -220,6 +230,16 @@ class S {
     );
   }
 
+  /// `Cost`
+  String get cost {
+    return Intl.message(
+      'Cost',
+      name: 'cost',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Country`
   String get country {
     return Intl.message(
@@ -245,6 +265,16 @@ class S {
     return Intl.message(
       'Customer',
       name: 'customer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Department`
+  String get department {
+    return Intl.message(
+      'Department',
+      name: 'department',
       desc: '',
       args: [],
     );
@@ -330,6 +360,16 @@ class S {
     );
   }
 
+  /// `Final Section`
+  String get finalSection {
+    return Intl.message(
+      'Final Section',
+      name: 'finalSection',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Fuel`
   String get fuel {
     return Intl.message(
@@ -355,6 +395,16 @@ class S {
     return Intl.message(
       'Home',
       name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Initial Section`
+  String get initialSection {
+    return Intl.message(
+      'Initial Section',
+      name: 'initialSection',
       desc: '',
       args: [],
     );
@@ -395,6 +445,26 @@ class S {
     return Intl.message(
       'Last One Step',
       name: 'lastOneStep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lines`
+  String get lines {
+    return Intl.message(
+      'Lines',
+      name: 'lines',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Locality`
+  String get locality {
+    return Intl.message(
+      'Locality',
+      name: 'locality',
       desc: '',
       args: [],
     );
@@ -550,6 +620,16 @@ class S {
     );
   }
 
+  /// `Province`
+  String get province {
+    return Intl.message(
+      'Province',
+      name: 'province',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Recharge Wallet`
   String get rechargeWallet {
     return Intl.message(
@@ -700,11 +780,31 @@ class S {
     );
   }
 
+  /// `Type of Road`
+  String get typeOfRoad {
+    return Intl.message(
+      'Type of Road',
+      name: 'typeOfRoad',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Type of Vehicle`
   String get typeOfVehicle {
     return Intl.message(
       'Type of Vehicle',
       name: 'typeOfVehicle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Toll data`
+  String get tollData {
+    return Intl.message(
+      'Toll data',
+      name: 'tollData',
       desc: '',
       args: [],
     );

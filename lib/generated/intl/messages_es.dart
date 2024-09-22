@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addBrand": MessageLookupByLibrary.simpleMessage("Agregar Marca"),
         "addEmployee": MessageLookupByLibrary.simpleMessage("Agregar Empleado"),
         "addModel": MessageLookupByLibrary.simpleMessage("Agregar Modelo"),
+        "addToll": MessageLookupByLibrary.simpleMessage("Agregar Caseta"),
         "addVehicleType":
             MessageLookupByLibrary.simpleMessage("Agregar tipo de vehículo"),
         "addVehicles":
@@ -46,10 +47,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Transacciones Realizadas"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirmar contraseña"),
+        "cost": MessageLookupByLibrary.simpleMessage("Costo"),
         "country": MessageLookupByLibrary.simpleMessage("Pais"),
         "createAccount": MessageLookupByLibrary.simpleMessage(
             "Crea una nueva cuenta en Smart Tolls"),
         "customer": MessageLookupByLibrary.simpleMessage("Cliente"),
+        "department": MessageLookupByLibrary.simpleMessage("Departamento"),
         "dni": MessageLookupByLibrary.simpleMessage("Carnet de identidad"),
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("¿No tienes una cuenta? "),
@@ -59,14 +62,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("Correo electrónico"),
         "employee": MessageLookupByLibrary.simpleMessage("Operador"),
         "engineNumber": MessageLookupByLibrary.simpleMessage("Número de motor"),
+        "finalSection": MessageLookupByLibrary.simpleMessage("Tramo final"),
         "fuel": MessageLookupByLibrary.simpleMessage("Combustible"),
         "gender": MessageLookupByLibrary.simpleMessage("Género"),
         "home": MessageLookupByLibrary.simpleMessage("Inicio"),
+        "initialSection": MessageLookupByLibrary.simpleMessage("Tramo inicial"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Ingrese monto"),
         "lastNameF": MessageLookupByLibrary.simpleMessage("Apellido Paterno"),
         "lastNameM": MessageLookupByLibrary.simpleMessage("Apellido Materno"),
         "lastOneStep": MessageLookupByLibrary.simpleMessage("¡Ya casi!"),
+        "lines": MessageLookupByLibrary.simpleMessage("Casetas"),
+        "locality": MessageLookupByLibrary.simpleMessage("Localidad"),
         "login": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
         "loginToYourAccount":
             MessageLookupByLibrary.simpleMessage("Inicie sesión en su cuenta"),
@@ -86,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "phone": MessageLookupByLibrary.simpleMessage("Teléfono"),
         "plate": MessageLookupByLibrary.simpleMessage("Matrícula"),
         "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
+        "province": MessageLookupByLibrary.simpleMessage("Provincia"),
         "rechargeWallet":
             MessageLookupByLibrary.simpleMessage("Recargar Billetera"),
         "register": MessageLookupByLibrary.simpleMessage("Registrarse"),
@@ -104,6 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "status": MessageLookupByLibrary.simpleMessage("Estado"),
         "stepOne": MessageLookupByLibrary.simpleMessage("Paso 1"),
         "stepTwo": MessageLookupByLibrary.simpleMessage("Paso 2"),
+        "tollData": MessageLookupByLibrary.simpleMessage("Datos de la caseta"),
         "tolls": MessageLookupByLibrary.simpleMessage("Peajes"),
         "tollsUsed": MessageLookupByLibrary.simpleMessage("Peajes Utilizados"),
         "totalPaid": MessageLookupByLibrary.simpleMessage("Monto Total Pagado"),
@@ -111,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Historial de transacciones"),
         "typeOfDocument":
             MessageLookupByLibrary.simpleMessage("Tipo de Documento"),
+        "typeOfRoad": MessageLookupByLibrary.simpleMessage("Tipo de via"),
         "typeOfVehicle":
             MessageLookupByLibrary.simpleMessage("Tipo de vehículo"),
         "vehicle": MessageLookupByLibrary.simpleMessage("Vehículo"),

@@ -37,6 +37,11 @@ class AppRouter {
             builder: (context, state) => const AddEmployeeAdminView(),
           ),
           GoRoute(
+            name: AddTollAdminView.routerName,
+            path: AddTollAdminView.routerPath,
+            builder: (context, state) => const AddTollAdminView(),
+          ),
+          GoRoute(
             name: AddVehicleTypeAdminView.routerName,
             path: AddVehicleTypeAdminView.routerPath,
             builder: (context, state) => const AddVehicleTypeAdminView(),
@@ -172,6 +177,7 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => LoginProvider()),
     ChangeNotifierProvider(create: (_) => SelectModeProvider()),
     ChangeNotifierProvider(create: (_) => SignUpProvider()),
+    ChangeNotifierProvider(create: (_) => TollProvider()),
     ChangeNotifierProvider(create: (_) => VehicleTypeProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesProvider()),
     ChangeNotifierProvider(create: (_) => WalletProvider()),
