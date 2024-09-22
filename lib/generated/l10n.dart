@@ -90,6 +90,16 @@ class S {
     );
   }
 
+  /// `Add Line`
+  String get addLine {
+    return Intl.message(
+      'Add Line',
+      name: 'addLine',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add Model`
   String get addModel {
     return Intl.message(
@@ -445,6 +455,16 @@ class S {
     return Intl.message(
       'Last One Step',
       name: 'lastOneStep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Line`
+  String get line {
+    return Intl.message(
+      'Line',
+      name: 'line',
       desc: '',
       args: [],
     );

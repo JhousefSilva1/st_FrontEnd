@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "add": MessageLookupByLibrary.simpleMessage("Agregar"),
         "addBrand": MessageLookupByLibrary.simpleMessage("Agregar Marca"),
         "addEmployee": MessageLookupByLibrary.simpleMessage("Agregar Empleado"),
+        "addLine": MessageLookupByLibrary.simpleMessage("Agregar Caseta"),
         "addModel": MessageLookupByLibrary.simpleMessage("Agregar Modelo"),
         "addToll": MessageLookupByLibrary.simpleMessage("Agregar Caseta"),
         "addVehicleType":
@@ -72,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameF": MessageLookupByLibrary.simpleMessage("Apellido Paterno"),
         "lastNameM": MessageLookupByLibrary.simpleMessage("Apellido Materno"),
         "lastOneStep": MessageLookupByLibrary.simpleMessage("¡Ya casi!"),
+        "line": MessageLookupByLibrary.simpleMessage("Caseta"),
         "lines": MessageLookupByLibrary.simpleMessage("Casetas"),
         "locality": MessageLookupByLibrary.simpleMessage("Localidad"),
         "login": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),

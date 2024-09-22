@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 
 class TollCard extends StatelessWidget {
@@ -7,6 +9,7 @@ class TollCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TollProvider tollProvider = Provider.of<TollProvider>(context);
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: AppStyle.white, width: 1),
@@ -146,7 +149,7 @@ class TollCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => tollProvider.goToLineAdmin(context),
                     child: const Icon(Icons.emoji_transportation_rounded, color: AppStyle.primary)
                   ),
                   GestureDetector(

@@ -6,4 +6,8 @@ class TollProvider extends ChangeNotifier {
   void goToAddTollAdmin(BuildContext context) {
     context.pushNamed(AddTollAdminView.routerName);
   }
+
+  void goToLineAdmin(BuildContext context) {
+    context.pushNamed(LineAdminView.routerName);
+  }
 }

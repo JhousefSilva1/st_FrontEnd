@@ -2,6 +2,7 @@ export 'package:smarttolls/providers/brand_provider.dart';
 export 'package:smarttolls/providers/drawer_provider.dart';
 export 'package:smarttolls/providers/employee_provider.dart';
 export 'package:smarttolls/providers/home_provider.dart';
+export 'package:smarttolls/providers/line_provider.dart';
 export 'package:smarttolls/providers/login_provider.dart';
 export 'package:smarttolls/providers/select_mode_provider.dart';
 export 'package:smarttolls/providers/signup_provider.dart';

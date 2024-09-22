@@ -72,6 +72,11 @@ class AppRouter {
             builder: (context, state) => const HomeAdminView(),
           ),
           GoRoute(
+            name: LineAdminView.routerName,
+            path: LineAdminView.routerPath,
+            builder: (context, state) => const LineAdminView(),
+          ),
+          GoRoute(
             name: TollAdminView.routerName,
             path: TollAdminView.routerPath,
             builder: (context, state) => const TollAdminView(),
@@ -174,6 +179,7 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => DrawerProvider()),
     ChangeNotifierProvider(create: (_) => EmployeeProvider()),
     ChangeNotifierProvider(create: (_) => HomeProvider()),
+    ChangeNotifierProvider(create: (_) => LineProvider()),
     ChangeNotifierProvider(create: (_) => LoginProvider()),
     ChangeNotifierProvider(create: (_) => SelectModeProvider()),
     ChangeNotifierProvider(create: (_) => SignUpProvider()),

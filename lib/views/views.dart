@@ -3,6 +3,7 @@ export 'package:smarttolls/views/admin/brand/brands_admin_view.dart';
 export 'package:smarttolls/views/admin/employee/add_employee_admin_view.dart';
 export 'package:smarttolls/views/admin/employee/employee_admin_view.dart';
 export 'package:smarttolls/views/admin/home/home_admin_view.dart';
+export 'package:smarttolls/views/admin/line/line_admin_view.dart';
 export 'package:smarttolls/views/admin/navBar/nav_bar_admin_view.dart';
 export 'package:smarttolls/views/admin/toll/add_toll_admin_view.dart';
 export 'package:smarttolls/views/admin/toll/toll_admin_view.dart';

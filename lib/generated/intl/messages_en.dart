@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "addBrand": MessageLookupByLibrary.simpleMessage("Add Brand"),
         "addEmployee": MessageLookupByLibrary.simpleMessage("Add Employee"),
+        "addLine": MessageLookupByLibrary.simpleMessage("Add Line"),
         "addModel": MessageLookupByLibrary.simpleMessage("Add Model"),
         "addToll": MessageLookupByLibrary.simpleMessage("Add Toll"),
         "addVehicleType":
@@ -71,6 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameF": MessageLookupByLibrary.simpleMessage("Last Name (Father)"),
         "lastNameM": MessageLookupByLibrary.simpleMessage("Last Name (Mother)"),
         "lastOneStep": MessageLookupByLibrary.simpleMessage("Last One Step"),
+        "line": MessageLookupByLibrary.simpleMessage("Line"),
         "lines": MessageLookupByLibrary.simpleMessage("Lines"),
         "locality": MessageLookupByLibrary.simpleMessage("Locality"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
