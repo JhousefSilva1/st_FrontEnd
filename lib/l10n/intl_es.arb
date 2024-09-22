@@ -1,12 +1,17 @@
 {
     "accountNumber": "Número de cuenta",
     "add": "Agregar",
+    "addBrand": "Agregar Marca",
+    "addEmployee": "Agregar Empleado",
+    "addModel": "Agregar Modelo",
     "addVehicles": "Agregar Nuevo Vehículo",
     "addVehicleType": "Agregar tipo de vehículo",
     "administration": "Administrador",
     "appName": "Smart Tolls",
     "back": "Volver",
+    "birthdate": "Fecha de Nacimiento",
     "brand": "Marca",
+    "cancel": "Cancelar",
     "chassis": "Chasis",
     "circulationSquare": "Plaza de circulación",
     "completedTransactions": "Transacciones Realizadas",
@@ -23,6 +28,7 @@
     "employee": "Operador",
     "engineNumber": "Número de motor",
     "fuel": "Combustible",
+    "gender": "Género",
     "home": "Inicio",
     "introduceAmount": "Ingrese monto",
     "lastNameF": "Apellido Paterno",
@@ -71,5 +77,6 @@
     "wallet": "Billetera",
     "welcome": "¡Bienvenido!",
     "weight": "Peso",
+    "workstation": "Puesto de trabajo",
     "year": "Año"
 }

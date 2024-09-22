@@ -70,6 +70,36 @@ class S {
     );
   }
 
+  /// `Add Brand`
+  String get addBrand {
+    return Intl.message(
+      'Add Brand',
+      name: 'addBrand',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Employee`
+  String get addEmployee {
+    return Intl.message(
+      'Add Employee',
+      name: 'addEmployee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Model`
+  String get addModel {
+    return Intl.message(
+      'Add Model',
+      name: 'addModel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add New Vehicle`
   String get addVehicles {
     return Intl.message(
@@ -120,11 +150,31 @@ class S {
     );
   }
 
+  /// `Birthdate`
+  String get birthdate {
+    return Intl.message(
+      'Birthdate',
+      name: 'birthdate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Brand`
   String get brand {
     return Intl.message(
       'Brand',
       name: 'brand',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
       desc: '',
       args: [],
     );
@@ -285,6 +335,16 @@ class S {
     return Intl.message(
       'Fuel',
       name: 'fuel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gender`
+  String get gender {
+    return Intl.message(
+      'Gender',
+      name: 'gender',
       desc: '',
       args: [],
     );
@@ -765,6 +825,16 @@ class S {
     return Intl.message(
       'Welcome!',
       name: 'welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Workstation`
+  String get workstation {
+    return Intl.message(
+      'Workstation',
+      name: 'workstation',
       desc: '',
       args: [],
     );

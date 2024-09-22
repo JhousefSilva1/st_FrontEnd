@@ -25,6 +25,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountNumber":
             MessageLookupByLibrary.simpleMessage("Número de cuenta"),
         "add": MessageLookupByLibrary.simpleMessage("Agregar"),
+        "addBrand": MessageLookupByLibrary.simpleMessage("Agregar Marca"),
+        "addEmployee": MessageLookupByLibrary.simpleMessage("Agregar Empleado"),
+        "addModel": MessageLookupByLibrary.simpleMessage("Agregar Modelo"),
         "addVehicleType":
             MessageLookupByLibrary.simpleMessage("Agregar tipo de vehículo"),
         "addVehicles":
@@ -32,7 +35,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "administration": MessageLookupByLibrary.simpleMessage("Administrador"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
         "back": MessageLookupByLibrary.simpleMessage("Volver"),
+        "birthdate":
+            MessageLookupByLibrary.simpleMessage("Fecha de Nacimiento"),
         "brand": MessageLookupByLibrary.simpleMessage("Marca"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chasis"),
         "circulationSquare":
             MessageLookupByLibrary.simpleMessage("Plaza de circulación"),
@@ -54,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "employee": MessageLookupByLibrary.simpleMessage("Operador"),
         "engineNumber": MessageLookupByLibrary.simpleMessage("Número de motor"),
         "fuel": MessageLookupByLibrary.simpleMessage("Combustible"),
+        "gender": MessageLookupByLibrary.simpleMessage("Género"),
         "home": MessageLookupByLibrary.simpleMessage("Inicio"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Ingrese monto"),
@@ -116,6 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "wallet": MessageLookupByLibrary.simpleMessage("Billetera"),
         "weight": MessageLookupByLibrary.simpleMessage("Peso"),
         "welcome": MessageLookupByLibrary.simpleMessage("¡Bienvenido!"),
+        "workstation":
+            MessageLookupByLibrary.simpleMessage("Puesto de trabajo"),
         "year": MessageLookupByLibrary.simpleMessage("Año")
       };
 }

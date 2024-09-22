@@ -1,3 +1,7 @@
+export 'package:smarttolls/views/admin/brand/add_brand_admin_view.dart';
+export 'package:smarttolls/views/admin/brand/brands_admin_view.dart';
+export 'package:smarttolls/views/admin/employee/add_employee_admin_view.dart';
+export 'package:smarttolls/views/admin/employee/employee_admin_view.dart';
 export 'package:smarttolls/views/admin/home/home_admin_view.dart';
 export 'package:smarttolls/views/admin/navBar/nav_bar_admin_view.dart';
 export 'package:smarttolls/views/admin/toll/toll_admin_view.dart';
@@ -17,7 +21,6 @@ export 'package:smarttolls/views/customer/wallet/recharge_wallet_view.dart';
 export 'package:smarttolls/views/customer/wallet/transaction_history_view.dart';
 export 'package:smarttolls/views/customer/wallet/wallet_list_view.dart';
 export 'package:smarttolls/views/customer/wallet/wallet_view.dart';
-export 'package:smarttolls/views/employee/employee_admin_view.dart';
 export 'package:smarttolls/views/login/login_view.dart';
 export 'package:smarttolls/views/selectMode/select_mode_view.dart';
 export 'package:smarttolls/views/signup/signup_view.dart';

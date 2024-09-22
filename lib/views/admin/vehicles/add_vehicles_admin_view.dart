@@ -396,7 +396,7 @@ class AddWalletForm extends StatelessWidget {
             width: double.infinity,
             cardProviderLogo: InkWell(
               // onTap: () => walletProvider.goToRechargeWallet(context),
-              child: const Chip(
+              child:Chip(
                 labelStyle: TextStyle(color: AppStyle.primary),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16)), side: BorderSide(color: AppStyle.primary, width: 1)),
                 label: Text('Recargar')

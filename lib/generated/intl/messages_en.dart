@@ -24,6 +24,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountNumber": MessageLookupByLibrary.simpleMessage("Account Number"),
         "add": MessageLookupByLibrary.simpleMessage("Add"),
+        "addBrand": MessageLookupByLibrary.simpleMessage("Add Brand"),
+        "addEmployee": MessageLookupByLibrary.simpleMessage("Add Employee"),
+        "addModel": MessageLookupByLibrary.simpleMessage("Add Model"),
         "addVehicleType":
             MessageLookupByLibrary.simpleMessage("Add Vehicle Type"),
         "addVehicles": MessageLookupByLibrary.simpleMessage("Add New Vehicle"),
@@ -31,7 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Administration"),
         "appName": MessageLookupByLibrary.simpleMessage("Smart Tolls"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "birthdate": MessageLookupByLibrary.simpleMessage("Birthdate"),
         "brand": MessageLookupByLibrary.simpleMessage("Brand"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chassis": MessageLookupByLibrary.simpleMessage("Chassis"),
         "circulationSquare":
             MessageLookupByLibrary.simpleMessage("Circulation Square"),
@@ -53,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "employee": MessageLookupByLibrary.simpleMessage("Operator"),
         "engineNumber": MessageLookupByLibrary.simpleMessage("Engine Number"),
         "fuel": MessageLookupByLibrary.simpleMessage("Fuel"),
+        "gender": MessageLookupByLibrary.simpleMessage("Gender"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "introduceAmount":
             MessageLookupByLibrary.simpleMessage("Introduce amount"),
@@ -112,6 +118,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "wallet": MessageLookupByLibrary.simpleMessage("Wallet"),
         "weight": MessageLookupByLibrary.simpleMessage("Weight"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome!"),
+        "workstation": MessageLookupByLibrary.simpleMessage("Workstation"),
         "year": MessageLookupByLibrary.simpleMessage("Year")
       };
 }
