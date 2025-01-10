@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smarttolls/api/api.dart';
+import 'package:smarttolls/models/models.dart';
 import 'package:smarttolls/views/views.dart';
 
 class VehiclesProvider extends ChangeNotifier {
@@ -22,7 +24,7 @@ class VehiclesProvider extends ChangeNotifier {
     context.pushNamed(AddVehiclesView.routerName);
   }
 
-  void goToAddVehicleAdmin(BuildContext context) {
+  void goToAddVehicleAdmin(BuildContext context) async {
     context.pushNamed(AddVehiclesAdminView.routerName);
   }
 
@@ -32,5 +34,9 @@ class VehiclesProvider extends ChangeNotifier {
 
   void goToVehicleAdmin(BuildContext context) {
     context.pushNamed(VehicleAdminView.routerName);
+  }
+
+  Future<StResponse> getAllVehicles() async {
+    return await SmartTollsApi().getAllVehicles();
   }
 }

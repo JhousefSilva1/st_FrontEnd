@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/config/app_router.dart';
+import 'package:smarttolls/config/enviroment.dart';
 import 'package:smarttolls/generated/l10n.dart';
 
-void main() => runApp(
-  MultiProvider(
-    providers: AppRouter.providers,
-    child: const MyApp(),
-  ),
-);
+void main() async {
+  await dotenv.load(fileName: Enviroment.file);
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    MultiProvider(
+      providers: AppRouter.providers,
+      child: const MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
