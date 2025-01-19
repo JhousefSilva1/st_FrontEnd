@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smarttolls/api/response/st_vehicles_response.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 
 class VehiclesCard extends StatelessWidget {
-  const VehiclesCard({super.key});
+  const VehiclesCard({
+    super.key,
+    required this.vehicle
+  });
+  final StVehicleResponse vehicle;
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +36,18 @@ class VehiclesCard extends StatelessWidget {
               child: Image.asset('assets/car.jpg', height: 120, width: 120),
             ),
             const SizedBox(width: 8),
-            const Expanded(
+            Expanded(
               flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Suzuki, Dzire', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                  Text('5617-KNK', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text('Vagoneta', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text('Particular', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text('La Paz', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text('2022', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                  Text('${vehicle.vehiclesModels.brand.brandName} - ${vehicle.vehiclesModels.modelName}', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                  Text(vehicle.licensePlate ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                  Text(vehicle.vehiclesType.vehiclesTypes ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                  Text(vehicle.fuelTypes.fuelTypeFuel ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                  Text(vehicle.vehiclesColors.colorName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                  Text(vehicle.manufacturingYear ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                 ],
               ),
             ),
