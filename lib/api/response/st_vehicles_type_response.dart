@@ -1,6 +1,9 @@
-import 'package:smarttolls/api/api.dart';
+import 'dart:convert';
 
-class StVehiclesTypeResponse {
+import 'package:smarttolls/api/api.dart';
+import 'package:smarttolls/models/models.dart';
+
+class StVehiclesTypeResponse implements StResponseService {
   int idVehiclesType;
   String? vehiclesTypes;
   int status;
@@ -20,6 +23,9 @@ class StVehiclesTypeResponse {
     audit: StAuditResponse.createEmpty(),
   );
 
+  @override
+  String toJson() => json.encode(toMap());
+
   factory StVehiclesTypeResponse.fromJson(Map<String, dynamic> json) => StVehiclesTypeResponse(
     idVehiclesType: json["idVehiclesType"],
     vehiclesTypes: json["vehiclesTypes"],
@@ -27,10 +33,24 @@ class StVehiclesTypeResponse {
     audit: StAuditResponse.fromJson(json["audit"]),
   );
 
-  Map<String, dynamic> toJson() => {
+  @override
+  Map<String, dynamic> toMap() => {
     "idVehiclesType": idVehiclesType,
     "vehiclesTypes": vehiclesTypes,
     "status": status,
     "audit": audit.toJson(),
   };
+
+  @override
+  StVehiclesTypeResponse fromJson(String json) {
+    return fromMap(jsonDecode(json));
+  }
+
+  @override
+  StVehiclesTypeResponse fromMap(Map<String, dynamic> json) => StVehiclesTypeResponse(
+    idVehiclesType: json["idVehiclesType"],
+    vehiclesTypes: json["vehiclesTypes"],
+    status: json["status"],
+    audit: StAuditResponse.fromJson(json["audit"]),
+  );
 }
