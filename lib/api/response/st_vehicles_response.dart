@@ -5,7 +5,7 @@
 import 'dart:convert';
 
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/models/st_response.dart';
+import 'package:smarttolls/models/models.dart';
 
 List<StVehicleResponse> vehicleResponseFromJson(String str) => List<StVehicleResponse>.from(json.decode(str).map((x) => StVehicleResponse.fromJson(x)));
 
@@ -95,19 +95,18 @@ class StVehicleResponse implements StResponseService{
   }
   
   @override
-  StVehicleResponse fromMap(Map<String, dynamic> json) {
-    idVehicle = json["idVehicle"];
-    licensePlate = json["licensePlate"];
-    chassisNumber = json["chassisNumber"];
-    engineNumber = json["engineNumber"];
-    manufacturingYear = json["manufacturingYear"];
-    weight = json["weight"];
-    fuelTypes = StFuelTypesResponse.fromJson(json["fuelTypes"]);
-    vehiclesColors = StVehiclesColorsResponse.fromJson(json["vehiclesColors"]);
-    vehiclesModels = StVehiclesModelsResponse.fromJson(json["vehiclesModels"]);
-    vehiclesType = StVehiclesTypeResponse.fromJson(json["vehiclesType"]);
-    status = json["status"];
-    audit = StAuditResponse.fromJson(json["audit"]);
-    return this;
-  }
+  StVehicleResponse fromMap(Map<String, dynamic> json) => StVehicleResponse(
+    idVehicle: json["idVehicle"],
+    licensePlate: json["licensePlate"],
+    chassisNumber: json["chassisNumber"],
+    engineNumber: json["engineNumber"],
+    manufacturingYear: json["manufacturingYear"],
+    weight: json["weight"],
+    fuelTypes: StFuelTypesResponse.fromJson(json["fuelTypes"]),
+    vehiclesColors: StVehiclesColorsResponse.fromJson(json["vehiclesColors"]),
+    vehiclesModels: StVehiclesModelsResponse.fromJson(json["vehiclesModels"]),
+    vehiclesType: StVehiclesTypeResponse.fromJson(json["vehiclesType"]),
+    status: json["status"],
+    audit: StAuditResponse.fromJson(json["audit"])
+  );
 }
