@@ -13,7 +13,7 @@ class SmartTollsApi {
   static final String _baseUrl = Enviroment.apiSmartTollsURL;
 
 
-  Future<StResponse/*<StVehicleResponse>*/> getAllVehicles() async{
+  Future<StResponse<StVehicleResponse>> getAllVehicles() async{
     try {
       final response = await httpGet('$_baseUrl/vehicles', getHeaders());
       if (response.statusCode >= HttpStatus.badRequest) {
@@ -23,12 +23,7 @@ class SmartTollsApi {
         }
         return StResponse.createEmpty();
       }
-      StResponse/*<StVehicleResponse>*/ responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehicleResponse.createEmpty());
-      // if(jsonDecode(utf8.decode(response.bodyBytes))['data'] != null){
-      //   List<StVehicleResponse> vehicles = jsonDecode(utf8.decode(response.bodyBytes))['data'];
-      //   List<StVehicleResponse> vehiclesList = vehicles.map((vehicle) => StVehicleResponse.fromJson(vehicle.toMap())).toList();
-      //   responseData.data = vehiclesList;
-      // }
+      StResponse<StVehicleResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehicleResponse.createEmpty());
 
       return responseData;
     } catch (e) {
