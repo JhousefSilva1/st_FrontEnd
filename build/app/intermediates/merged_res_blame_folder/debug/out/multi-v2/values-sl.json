@@ -4,7 +4,7 @@
             "outputFile": "com.example.smarttolls.app-mergeDebugResources-25:/values-sl/values-sl.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\meric\\.gradle\\caches\\transforms-3\\54a4cfbaad86b9ab2273ca8263e4a153\\transformed\\core-1.13.1\\res\\values-sl\\values-sl.xml",
+                    "source": "C:\\Users\\meric\\.gradle\\caches\\transforms-3\\ef0b49a1afbd575ac0952a2f8858cba9\\transformed\\core-1.13.1\\res\\values-sl\\values-sl.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

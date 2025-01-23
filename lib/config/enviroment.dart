@@ -13,6 +13,10 @@ class Enviroment {
     }
   }
 
+  static String get apiSmartTollsAuthURL{
+    return dotenv.env['API_SMART_TOLLS_AUTH_URL'] ?? '';
+  }
+
   static String get apiSmartTollsURL{
     return dotenv.env['API_SMART_TOLLS_URL'] ?? '';
   }

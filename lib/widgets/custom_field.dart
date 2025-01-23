@@ -39,7 +39,7 @@ class CustomField extends StatelessWidget {
     return SizedBox(
       height: 56,
       width: width,
-      child: TextField(
+      child: TextFormField(
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderSide: const BorderSide(color: AppStyle.primary),
@@ -62,7 +62,7 @@ class CustomField extends StatelessWidget {
           labelStyle: const TextStyle(color: AppStyle.primary),
           labelText: hintText ?? '',
           prefixIcon: prefixIcon,
-         prefixIconColor: AppStyle.primary
+          prefixIconColor: AppStyle.primary,
         ),
         enabled: enabled,
         inputFormatters: inputFormatters ?? [],
@@ -70,6 +70,7 @@ class CustomField extends StatelessWidget {
         obscureText: obscureText,
         onTap: onTap,
         onChanged: onChanged,
+        validator: validator,
       )
     );
   }

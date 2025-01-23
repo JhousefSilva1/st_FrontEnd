@@ -4,7 +4,7 @@
             "outputFile": "com.example.smarttolls.app-mergeDebugResources-25:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\Proyecto de grado Jhousef_MyLove\\FrontEnd\\st_FrontEnd\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "D:\\Proyecto de grado Jhousef_MyLove\\2025\\Frontend\\st_FrontEnd\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

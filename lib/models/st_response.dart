@@ -98,4 +98,7 @@ class StResponse<T extends StResponseService> {
     return status == HttpStatus.notFound;
   }
 
+  bool isUnauthorized() {
+    return status == HttpStatus.unauthorized;
+  }
 }

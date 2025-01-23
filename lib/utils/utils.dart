@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/widgets/widgets.dart';
 
 class Utils{
   static textFieldAlert({required BuildContext context, required Widget content, required String negativeText, Function()? positiveOnPressed, required String positiveText, required String title, Function()? negativeOnPressed}){
@@ -64,6 +65,36 @@ class Utils{
           ],
         );
       },
+    );
+  }
+
+  static Future<void> dialogOption({
+    required BuildContext context,
+    required String title,
+    required String content,
+    IconData? iconData,
+    String? onActionText,
+    String? onActionTextNegative,
+    bool? barrierDismissible,
+    Function? onAction,
+    Function? onActionNegative,
+    double? width,
+  }) async {
+    showDialog(
+      context: context,
+      barrierDismissible: barrierDismissible ?? true,
+      builder: (context) {
+        return CustomDialogPermission(
+          title: title,
+          content: content,
+          iconData: iconData,
+          positiveBtnText: onActionText ?? "Ok",
+          negativeBtnText: onActionTextNegative ?? "Volver",
+          positiveBtnPressed: onAction == null ? null: () async { onAction(); },
+          negativeBtnPressed: onActionNegative == null ? null : () async { onActionNegative(); },
+          width: width,
+        );
+      }
     );
   }
 }
