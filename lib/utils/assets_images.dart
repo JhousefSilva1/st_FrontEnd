@@ -75,4 +75,22 @@ abstract class AssetsImages{
       width: width
     );
   }
+
+  static Widget singleFingerLeftSlip({double? height, double? width}){
+    return getImage(
+      ext: 'svg',
+      path: 'assets/single_finger_left_slip.svg',
+      height: height,
+      width: width
+    );
+  }
+
+  static Widget singleFingerRightSlide({double? height, double? width}){
+    return getImage(
+      ext: 'svg',
+      path: 'assets/single_finger_right_slide.svg',
+      height: height,
+      width: width
+    );
+  }
 }

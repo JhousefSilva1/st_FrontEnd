@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:smarttolls/api/response/st_vehicles_response.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/utils/assets_images.dart';
 
 class VehiclesCard extends StatelessWidget {
   const VehiclesCard({
@@ -14,64 +16,88 @@ class VehiclesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VehiclesProvider vehiclesProvider = Provider.of<VehiclesProvider>(context);
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: AppStyle.white, width: 1),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: AppStyle.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            spreadRadius: 1
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: const DrawerMotion(),
+        children: [
+          SlidableAction(
+            flex: 2,
+            onPressed: (BuildContext context) {},
+            backgroundColor: AppStyle.red,
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Delete',
           ),
-        ]
+          SlidableAction(
+            borderRadius: const BorderRadius.only(bottomRight: Radius.circular(16), topRight: Radius.circular(16)), 
+            flex: 2,
+            onPressed: (BuildContext context) {},
+            backgroundColor: AppStyle.primary,
+            foregroundColor: Colors.white,
+            icon: Icons.edit,
+            label: 'Edit',
+          ),
+        ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Image.asset('assets/car.jpg', height: 120, width: 120),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: AppStyle.white, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: AppStyle.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              spreadRadius: 1
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text('${vehicle.vehiclesModels.brand.brandName} - ${vehicle.vehiclesModels.modelName}', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                  Text(vehicle.licensePlate ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text(vehicle.vehiclesType.vehiclesTypes ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text(vehicle.fuelTypes.fuelTypeFuel ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text(vehicle.vehiclesColors.colorName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  Text(vehicle.manufacturingYear ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                ],
+          ]
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Image.asset('assets/car.jpg', height: 120, width: 120),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () => vehiclesProvider.goToVehicleAdmin(context),
-                    child: const Icon(Icons.remove_red_eye_sharp, color: AppStyle.primary)
-                  ),
-                  GestureDetector(
-                    onTap: () => vehiclesProvider.goToEditVehicleAdmin(context),
-                    child: const Icon(Icons.edit, color: AppStyle.primary)
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Icon(Icons.delete, color: AppStyle.primary)
-                  ),
-                ],
+              const SizedBox(width: 8),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('${vehicle.vehiclesModels.brand.brandName} - ${vehicle.vehiclesModels.modelName}', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                    Text(vehicle.licensePlate ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                    Text(vehicle.vehiclesType.vehiclesTypes ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                    Text(vehicle.fuelTypes.fuelTypeFuel ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                    Text(vehicle.vehiclesColors.colorName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                    Text(vehicle.manufacturingYear ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // GestureDetector(
+                    //   onTap: () => vehiclesProvider.goToVehicleAdmin(context),
+                    //   child: const Icon(Icons.remove_red_eye_sharp, color: AppStyle.primary)
+                    // ),
+                    // GestureDetector(
+                    //   onTap: () => vehiclesProvider.goToEditVehicleAdmin(context),
+                    //   child: const Icon(Icons.edit, color: AppStyle.primary)
+                    // ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: AssetsImages.singleFingerLeftSlip(width: 30, height: 30)
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

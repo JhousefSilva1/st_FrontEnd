@@ -1,18 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/widgets/custom_dropdown_field.dart';
 import 'package:smarttolls/widgets/custom_progress.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 import 'package:u_credit_card/u_credit_card.dart';
 
-class AddVehiclesAdminView extends StatelessWidget {
+class AddVehiclesAdminView extends StatefulWidget {
   static const String routerName = 'addVehiclesAdmin';
   static const String routerPath = '/addVehiclesAdmin';
   const AddVehiclesAdminView({super.key});
 
+  @override
+  State<AddVehiclesAdminView> createState() => _AddVehiclesAdminViewState();
+}
+
+class _AddVehiclesAdminViewState extends State<AddVehiclesAdminView> {
+  
+  @override
+  void initState() {
+    _loadInitialData();
+    super.initState();
+  }
+
+  Future _loadInitialData() async {
+    final VehiclesProvider vehiclesProvider = Provider.of<VehiclesProvider>(context, listen: false);
+    await Future.wait([
+      vehiclesProvider.fetchAllBrands(),
+      vehiclesProvider.fetchAllColors(),
+      vehiclesProvider.fetchAllFuelTypes(),
+      vehiclesProvider.fetchAllModels(),
+      vehiclesProvider.fetchAllVehiclesType(),
+    ]);
+  }
+  
   @override
   Widget build(BuildContext context) {
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
@@ -110,17 +135,68 @@ class AddVehiclesAdminForm extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 onChanged: (value) {},
                 prefixIcon: const Icon(Icons.drive_eta),
-                
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               flex: 2,
-              child: CustomField(
-                hintText: S.of(context).circulationSquare,
-                keyboardType: TextInputType.text,
-                onChanged: (value) {},
-                prefixIcon: const Icon(Icons.location_on_rounded),
+              child: vehiclesProvider.vehiclesType.isEmpty?
+              const Center(child: CircularProgressIndicator()):
+              CustomDropdownfield(
+                label: S.of(context).typeOfVehicle,
+                value: vehiclesProvider.vehiclesType.first,
+                items: vehiclesProvider.vehiclesType.map((StVehiclesTypeResponse value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value.vehiclesTypes?? ''),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  vehiclesProvider.setVehicleType = value;
+                },
+              )
+            )
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: vehiclesProvider.brands.isEmpty?
+              const Center(child: CircularProgressIndicator()): 
+              CustomDropdownfield(
+                label: S.of(context).brand,
+                value: vehiclesProvider.brands.first,
+                items: vehiclesProvider.brands.map((StBrandResponse value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value.brandName?? ''),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  vehiclesProvider.setBrand = value;
+                  vehiclesProvider.fetchAllModelsByBrand(value);
+                },
+              )
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 2,
+              child: vehiclesProvider.vehiclesModels.isEmpty?
+              const Center(child: CircularProgressIndicator()):
+              CustomDropdownfield(
+                label: S.of(context).model,
+                value: vehiclesProvider.vehiclesModels.first,
+                items: vehiclesProvider.vehiclesModels.map((StVehiclesModelsResponse value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value.modelName?? ''),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  vehiclesProvider.setModel = value;
+                },
               ),
             ),
           ],
@@ -130,35 +206,20 @@ class AddVehiclesAdminForm extends StatelessWidget {
           children: [
             Expanded(
               flex: 2,
-              child: CustomField(
-                hintText: S.of(context).typeOfVehicle,
-                keyboardType: TextInputType.text,
-                onChanged: (value) {},
-                prefixIcon: const Icon(Icons.car_repair_rounded),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              flex: 2,
-              child: CustomField(
-                hintText: S.of(context).brand,
-                keyboardType: TextInputType.text,
-                onChanged: (value) {},
-                prefixIcon: const Icon(Icons.ballot_outlined),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: CustomField(
-                hintText: S.of(context).model,
-                keyboardType: TextInputType.text,
-                onChanged: (value) {},
-                prefixIcon: const Icon(Icons.ballot_outlined),
+              child: vehiclesProvider.fuelTypes.isEmpty?
+              const Center(child: CircularProgressIndicator()):
+              CustomDropdownfield(
+                label: S.of(context).fuel,
+                value: vehiclesProvider.fuelTypes.first,
+                items: vehiclesProvider.fuelTypes.map((StFuelTypesResponse value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value.fuelTypeFuel?? ''),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  vehiclesProvider.setFuelType = value;
+                },
               ),
             ),
             const SizedBox(width: 16),
@@ -166,7 +227,7 @@ class AddVehiclesAdminForm extends StatelessWidget {
               flex: 2,
               child: CustomField(
                 hintText: S.of(context).year,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
                 onChanged: (value) {},
                 prefixIcon: const Icon(Icons.calendar_month_outlined),
               ),
@@ -179,10 +240,10 @@ class AddVehiclesAdminForm extends StatelessWidget {
             Expanded(
               flex: 2,
               child: CustomField(
-                hintText: S.of(context).fuel,
+                hintText: S.of(context).chassis,
                 keyboardType: TextInputType.text,
                 onChanged: (value) {},
-                prefixIcon: const Icon(Icons.local_gas_station_rounded),
+                prefixIcon: const Icon(Icons.dvr_sharp),
               ),
             ),
             const SizedBox(width: 16),
@@ -213,20 +274,13 @@ class AddVehiclesAdminForm extends StatelessWidget {
             Expanded(
               flex: 2,
               child: CustomField(
-                hintText: S.of(context).chassis,
+                hintText: S.of(context).engineNumber,
                 keyboardType: TextInputType.text,
                 onChanged: (value) {},
-                prefixIcon: const Icon(Icons.dvr_sharp),
+                prefixIcon: const Icon(Icons.engineering_sharp),
               ),
-            ),
+            )
           ],
-        ),
-        const SizedBox(height: 16),
-        CustomField(
-          hintText: S.of(context).engineNumber,
-          keyboardType: TextInputType.text,
-          onChanged: (value) {},
-          prefixIcon: const Icon(Icons.engineering_sharp),
         ),
         const SizedBox(height: 32),
         CustomButton(

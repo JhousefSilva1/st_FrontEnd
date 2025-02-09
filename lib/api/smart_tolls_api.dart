@@ -30,6 +30,125 @@ class SmartTollsApi {
     }
   }
 
+  Future<StResponse<StVehicleResponse>> createVehicle(StVehicleResponse authRequest) async {
+    try {
+      final response = await httpPost('$_baseAuthUrl/login', getHeaders(), authRequest.toJson());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StVehicleResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StVehicleResponse> responseData = StResponse.fromJsonT(response.body, StVehicleResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+
+  Future<StResponse<StBrandResponse>> getAllBrands() async{
+    try {
+      final response = await httpGet('$_baseUrl/brands', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StBrandResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StBrandResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StBrandResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+
+  Future<StResponse<StVehiclesColorsResponse>> getAllColors() async{
+    try {
+      final response = await httpGet('$_baseUrl/colors', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StVehiclesColorsResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StVehiclesColorsResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehiclesColorsResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+
+  Future<StResponse<StFuelTypesResponse>> getAllFuelTypes() async{
+    try {
+      final response = await httpGet('$_baseUrl/fuel/types', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StFuelTypesResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StFuelTypesResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StFuelTypesResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+
+  Future<StResponse<StVehiclesModelsResponse>> getAllModels() async{
+    try {
+      final response = await httpGet('$_baseUrl/models', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StVehiclesModelsResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StVehiclesModelsResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehiclesModelsResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+
+  Future<StResponse<StVehiclesModelsResponse>> getAllModelsByBrand(StBrandResponse request) async{
+    try {
+      final response = await httpGet('$_baseUrl/models/byBrand/${request.idBrand}', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StVehiclesModelsResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StVehiclesModelsResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehiclesModelsResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+  
+  Future<StResponse<StVehiclesTypeResponse>> getAllTypeVehicles() async{
+    try {
+      final response = await httpGet('$_baseUrl/vehicleType', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StVehiclesTypeResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StVehiclesTypeResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehiclesTypeResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+
   Future<StResponse<StVehicleResponse>> getAllVehicles() async{
     try {
       final response = await httpGet('$_baseUrl/vehicles', getHeaders());
@@ -41,7 +160,6 @@ class SmartTollsApi {
         return StResponse.createEmpty();
       }
       StResponse<StVehicleResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehicleResponse.createEmpty());
-
       return responseData;
     } catch (e) {
       return StResponse.createEmpty();
@@ -53,7 +171,6 @@ class SmartTollsApi {
       var httpResponse = await http.get(Uri.parse(baseUrl), headers: header);
       if (httpResponse.statusCode != HttpStatus.ok) {
         final error = StResponse.fromJson(httpResponse.body);
-
         if (error.status == authorizationForbidden || error.status == authorizationUnauthorized) {
           // httpResponse = await reloginMethodGet(baseUrl, header, httpResponse);
         }

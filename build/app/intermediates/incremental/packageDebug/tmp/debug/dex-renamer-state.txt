@@ -1,4 +1,4 @@
-#Wed Jan 22 20:04:56 BOT 2025
+#Sun Jan 26 00:07:36 BOT 2025
 base.0=D\:\\Proyecto de grado Jhousef_MyLove\\2025\\Frontend\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=D\:\\Proyecto de grado Jhousef_MyLove\\2025\\Frontend\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.2=D\:\\Proyecto de grado Jhousef_MyLove\\2025\\Frontend\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
