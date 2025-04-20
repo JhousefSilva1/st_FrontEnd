@@ -32,7 +32,7 @@ class SmartTollsApi {
 
   Future<StResponse<StVehicleResponse>> createVehicle(StVehicleResponse authRequest) async {
     try {
-      final response = await httpPost('$_baseAuthUrl/login', getHeaders(), authRequest.toJson());
+      final response = await httpPost('$_baseAuthUrl/vehicle', getHeaders(), authRequest.toJson());
       if (response.statusCode >= HttpStatus.badRequest) {
         if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
           StResponse<StVehicleResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
