@@ -13,22 +13,55 @@ class SmartTollsApi {
   static final String _baseUrl = Enviroment.apiSmartTollsURL;
   static final String _baseAuthUrl = Enviroment.apiSmartTollsAuthURL;
 
-  Future<StResponse> autenticateUser(StAuthRequest authRequest) async {
-    try {
-      final response = await httpPost('$_baseAuthUrl/login', getHeaders(), authRequest.toJson());
-      if (response.statusCode >= HttpStatus.badRequest) {
-        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
-          StResponse<StVehicleResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
-          return responseData;
-        }
-        return StResponse.createEmpty();
+Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) async {
+  try {
+    final response = await httpPost('$_baseAuthUrl/login', getHeaders(), authRequest.toJson());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StTokenRequest>(status: HttpStatus.networkConnectTimeoutError);
       }
-      StResponse<StTokenRequest> responseData = StResponse.fromJsonT(response.body, StTokenRequest.createEmpty());
-      return responseData;
-    } catch (e) {
-      return StResponse.createEmpty();
+      
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StTokenRequest>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error desconocido',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StTokenRequest>.createEmpty();
+      }
     }
+
+    final responseJson = json.decode(response.body);
+    
+    // Manejar el caso cuando la respuesta no tiene el formato esperado
+    if (responseJson['data'] == null) {
+      return StResponse<StTokenRequest>(
+        status: response.statusCode,
+        message: 'Respuesta del servidor no contiene datos',
+        error: 'Formato de respuesta inválido',
+      );
+    }
+
+    // Crear la respuesta con los tokens
+    final tokenData = StTokenRequest.createEmpty().fromMap(responseJson['data']);
+    
+    return StResponse<StTokenRequest>(
+      data: tokenData,
+      status: responseJson['status'] ?? response.statusCode,
+      message: responseJson['message'],
+      error: responseJson['error'] ?? '',
+    );
+  } catch (e) {
+    return StResponse<StTokenRequest>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la autenticación',
+      error: e.toString(),
+    );
   }
+}
 
   Future<StResponse<StVehicleResponse>> createVehicle(StVehicleResponse authRequest) async {
     try {
@@ -217,7 +250,7 @@ class SmartTollsApi {
   getHeadersByToken(String token) {
     return {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
     };
   }
 

@@ -10,58 +10,70 @@ import 'package:smarttolls/widgets/widgets.dart';
 class LoginProvider extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   StAuthRequest request = StAuthRequest.createEmpty();
-
-  void goHome(BuildContext context) async {
-    if(validateForm()){
-      OverlayLoadingProgress.start(
-        context,
-        widget: const Loading(
-          title: "Iniciando sesión",
-          message: "Por favor espere...",
-        ),
+  void _showErrorDialog(BuildContext context, String title, String content) {
+    if(context.mounted){
+      Utils.dialogOption(
+        content: content,
+        context: context,
+        iconData: Icons.close,
+        title: title,
+        width: MediaQuery.of(context).size.width * 0.6
       );
-      Future.delayed(const Duration(seconds: 100), () {});
-      final response = await SmartTollsApi().autenticateUser(request);
-      OverlayLoadingProgress.stop();
-      if(response.isSuccess()){
-        final StTokenRequest token = response.data as StTokenRequest;
-        final data = SmartTollsApi().parseJwt(token.accessToken ?? '');
-        Preferences().setAccessToken(token.accessToken ?? '');
-        Preferences().setRefreshToken(token.refreshToken ?? '');
-        Preferences().setEmail(data['email']);
-        Preferences().setLastName(data['lastName']);
-        Preferences().setName(data['name']);
-        Preferences().setRole(data['role']);
-        if(data['role'] == 'ROLE_ADMIN'){
-          if(context.mounted) context.goNamed(HomeAdminView.routerName);
-        } else if(data['role'] == 'ROLE_CUSTOMER'){
-          if(context.mounted) context.goNamed(HomeView.routerName);
-        } else {
-          if(context.mounted) context.goNamed(HomeView.routerName);
-        }
-      } else if(response.isUnauthorized()){
-        if(context.mounted){
-          Utils.dialogOption(
-            content: 'Por favor verifica tus credenciales e intenta nuevamente',
-            context: context,
-            iconData: Icons.close,
-            title: 'Credenciales incorrectas',
-            width: MediaQuery.of(context).size.width * 0.6
-          );
-        }
-      } else {
-        if(context.mounted){
-          Utils.dialogOption(
-            content: 'Ha ocurrido un error inesperado, por favor intenta nuevamente',
-            context: context,
-            iconData: Icons.close,
-            title: 'Error',
-            width: MediaQuery.of(context).size.width * 0.6
-          );
-        }
-      }
     }
   }
+
+void goHome(BuildContext context) async {
+  if(validateForm()){
+    OverlayLoadingProgress.start(
+      context,
+      widget: const Loading(
+        title: "Iniciando sesión",
+        message: "Por favor espere...",
+      ),
+    );
+    
+    try {
+      final response = await SmartTollsApi().autenticateUser(request);
+      OverlayLoadingProgress.stop();
+      
+      if(response.isSuccess() && response.data != null){
+        final token = response.data!; // Ya es del tipo StTokenRequest
+        final data = SmartTollsApi().parseJwt(token.accessToken ?? '');
+        
+        // Guardar tokens y datos de usuario
+        Preferences().setAccessToken(token.accessToken ?? '');
+        Preferences().setRefreshToken(token.refreshToken ?? '');
+        Preferences().setEmail(data['email'] ?? '');
+        Preferences().setLastName(data['lastName'] ?? '');
+        Preferences().setName(data['name'] ?? '');
+        Preferences().setRole(data['roles']?[0] ?? 'ROLE_CUSTOMER'); // Ajuste para el campo roles
+        
+        // Redirección basada en el rol
+        final role = data['roles']?[0] ?? 'ROLE_CUSTOMER';
+        if(context.mounted) {
+          if(role == 'ROLE_ADMINISTRADOR'){
+            context.goNamed(HomeAdminView.routerName);
+          } else {
+            context.goNamed(HomeView.routerName);
+          }
+        }
+      } else if(response.isUnauthorized()){
+        _showErrorDialog(context, 'Credenciales incorrectas', 
+          'Por favor verifica tus credenciales e intenta nuevamente');
+      } else {
+        _showErrorDialog(context, 'Error', 
+          response.message ?? 'Ha ocurrido un error inesperado');
+      }
+    } catch (e) {
+      OverlayLoadingProgress.stop();
+      _showErrorDialog(context, 'Error', 
+        'Excepción durante el login: ${e.toString()}');
+    }
+  }
+  
+  
+}
+
 
   void goToSelectMode(BuildContext context){
     context.goNamed(SelectModeView.routerName);

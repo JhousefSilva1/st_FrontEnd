@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:smarttolls/models/models.dart';
 
 class StTokenRequest implements StResponseService {
-  String? accessToken;
-  String? refreshToken;
+  String? accessToken;  // Cambiar para coincidir con el backend
+  String? refreshToken; // Cambiar para coincidir con el backend
 
   StTokenRequest({
     this.accessToken,
@@ -20,14 +20,14 @@ class StTokenRequest implements StResponseService {
   String toJson() => json.encode(toMap());
 
   factory StTokenRequest.fromJson(Map<String, dynamic> json) => StTokenRequest(
-    accessToken: json["access_token"],
-    refreshToken: json["refresh_token"],
+    accessToken: json["accessToken"] ?? json["access_token"], // Compatibilidad con ambos formatos
+    refreshToken: json["refreshToken"] ?? json["refresh_token"], // Compatibilidad con ambos formatos
   );
 
   @override
   Map<String, dynamic> toMap() => {
-    "access_token": accessToken,
-    "refresh_token": refreshToken,
+    "accessToken": accessToken, // Usar el mismo nombre que el backend
+    "refreshToken": refreshToken, // Usar el mismo nombre que el backend
   };
 
   @override
@@ -37,7 +37,7 @@ class StTokenRequest implements StResponseService {
 
   @override
   StTokenRequest fromMap(Map<String, dynamic> json) => StTokenRequest(
-    accessToken: json["access_token"],
-    refreshToken: json["refresh_token"],
+    accessToken: json["accessToken"] ?? json["access_token"],
+    refreshToken: json["refreshToken"] ?? json["refresh_token"],
   );
 }
