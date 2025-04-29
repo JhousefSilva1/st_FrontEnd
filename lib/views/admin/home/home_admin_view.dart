@@ -10,7 +10,7 @@ class HomeAdminView extends StatelessWidget {
     return const SafeArea(
       child: Scaffold(
         body: Center(
-          child: Text('Home Admin View'),
+          child: Text('Home Admin Viewsss'),
         ),
       ),
     );

@@ -91,14 +91,17 @@ class VehiclesAdminBody extends StatelessWidget {
     return FutureBuilder(
       future: vehiclesProvider.getAllVehicles(),
       builder:(context, snapshot){
+        
+
+
         if(snapshot.connectionState == ConnectionState.waiting){
           return const Center(child: CircularProgressIndicator());
         }
         if(snapshot.hasError){
-          return const Center(child: Text('Error'));
+          return const Center(child: Text('Error al generar la vista de vehiculos'));
         }
         if(snapshot.data == null || !snapshot.data!.isSuccess()){
-          return const Center(child: Text('Error'));
+          return const Center(child: Text('Error no se pordian cargar los vehiculos'));
         }
         var vehicles = snapshot.data!.dataList;
         return Column(

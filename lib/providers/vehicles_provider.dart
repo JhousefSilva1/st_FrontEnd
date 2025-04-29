@@ -107,7 +107,7 @@ class VehiclesProvider extends ChangeNotifier {
       _brands = response.dataList ?? [];
       notifyListeners();
     }else {
-      print('Error: ${response.message}');
+      print('Error : ${response.message}');
     }
   }
 

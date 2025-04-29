@@ -81,14 +81,7 @@ class VehiclesCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // GestureDetector(
-                    //   onTap: () => vehiclesProvider.goToVehicleAdmin(context),
-                    //   child: const Icon(Icons.remove_red_eye_sharp, color: AppStyle.primary)
-                    // ),
-                    // GestureDetector(
-                    //   onTap: () => vehiclesProvider.goToEditVehicleAdmin(context),
-                    //   child: const Icon(Icons.edit, color: AppStyle.primary)
-                    // ),
+
                     GestureDetector(
                       onTap: () {},
                       child: AssetsImages.singleFingerLeftSlip(width: 30, height: 30)
