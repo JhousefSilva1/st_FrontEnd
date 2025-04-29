@@ -22,14 +22,14 @@ class VehiclesAdminView extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () => vehiclesProvider.goToAddVehicleAdmin(context),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
+              icon: const Icon(Icons.add_rounded, color: Color.fromARGB(255, 38, 121, 168), size: 30),
             )
           ],
           centerTitle: true,
           text: S.of(context).vehicles,
         ),
         drawer: isMobile? const SmartTollsDrawer(): null,
-        backgroundColor: AppStyle.white,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         body: isMobile? const SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16),

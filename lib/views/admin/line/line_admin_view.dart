@@ -21,7 +21,7 @@ class LineAdminView extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () => lineProvider.goToAddLine(context),
-              icon: const Icon(Icons.add_rounded, color: Color.fromARGB(255, 21, 164, 69), size: 30),
+              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
             )
           ],
           centerTitle: true,

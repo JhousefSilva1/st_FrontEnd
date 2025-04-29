@@ -6,7 +6,8 @@ import 'package:smarttolls/widgets/custom_field.dart';
 
 
 class BrandProvider extends ChangeNotifier {
-  List<StBrandResponse> _brands = [];
+  List<StBrandResponse> _allBrands = []; // Lista completa
+  List<StBrandResponse> _brands = []; // Lista filtrada
   bool _isLoading = false;
   String? _errorMessage = '';
   String? _selectedBrand = '';
@@ -18,16 +19,30 @@ class BrandProvider extends ChangeNotifier {
   String? get selectedBrand => _selectedBrand;
   String? get newModelName => _newModelName;
 
+  // Método para buscar marcas
+  void searchBrands(String query) {
+    if (query.isEmpty) {
+      _brands = List.from(_allBrands);
+    } else {
+      _brands = _allBrands.where((brand) => 
+        brand.brandName?.toLowerCase().contains(query.toLowerCase()) ?? false
+      ).toList();
+    }
+    notifyListeners();
+  }
+
   // cargar marcas desde la API
   Future<void> loadBrands() async {
     _isLoading = true;
-     _errorMessage = null;
+    _errorMessage = null;
     notifyListeners();
-      try {
+
+    try {
       final response = await SmartTollsApi().getAllBrands();
       
       if (response.isSuccess() && response.dataList != null) {
-        _brands = response.dataList!;
+        _allBrands = response.dataList!;
+        _brands = List.from(_allBrands);
       } else {
         _errorMessage = response.message ?? 'Error al cargar las marcas';
       }
