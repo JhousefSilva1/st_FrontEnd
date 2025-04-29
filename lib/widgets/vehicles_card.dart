@@ -69,7 +69,7 @@ class VehiclesCard extends StatelessWidget {
                   children: [
                     Text('${vehicle.vehiclesModels.brand.brandName} - ${vehicle.vehiclesModels.modelName}', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                     Text(vehicle.licensePlate ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                    Text(vehicle.vehiclesType.vehiclesTypes ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                    Text(vehicle.vehiclesType.vehiclesTypesName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                     Text(vehicle.fuelTypes.fuelTypeFuel ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                     Text(vehicle.vehiclesColors.colorName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                     Text(vehicle.manufacturingYear ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
