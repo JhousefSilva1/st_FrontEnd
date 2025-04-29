@@ -16,6 +16,8 @@ class CustomField extends StatelessWidget {
   final Widget? prefixIcon;
   final FormFieldValidator? validator;
   final double? width;
+  final TextEditingController? controller; // Nuevo parámetro
+
   
   const CustomField({
     super.key,
@@ -31,7 +33,9 @@ class CustomField extends StatelessWidget {
     this.onTap,
     this.prefixIcon,
     this.validator,
-    this.width = double.infinity
+    this.width = double.infinity,
+    this.controller, // Añadido al constructor
+
   });
 
   @override
@@ -40,6 +44,7 @@ class CustomField extends StatelessWidget {
       height: 56,
       width: width,
       child: TextFormField(
+        controller: controller, // Usamos el controller aquí
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderSide: const BorderSide(color: AppStyle.primary),

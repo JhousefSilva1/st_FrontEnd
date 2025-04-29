@@ -7,124 +7,87 @@ import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
 class BrandsAdminView extends StatelessWidget {
-  static const String routerName = 'brandsAdmin';
-  static const String routerPath = '/brandsAdmin';
+  static const String routerName = 'brands';
+  static const String routerPath = '/brands';
+
   const BrandsAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final BrandProvider brandProvider = Provider.of<BrandProvider>(context);
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            PopupMenuButton(
-              color: AppStyle.white,
-              child: const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: Icon(Icons.add),
-              ),
-              itemBuilder: (ctx) => [
-                PopupMenuItem(
-                  child: GestureDetector(
-                    onTap: () => brandProvider.goToAddBrand(context),
-                    child: Text(S.of(context).brand),
-                  )
-                ),
-                PopupMenuItem(
-                  child: GestureDetector(
-                    onTap: () => brandProvider.goToAddModel(context),
-                    child: Text(S.of(context).model),
-                  )
-                )
-              ],
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).brand
-        ),
-        backgroundColor: AppStyle.white,
-        drawer: isMobile? const SmartTollsDrawer(): null,
-        body: isMobile? const SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                BrandsAdminMobileView(),
-              ],
-            )
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Marcas de Vehículos'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Provider.of<BrandProvider>(context, listen: false).goToAddBrand(context);
+            },
           ),
-        ): const BrandsAdminTabletView(),
+        ],
       ),
+      body: const BrandsList(),
     );
   }
 }
 
-class BrandsAdminMobileView extends StatelessWidget {
-  const BrandsAdminMobileView({super.key});
+class BrandsList extends StatefulWidget {
+  const BrandsList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        BrandsForm()
-      ],
-    );
-  }
+  State<BrandsList> createState() => _BrandsListState();
 }
 
-class BrandsAdminTabletView extends StatelessWidget {
-  const BrandsAdminTabletView({super.key});
+class _BrandsListState extends State<BrandsList> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<BrandProvider>(context, listen: false).loadBrands();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        SmartTollsDrawer(),
-        Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  BrandsForm()
-                ],
-              )
+    final provider = context.watch<BrandProvider>();
+
+    if (provider.isLoading && provider.brands.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
             ),
-          )
-        )
-      ],
-    );
-  }
-}
-
-class BrandsForm extends StatelessWidget {
-  const BrandsForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        CustomField(
-          hintText: S.of(context).search,
-          prefixIcon: const Icon(Icons.search),
-          onChanged: (value) {},
+          ],
         ),
-        ListView.separated(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return const BrandsCard();
-          },
-          physics: const NeverScrollableScrollPhysics(),
-          primary: true,
-          shrinkWrap: true,
-          separatorBuilder: (context, index) => const SizedBox(height: 8),
-        ),
-      ],
+      );
+    }
+
+    if (provider.brands.isEmpty) {
+      return Center(child: Text('No hay marcas registradas'));
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => provider.loadBrands(),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: provider.brands.length,
+        itemBuilder: (context, index) {
+          final brand = provider.brands[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: BrandsCard(brand: brand),
+          );
+        },
+      ),
     );
   }
 }

@@ -107,7 +107,8 @@ class VehiclesProvider extends ChangeNotifier {
       _brands = response.dataList ?? [];
       notifyListeners();
     }else {
-      print('Error : ${response.message}');
+      // print('Error : ${response.message}');
+      debugPrint('Error: ${response.message}');
     }
   }
 
@@ -117,7 +118,7 @@ class VehiclesProvider extends ChangeNotifier {
       _vehiclesColors = response.dataList ?? [];
       notifyListeners();
     }else {
-      print('Error: ${response.message}');
+     debugPrint('Error: ${response.message}');
     }
   }
 
@@ -127,7 +128,7 @@ class VehiclesProvider extends ChangeNotifier {
       _vehiclesModels = response.dataList ?? [];
       notifyListeners();
     }else {
-      print('Error: ${response.message}');
+      debugPrint('Error: ${response.message}');
     }
   }
 
@@ -137,7 +138,7 @@ class VehiclesProvider extends ChangeNotifier {
       _fuelTypes = response.dataList ?? [];
       notifyListeners();
     }else {
-      print('Error: ${response.message}');
+      debugPrint('Error: ${response.message}');
     }
   }
 
@@ -147,7 +148,7 @@ class VehiclesProvider extends ChangeNotifier {
       _vehiclesType = response.dataList ?? [];
       notifyListeners();
     }else {
-      print('Error: ${response.message}');
+      debugPrint('Error: ${response.message}');
     }
   }
 
@@ -157,7 +158,7 @@ class VehiclesProvider extends ChangeNotifier {
       _vehiclesModels = response.dataList ?? [];
       notifyListeners();
     }else {
-      print('Error: ${response.message}');
+      debugPrint('Error: ${response.message}');
     }
   }
 }

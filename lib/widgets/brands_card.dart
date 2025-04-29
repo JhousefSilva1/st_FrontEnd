@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:smarttolls/api/response/st_brand_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/brand_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
 
 class BrandsCard extends StatelessWidget {
-  const BrandsCard({super.key});
+  final StBrandResponse brand;
+
+  const BrandsCard({
+    super.key,
+    required this.brand,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +45,14 @@ class BrandsCard extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: Text(S.of(context).brand, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                        child: Text(S.of(context).brand, 
+                          style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                       ),
                       const SizedBox(width: 16),
-                      const Expanded(
+                      Expanded(
                         flex: 2,
-                        child: Text('Suzuki', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                        child: Text(brand.brandName ?? 'N/A', 
+                          style: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                       ),
                     ],
                   ),
@@ -50,12 +60,14 @@ class BrandsCard extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: Text(S.of(context).model, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                        child: Text(S.of(context).country, 
+                          style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                       ),
                       const SizedBox(width: 16),
-                      const Expanded(
+                      Expanded(
                         flex: 2,
-                        child: Text('Dzire', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
+                        child: Text(brand.brandManufacturingCountry ?? 'N/A', 
+                          style: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                       ),
                     ],
                   ),
@@ -68,15 +80,23 @@ class BrandsCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () {},
-                    child: const Icon(Icons.remove_red_eye_sharp, color: AppStyle.primary)
+                    onTap: () {
+                      // Ver detalles
+                      final provider = Provider.of<BrandProvider>(context, listen: false);
+                      provider.goToAddModel(context);
+                    },
+                    child: const Icon(Icons.add, color: AppStyle.primary)
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      // Editar
+                    },
                     child: const Icon(Icons.edit, color: AppStyle.primary)
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      // Eliminar
+                    },
                     child: const Icon(Icons.delete, color: AppStyle.primary)
                   ),
                 ],
