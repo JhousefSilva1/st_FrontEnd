@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import 'package:smarttolls/providers/providers.dart';
+import 'package:smarttolls/views/admin/colors/vehicles_colors_admin_view.dart';
 import 'package:smarttolls/views/views.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -98,6 +99,11 @@ class AppRouter {
             path: FuelTypeAdminView.routerPath,
             builder: (context, state) => const FuelTypeAdminView(),
             ),
+          GoRoute(
+            path: VehiclesColorsAdminView.routerName,
+            name: VehiclesColorsAdminView.routerPath,
+            builder: (context, state) => const VehiclesColorsAdminView(),
+            )
         ]
       ),
       ShellRoute(

@@ -39,6 +39,7 @@ class SmartTollsDrawer extends StatelessWidget {
             DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehicleTypeAdmin(context), title: S.of(context).vehicleType),
             DrawerListTile(icon: Icons.badge_rounded, onTap: () => drawerProvider.goToBrandsAdmin(context), title: S.of(context).brand),
             DrawerListTile(icon: Icons.oil_barrel_sharp, onTap: ()=> drawerProvider.goToFuelTypeAdmin(context), title: S.of(context).fuel),
+            DrawerListTile(icon: Icons.color_lens_rounded, onTap: () => drawerProvider.goToVehiclesColorsAdmin(context), title: S.of(context).vehicleColor),
             DrawerListTile(icon: Icons.supervised_user_circle_rounded, onTap: () {}, title: S.of(context).staff),
             DrawerListTile(icon: Icons.business_outlined, onTap: () {}, title: S.of(context).tolls),
             DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () {}, title: S.of(context).reports),

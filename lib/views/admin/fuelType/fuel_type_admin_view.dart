@@ -53,7 +53,7 @@ class FuelTypeAdminView extends StatelessWidget{
     Widget build(BuildContext context) {
       return const Column(
         children: [
-          // FuelTypeAdminList(),
+          FuelTypeAdminList(),
         ],
       );
     }
