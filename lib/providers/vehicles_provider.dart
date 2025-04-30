@@ -70,7 +70,7 @@ class VehiclesProvider extends ChangeNotifier {
   }
 
   void goToVehicleAdmin(BuildContext context) {
-    context.pushNamed(VehicleAdminView.routerName);
+    context.pushNamed(VehiclesAdminView.routerName);
   }
 
   Future<StResponse<StBrandResponse>> getAllBrands() async {

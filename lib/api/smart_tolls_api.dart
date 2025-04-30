@@ -116,7 +116,7 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
 
   Future<StResponse<StFuelTypesResponse>> getAllFuelTypes() async{
     try {
-      final response = await httpGet('$_baseUrl/fuel/types', getHeaders());
+      final response = await httpGet('$_baseUrl/fuelTypes', getHeaders());
       if (response.statusCode >= HttpStatus.badRequest) {
         if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
           StResponse<StFuelTypesResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);

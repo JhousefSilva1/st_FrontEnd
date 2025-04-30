@@ -3,10 +3,23 @@ import 'package:go_router/go_router.dart';
 import 'package:smarttolls/views/views.dart';
 
 class DrawerProvider extends ChangeNotifier {
+
+  void goToHomeAdmin(BuildContext context) {
+    context.pushNamed(HomeAdminView.routerName);
+  }
+
+  void goToVehiclesAdmin(BuildContext context) {
+    context.pushNamed(VehiclesAdminView.routerName);
+  }
+
   void goToBrandsAdmin(BuildContext context) {
     context.pushNamed(BrandsAdminView.routerName);
   }
   void goToVehicleTypeAdmin(BuildContext context) {
     context.pushNamed(VehicleTypeAdminView.routerName);
+  }
+
+  void goToFuelTypeAdmin(BuildContext context) {
+    context.pushNamed(FuelTypeAdminView.routerName);
   }
 }

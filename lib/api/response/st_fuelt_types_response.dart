@@ -5,20 +5,20 @@ import 'package:smarttolls/models/models.dart';
 
 class StFuelTypesResponse implements StResponseService {
   int idFuelType;
-  String? fuelTypeFuel;
+  String? fuelTypeName;
   int status;
   StAuditResponse audit;
 
   StFuelTypesResponse({
     required this.idFuelType,
-    this.fuelTypeFuel,
+    this.fuelTypeName,
     required this.status,
     required this.audit,
   });
 
   factory StFuelTypesResponse.createEmpty() => StFuelTypesResponse(
     idFuelType: 0,
-    fuelTypeFuel: '',
+    fuelTypeName: '',
     status: 0, 
     audit: StAuditResponse.createEmpty(),
   );
@@ -28,7 +28,7 @@ class StFuelTypesResponse implements StResponseService {
 
   factory StFuelTypesResponse.fromJson(Map<String, dynamic> json) => StFuelTypesResponse(
     idFuelType: json["idFuelType"],
-    fuelTypeFuel: json["fuelTypeFuel"],
+    fuelTypeName: json["fuelTypeFuel"],
     status: json["status"],
     audit: StAuditResponse.fromJson(json["audit"]),
   );
@@ -36,7 +36,7 @@ class StFuelTypesResponse implements StResponseService {
   @override
   Map<String, dynamic> toMap() => {
     "idFuelType": idFuelType,
-    "fuelTypeFuel": fuelTypeFuel,
+    "fuelTypeFuel": fuelTypeName,
     "status": status,
     "audit": audit.toJson(),
   };
@@ -49,7 +49,7 @@ class StFuelTypesResponse implements StResponseService {
   @override
   StFuelTypesResponse fromMap(Map<String, dynamic> json) => StFuelTypesResponse(
     idFuelType: json["idFuelType"],
-    fuelTypeFuel: json["fuelTypeFuel"],
+    fuelTypeName: json["fuelTypeFuel"],
     status: json["status"],
     audit: StAuditResponse.fromJson(json["audit"]),
   );

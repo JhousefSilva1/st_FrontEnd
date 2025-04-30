@@ -15,3 +15,4 @@ export 'package:smarttolls/widgets/toll_card.dart';
 export 'package:smarttolls/widgets/vehicle_card.dart';
 export 'package:smarttolls/widgets/vehicles_card.dart';
 export 'package:smarttolls/widgets/vehicle_type_card.dart';
+export 'package:smarttolls/widgets/fuel_type_card.dart';

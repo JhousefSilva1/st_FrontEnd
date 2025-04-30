@@ -214,7 +214,7 @@ class AddVehiclesAdminForm extends StatelessWidget {
                 items: vehiclesProvider.fuelTypes.map((StFuelTypesResponse value) {
                   return DropdownMenuItem(
                     value: value,
-                    child: Text(value.fuelTypeFuel?? ''),
+                    child: Text(value.fuelTypeName?? ''),
                   );
                 }).toList(),
                 onChanged: (value) {

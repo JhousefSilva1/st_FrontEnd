@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/utils/utils.dart';
-import 'package:smarttolls/views/views.dart';
 import 'package:smarttolls/widgets/custom_field.dart';
+
+
 
 class VehicleTypeProvider extends ChangeNotifier {
   List<StVehiclesTypeResponse> _allVehiclesType = []; // Lista completa
@@ -23,7 +23,6 @@ class VehicleTypeProvider extends ChangeNotifier {
   String? get newVehicleTypeName => _newVehicleTypeName;
 
   // Método para buscar tipos de vehículos
-
   void searchVehiclesType(String query){
     if (query.isEmpty){
       _vehiclesType = List.from(_allVehiclesType);

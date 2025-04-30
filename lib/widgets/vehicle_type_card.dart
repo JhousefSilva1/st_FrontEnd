@@ -4,8 +4,7 @@ import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:smarttolls/views/customer/vehicles/vehicles_view.dart';
+
 
 class VehicleTypeCard extends StatelessWidget {
   final StVehiclesTypeResponse vehiclesTypeName;
@@ -48,7 +47,11 @@ class VehicleTypeCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Text(S.of(context).vehicleType, 
-                          style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w700
+                            )
+                            ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(

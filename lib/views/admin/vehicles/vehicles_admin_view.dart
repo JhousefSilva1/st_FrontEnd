@@ -4,7 +4,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
-import 'package:smarttolls/style/app_style.dart';
+
 import 'package:smarttolls/widgets/widgets.dart';
 
 class VehiclesAdminView extends StatelessWidget {

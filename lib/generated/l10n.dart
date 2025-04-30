@@ -54,6 +54,15 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+  /// `Retry`
+  String get retry{
+    return Intl.message(
+      'Rettry',
+      name: 'reintentar',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Account Number`
   String get accountNumber {
@@ -115,6 +124,33 @@ class S {
     return Intl.message(
       'Add Vehicle Type',
       name: 'addVehicleType',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Add Fuel Types`
+  String get addFuelTypes {
+    return Intl.message(
+      'Add Fuel Types',
+      name: 'addFuelTypes',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Fuel Type`
+  String get fuelType{
+    return Intl.message(
+      'Fuel Type',
+      name: 'fuelType',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Fuel Type Name`
+  String get fuelTypeName {
+    return Intl.message(
+      'Fuel Type Name',
+      name: 'fuelTypeName',
       desc: '',
       args: [],
     );

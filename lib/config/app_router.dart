@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/views/views.dart';
 
@@ -82,20 +83,21 @@ class AppRouter {
             builder: (context, state) => const TollAdminView(),
           ),
           GoRoute(
-            name: VehicleAdminView.routerName,
-            path: VehicleAdminView.routerPath,
-            builder: (context, state) => const VehicleAdminView(),
-          ),
-          GoRoute(
             name: VehiclesAdminView.routerName,
             path: VehiclesAdminView.routerPath,
             builder: (context, state) => const VehiclesAdminView(),
           ),
           GoRoute(
-            name: VehicleTypeAdminView.routerName,
             path: VehicleTypeAdminView.routerPath,
+            name: VehicleTypeAdminView.routerName,
             builder: (context, state) => const VehicleTypeAdminView(),
           ),
+
+          GoRoute(
+            name: FuelTypeAdminView.routerName,
+            path: FuelTypeAdminView.routerPath,
+            builder: (context, state) => const FuelTypeAdminView(),
+            ),
         ]
       ),
       ShellRoute(
@@ -187,5 +189,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => VehicleTypeProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesProvider()),
     ChangeNotifierProvider(create: (_) => WalletProvider()),
+    ChangeNotifierProvider(create: (_) => FuelTypeProvider()),
   ];
 }

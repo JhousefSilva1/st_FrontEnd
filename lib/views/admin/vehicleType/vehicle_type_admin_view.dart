@@ -160,7 +160,9 @@ Widget build(BuildContext context){
                 itemCount: provider.vehiclesType.length,
                 itemBuilder: (context, index) {
                   final VehiclesType = provider.vehiclesType[index];
-                  return VehicleTypeCard(vehiclesTypeName: VehiclesType);
+                  return VehicleTypeCard(
+                    vehiclesTypeName: VehiclesType
+                    );
                 },
                 physics: const NeverScrollableScrollPhysics(),
                 primary: false,
