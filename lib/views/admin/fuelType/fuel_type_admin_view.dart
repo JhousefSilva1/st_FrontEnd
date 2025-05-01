@@ -156,9 +156,9 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
               ListView.separated(
                 itemCount: provider.fuelType.length,
                 itemBuilder: (context, index) {
-                  final FuelType = provider.fuelType[index];
+                  final fuelType = provider.fuelType[index];
                   return FuelTypeCard(
-                      fuelTypesName: FuelType,
+                      fuelTypesName: fuelType,
                   ) ;
                 },
                 physics: const NeverScrollableScrollPhysics(),

@@ -59,7 +59,6 @@ class VehiclesColorsProvider extends ChangeNotifier{
   // agregar nuevo color de vehículo
   Future<void> addColor(String colorName) async{
     _isLoading = true;
-    _errorMessage = null;
     notifyListeners();
 
     try{

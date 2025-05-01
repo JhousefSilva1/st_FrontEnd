@@ -4,7 +4,6 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/vehicles_colors_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/widgets/vehicles_colors_card.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
 class VehiclesColorsAdminView extends StatelessWidget{
@@ -158,9 +157,9 @@ class _VehiclesColorsAdminListState extends State<VehiclesColorsAdminList> {
               ListView.separated(
                 itemCount: provider.colors.length,
                 itemBuilder: (context, index) {
-                  final VehiclesColors = provider.colors[index];
+                  final vehiclesColors = provider.colors[index];
                   return VehiclesColorsCard(
-                    vehiclesColorsName: VehiclesColors,
+                    vehiclesColorsName: vehiclesColors
                     
                   );
                 },

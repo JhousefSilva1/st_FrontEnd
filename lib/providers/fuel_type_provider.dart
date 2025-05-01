@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smarttolls/api/response/st_fuelt_types_response.dart';
+import 'package:smarttolls/api/response/st_fuel_types_response.dart';
 import 'package:smarttolls/api/smart_tolls_api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/utils/utils.dart';

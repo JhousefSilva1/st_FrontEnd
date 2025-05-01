@@ -2,7 +2,7 @@ export 'package:smarttolls/api/request/st_auth_request.dart';
 export 'package:smarttolls/api/request/st_token_request.dart';
 export 'package:smarttolls/api/response/st_audit_response.dart';
 export 'package:smarttolls/api/response/st_brand_response.dart';
-export 'package:smarttolls/api/response/st_fuelt_types_response.dart';
+export 'package:smarttolls/api/response/st_fuel_types_response.dart';
 export 'package:smarttolls/api/response/st_vehicles_colors_response.dart';
 export 'package:smarttolls/api/response/st_vehicles_models_response.dart';
 export 'package:smarttolls/api/response/st_vehicles_response.dart';
