@@ -55,24 +55,35 @@ class BrandProvider extends ChangeNotifier {
   }
   
   // Agregar nueva marca
-  Future<void> addBrand(String brandName) async {
+  Future<void> addBrand(String brandName, String description, String country) async {
     _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
 
-    try {
-      // Aquí deberías implementar el método para agregar una nueva marca
-      // final response = await SmartTollsApi().addBrand(brandName);
-      // if (response.isSuccess()) {
-      //   await loadBrands(); // Recargar la lista
-      // }
-    } catch (e) {
-      _errorMessage = 'Error al agregar marca: ${e.toString()}';
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+  try {
+    // Crear el objeto request con todos los datos
+    final request = StBrandRequest(
+      brandName: brandName,
+      brandDescription: description,
+      brandManufacturingCountry: country,
+    );
+
+    // Llamar a la API
+    final response = await SmartTollsApi().createBrands(request);
+    
+    if (response.isSuccess()) {
+      await loadBrands(); // Recargar la lista de marcas
+    } else {
+      _errorMessage = response.message ?? 'Error al agregar marca';
     }
+  } catch (e) {
+    _errorMessage = 'Error al agregar marca: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
   }
-  // Mostrar diálogo para agregar marca
+  }
+
 
 
 

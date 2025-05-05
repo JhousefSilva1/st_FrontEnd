@@ -185,40 +185,59 @@ void showAddBrandDialog(BuildContext context) {
 
   Utils.textFieldAlert(
     context: context,
-content: Column(
-  mainAxisSize: MainAxisSize.min,
-  children: [
-    CustomField(
-      controller: brandNameController,
-      hintText: S.of(context).brand,
-      keyboardType: TextInputType.text,
-      prefixIcon: const Icon(Icons.drive_eta),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: brandNameController,
+          hintText: S.of(context).brand,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.drive_eta),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el nombre de la marca';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        CustomField(
+          controller: brandDescriptionController,
+          hintText: S.of(context).description,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.info),
+        ),
+        const SizedBox(height: 10),
+        CustomField(
+          controller: brandCountryController,
+          hintText: S.of(context).country,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.public),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el país de origen';
+            }
+            return null;
+          },
+        ),
+      ],
     ),
-    const SizedBox(height: 10),
-    CustomField(
-      controller: brandDescriptionController,
-      hintText: S.of(context).description,
-      keyboardType: TextInputType.text,
-      prefixIcon: const Icon(Icons.info),
-    ),
-    const SizedBox(height: 10),
-    CustomField(
-      controller: brandCountryController,
-      hintText: S.of(context).country,
-      keyboardType: TextInputType.number,
-      prefixIcon: const Icon(Icons.public),
-    ),
-  ],
-),
     negativeText: S.of(context).cancel, 
-    positiveOnPressed: () {
-      if (brandNameController.text.isNotEmpty) {
-        provider.addBrand(brandNameController.text);
-        Navigator.pop(context);
+    positiveOnPressed: () async {
+      if (brandNameController.text.isNotEmpty && brandCountryController.text.isNotEmpty) {
+        await provider.addBrand(
+          brandNameController.text,
+          brandDescriptionController.text,
+          brandCountryController.text,
+        );
+        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Nombre y país son campos requeridos')),
+        );
       }
-    }, 
+    },
     positiveText: S.of(context).add,
     title: S.of(context).addBrand,
   );
 }
-

@@ -16,4 +16,10 @@ class StBrandRequest {
       'brandManufacturingCountry': brandManufacturingCountry,
     };
   }
+
+  debugPrint() {
+    print('Brand Name: $brandName');
+    print('Brand Description: $brandDescription');
+    print('Brand Manufacturing Country: $brandManufacturingCountry');
+  }
 }

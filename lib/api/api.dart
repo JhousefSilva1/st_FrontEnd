@@ -8,3 +8,4 @@ export 'package:smarttolls/api/response/st_vehicles_models_response.dart';
 export 'package:smarttolls/api/response/st_vehicles_response.dart';
 export 'package:smarttolls/api/response/st_vehicles_type_response.dart';
 export 'package:smarttolls/api/smart_tolls_api.dart';
+export 'package:smarttolls/api/request/st_brand_request.dart';

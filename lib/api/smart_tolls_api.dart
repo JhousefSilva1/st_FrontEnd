@@ -80,6 +80,49 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
     }
   }
 
+  // create brand
+  Future<StResponse<StBrandResponse>> createBrands(StBrandRequest brandRequest) async {
+  try {
+    final response = await httpPost(
+      '$_baseUrl/brands/create',
+      getHeaders(),
+      jsonEncode(brandRequest.toJson()),
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StBrandResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StBrandResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear la marca',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StBrandResponse>.createEmpty();
+      }
+    }
+
+    final responseJson = json.decode(response.body);
+    final brandData = StBrandResponse.createEmpty().fromMap(responseJson['data']);
+    
+    return StResponse<StBrandResponse>(
+      data: brandData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StBrandResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación de la marca',
+      error: e.toString(),
+    );
+  }
+}
+
   Future<StResponse<StBrandResponse>> getAllBrands() async{
     try {
       final response = await httpGet('$_baseUrl/brands', getHeaders());
