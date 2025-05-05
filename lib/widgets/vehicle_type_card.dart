@@ -69,14 +69,7 @@ class VehicleTypeCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: (){
-                      // ver detalles
-                      final provider = Provider.of<VehicleTypeProvider>(context, listen: false);
-                      provider.goToAddVehiclesType(context);
-                    },
-                    child: const Icon(Icons.add, color: AppStyle.primary, size: 30),
-                  ),
+
                   GestureDetector(
                     onTap:(){
                       // editar

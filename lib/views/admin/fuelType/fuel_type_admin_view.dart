@@ -5,14 +5,11 @@ import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
-
 import '../../../generated/l10n.dart';
-
 class FuelTypeAdminView extends StatelessWidget{
   static const String routerName = 'fuelTypeAdmin';
   static const String routerPath = '/fuelTypeAdmin';
   const FuelTypeAdminView({super.key});
-
   @override
   Widget build(BuildContext context) {
     final FuelTypeProvider fuelTypeProvider = Provider.of<FuelTypeProvider>(context);
@@ -61,7 +58,6 @@ class FuelTypeAdminView extends StatelessWidget{
   }
 class FuelTypeAdminTabletView extends StatelessWidget{
   const FuelTypeAdminTabletView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return const Row(
@@ -84,18 +80,13 @@ class FuelTypeAdminTabletView extends StatelessWidget{
     );
   }
 }
-
 class FuelTypeAdminList extends StatefulWidget{
   const FuelTypeAdminList({super.key});
-
   @override
   State<FuelTypeAdminList> createState() => _FuelTypeAdminListState();
 }
-
 class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
-
   @override
-
   void initState(){
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -103,7 +94,6 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
     });
     
   }
-
   @override
   Widget build (BuildContext context){
     final provider = context.watch<FuelTypeProvider>();
@@ -118,7 +108,6 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
           } ,
         ),
         const SizedBox(height: 16),
-
         // estado de carga
         if(provider.errorMessage != null)
           Column(
@@ -151,7 +140,6 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
                 )
                 ),
             ),
-
             // Lista de tipos de combustible
             if(provider.fuelType.isNotEmpty)
               ListView.separated(
@@ -166,18 +154,14 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
                 primary: false,
                 shrinkWrap: true, 
                 separatorBuilder: (context, index) => const SizedBox(height: 16),
-
               )           
       ],
     );
   }
 }
-
-
 void showAddFuelTypesDialog(BuildContext context){
   final fuelTypeFuelController = TextEditingController();
   final provider = Provider.of<FuelTypeProvider>(context, listen: false);
-
    Utils.textFieldAlert(
     context: context,
     content: Column(
@@ -214,5 +198,4 @@ void showAddFuelTypesDialog(BuildContext context){
     positiveText: S.of(context).add,
     title: S.of(context).addFuelType,
   );
-
 }

@@ -4,6 +4,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
 class VehicleTypeAdminView extends StatelessWidget {
@@ -21,7 +22,7 @@ class VehicleTypeAdminView extends StatelessWidget {
         appBar: CustomAppBar(
           actions: [
             IconButton(
-              onPressed: () => vehicleTypeProvider.goToAddVehiclesType(context),
+              onPressed: () => showAddVehilceTypeDialog(context),
               icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
             )
           ],
@@ -172,4 +173,48 @@ Widget build(BuildContext context){
         ],
      );
   }
+}
+void showAddVehilceTypeDialog(BuildContext context){
+  final vehiclesTypesController = TextEditingController();
+  final provider = Provider.of<VehicleTypeProvider>(context, listen: false);
+
+   Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: vehiclesTypesController,
+          hintText: S.of(context).vehicleType,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.car_rental),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese tipo de vehiculo';
+            }
+            return null;
+          },
+        ),
+        
+        const SizedBox(height: 10),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (vehiclesTypesController.text.isNotEmpty) {
+        await provider.addVehiclesType(
+          vehiclesTypesController.text,
+      
+
+        );
+        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Nombre y país son campos requeridos')),
+        );
+      }
+    },
+    positiveText: S.of(context).add,
+    title: S.of(context).addVehicleType,
+  );
 }

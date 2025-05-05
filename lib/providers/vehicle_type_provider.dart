@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/generated/l10n.dart';
-import 'package:smarttolls/utils/utils.dart';
-import 'package:smarttolls/widgets/custom_field.dart';
 
 
 
@@ -59,10 +56,21 @@ class VehicleTypeProvider extends ChangeNotifier {
   // agregar nuevo tipo de vehículo
   Future<void> addVehiclesType(String vehiclesTypeName) async{
     _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
 
     try{
       // Aca se implementa la logica para agregar un nuevo tipo de vehiculo
+      final request = StVehiclesTypeRequest(
+        vehiclesTypes: vehiclesTypeName,
+      );
+      // llamar a la API
+      final response = await SmartTollsApi().createVehicleType(request);
+          if (response.isSuccess()) {
+      await loadVehiclesType(); // Recargar la lista de marcas
+    } else {
+      _errorMessage = response.message ?? 'Error al agregar el tipo de vehículo';
+    }
     }catch(e){
       _errorMessage = 'Error de conexión: ${e.toString()}';
     }finally{
@@ -70,37 +78,11 @@ class VehicleTypeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  // Mostrar dialgoo para agregar tipo de vehículo
 
-  void goToAddVehiclesType(BuildContext context){
-    final vehicleTypeNameController = TextEditingController();
-
-    Utils.textFieldAlert(
-      context: context,
-      content: CustomField(
-        controller: vehicleTypeNameController,
-        hintText: S.of(context).vehicleType,
-        keyboardType: TextInputType.text,
-        onChanged: (value) {},
-        prefixIcon: const Icon(Icons.car_rental_sharp),
-      ),
-      negativeText: S.of(context).cancel,
-      positiveOnPressed: (){
-        if(vehicleTypeNameController.text.isNotEmpty){
-          addVehiclesType(vehicleTypeNameController.text);
-          Navigator.pop(context);
-        }
-      },
-      positiveText: S.of(context).add,
-      title: S.of(context).addVehicleType,
-    );
-  }
-
-  // metodo para recargar datos
-  void retryLoading(){
+      void retryLoading(){
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     loadVehiclesType();
   }
-  }
+}

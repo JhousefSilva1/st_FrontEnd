@@ -183,6 +183,40 @@ Future<StResponse<StFuelTypesResponse>> createFuelType(StFuelTypesRequest fuelTy
     );
   }
 }
+// create vehicle type
+Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeRequest vehicleTypeRequest) async {
+  try {
+    final response = await httpPost('$_baseUrl/vehicleType/create', getHeaders(), jsonEncode(vehicleTypeRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StVehiclesTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StVehiclesTypeResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear el tipo de vehículo',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StVehiclesTypeResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final vehicleTypeData = StVehiclesTypeResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StVehiclesTypeResponse>(
+      data: vehicleTypeData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StVehiclesTypeResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación del tipo de vehículo',
+      error: e.toString(),
+    );
+  }
+}
 
 // getAllBrands
   Future<StResponse<StBrandResponse>> getAllBrands() async{

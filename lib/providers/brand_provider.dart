@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
-
-
-
 class BrandProvider extends ChangeNotifier {
   List<StBrandResponse> _allBrands = []; // Lista completa
   List<StBrandResponse> _brands = []; // Lista filtrada
@@ -10,13 +7,11 @@ class BrandProvider extends ChangeNotifier {
   String? _errorMessage = '';
   String? _selectedBrand = '';
   String? _newModelName;
-
   List<StBrandResponse> get brands => _brands;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get selectedBrand => _selectedBrand;
   String? get newModelName => _newModelName;
-
   // Método para buscar marcas
   void searchBrands(String query) {
     if (query.isEmpty) {
@@ -28,13 +23,11 @@ class BrandProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
   // cargar marcas desde la API
   Future<void> loadBrands() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
-
     try {
       final response = await SmartTollsApi().getAllBrands();
       
@@ -51,13 +44,11 @@ class BrandProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
   // Agregar nueva marca
   Future<void> addBrand(String brandName, String description, String country) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
-
   try {
     // Crear el objeto request con todos los datos
     final request = StBrandRequest(
@@ -65,7 +56,6 @@ class BrandProvider extends ChangeNotifier {
       brandDescription: description,
       brandManufacturingCountry: country,
     );
-
     // Llamar a la API
     final response = await SmartTollsApi().createBrands(request);
     
@@ -81,10 +71,6 @@ class BrandProvider extends ChangeNotifier {
     notifyListeners();
   }
   }
-
-
-
-
   // Método para recargar datos
   void retryLoading() {
     _errorMessage = null;
