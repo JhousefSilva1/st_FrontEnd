@@ -116,7 +116,7 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
   }
 }
 // create color
-Future<StResponse<StVehiclesColorsResponse>>createColor(StColorRquest colorRequest) async {
+Future<StResponse<StVehiclesColorsResponse>>createColor(StColorRequest colorRequest) async {
   try{
     final response = await httpPost('$_baseUrl/colors/create', getHeaders(), jsonEncode(colorRequest.toJson()));
     if (response.statusCode >= HttpStatus.badRequest) {

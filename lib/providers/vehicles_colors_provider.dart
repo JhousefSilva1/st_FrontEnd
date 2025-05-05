@@ -1,10 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:smarttolls/api/response/st_vehicles_colors_response.dart';
-import 'package:smarttolls/api/smart_tolls_api.dart';
-import 'package:smarttolls/generated/l10n.dart';
-import 'package:smarttolls/utils/utils.dart';
-import 'package:smarttolls/widgets/custom_field.dart';
+import 'package:smarttolls/api/api.dart';
+
 
 class VehiclesColorsProvider extends ChangeNotifier{
   List<StVehiclesColorsResponse> _allColors=[];
@@ -57,43 +54,34 @@ class VehiclesColorsProvider extends ChangeNotifier{
   }
 
   // agregar nuevo color de vehículo
-  Future<void> addColor(String colorName) async{
+  Future<void> addColor(String colorName, String colorDescription) async{
     _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
 
     try{
-      // codigo para agregar color
-    }catch(e){
-      _errorMessage = 'Error de conexión: ${e.toString()}';
-    }finally{
-      _isLoading = false;
-      notifyListeners();
+      // crear el objeto de color con los datos ingresados
+      final request = StColorRequest(
+        colorName: colorName,
+        colorDescription: colorDescription,
+      );
+      // llmaar a la API
+      final response = await SmartTollsApi().createColor(request);
+            if (response.isSuccess()) {
+      await loadVehiclesColors(); // Recargar la lista de marcas
+    } else {
+      _errorMessage = response.message ?? 'Error al agregar marca';
     }
+    }catch (e) {
+    _errorMessage = 'Error al agregar marca: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
   }
 
-  void goToAddColors(BuildContext context){
-    final vehicleColorNameController = TextEditingController();
-
-    Utils.textFieldAlert(
-      context: context,
-      content: CustomField(
-        controller: vehicleColorNameController,
-        hintText: S.of(context).vehicleColor,
-        keyboardType: TextInputType.text,
-        onChanged: (value) {},
-        prefixIcon: const Icon(Icons.color_lens_outlined),
-      ),
-      negativeText: S.of(context).cancel,
-      positiveOnPressed: (){
-        if(vehicleColorNameController.text.isNotEmpty){
-          addColor(vehicleColorNameController.text);
-          Navigator.pop(context);
-        }
-      },
-      positiveText: S.of(context).addColor,
-      title: S.of(context).addColor,
-    );
   }
+
+    // metodo para recargar colores de vehiculos
     void retryLoading(){
     _isLoading = true;
     _errorMessage = null;

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:smarttolls/api/response/st_vehicles_colors_response.dart';
-import 'package:smarttolls/providers/vehicles_colors_provider.dart';
 
 import '../generated/l10n.dart';
 
@@ -47,7 +44,7 @@ class VehiclesColorsCard extends StatelessWidget {
                     children: [
                       Expanded(
                         flex:2,
-                        child: Text(S.of(context).vehicleColor,
+                        child: Text(S.of(context).color,
                           style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                       ),
                       const SizedBox(width: 16),
@@ -67,14 +64,7 @@ class VehiclesColorsCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap:(){
-                      // ver detalles del color
-                      final provider = Provider.of<VehiclesColorsProvider>(context, listen: false);
-                      provider.goToAddColors(context);
-                    },
-                    child: const Icon(Icons.add, color: Colors.blue, size: 30),
-                  ),
+
                   GestureDetector(
                     onTap: (){
                       // editar

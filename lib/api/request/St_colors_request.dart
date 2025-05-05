@@ -1,9 +1,9 @@
 
-class StColorRquest{
+class StColorRequest{
   final String colorName;
   final String colorDescription;
   
-  StColorRquest({
+  StColorRequest({
     required this.colorName,
     required this.colorDescription,
   });

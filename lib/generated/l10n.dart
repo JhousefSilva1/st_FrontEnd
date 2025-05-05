@@ -72,10 +72,10 @@ class S {
     );
   }
   /// `vehicleColor`
-  String get vehicleColor {
+  String get color {
     return Intl.message(
-      'vehicleColor',
-      name: 'vehicleColor',
+      'color',
+      name: 'color',
       desc: '',
       args: [],
     );

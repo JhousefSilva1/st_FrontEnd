@@ -4,6 +4,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/vehicles_colors_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
 class VehiclesColorsAdminView extends StatelessWidget{
@@ -20,12 +21,12 @@ class VehiclesColorsAdminView extends StatelessWidget{
         appBar: CustomAppBar(
           actions:[
             IconButton(
-              onPressed: () => vehiclesColorsProvider.goToAddColors(context),
+              onPressed: () => showAddColorDialog(context),
               icon: const Icon(Icons.add_rounded, color: Colors.blue, size: 30),
             )
           ],
           centerTitle: true,
-          text: S.of(context).vehicleColor
+          text: S.of(context).color
         ),
         backgroundColor: Colors.white,
         drawer: isMobile ? const SmartTollsDrawer() : null,
@@ -171,4 +172,56 @@ class _VehiclesColorsAdminListState extends State<VehiclesColorsAdminList> {
       ],
     );
   }
+}
+
+void showAddColorDialog(BuildContext context){
+  final colorNameController = TextEditingController();
+  final colorDescriptionController = TextEditingController();
+  final provider = Provider.of<VehiclesColorsProvider>(context, listen: false);
+
+ Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: colorNameController,
+          hintText: S.of(context).color,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.color_lens),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el nombre de la marca';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        CustomField(
+          controller: colorDescriptionController,
+          hintText: S.of(context).description,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.info),
+        ),
+        const SizedBox(height: 10),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (colorNameController.text.isNotEmpty && colorDescriptionController.text.isNotEmpty) {
+        await provider.addColor(
+          colorNameController.text,
+          colorDescriptionController.text,
+
+        );
+        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Nombre y país son campos requeridos')),
+        );
+      }
+    },
+    positiveText: S.of(context).add,
+    title: S.of(context).addBrand,
+  );
 }
