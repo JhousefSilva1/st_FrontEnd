@@ -83,17 +83,12 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
   // create brand
   Future<StResponse<StBrandResponse>> createBrands(StBrandRequest brandRequest) async {
   try {
-    final response = await httpPost(
-      '$_baseUrl/brands/create',
-      getHeaders(),
-      jsonEncode(brandRequest.toJson()),
+    final response = await httpPost('$_baseUrl/brands/create',getHeaders(),jsonEncode(brandRequest.toJson()),
     );
-    
     if (response.statusCode >= HttpStatus.badRequest) {
       if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
         return StResponse<StBrandResponse>(status: HttpStatus.networkConnectTimeoutError);
       }
-      
       try {
         final errorJson = json.decode(response.body);
         return StResponse<StBrandResponse>(
@@ -105,10 +100,8 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
         return StResponse<StBrandResponse>.createEmpty();
       }
     }
-
     final responseJson = json.decode(response.body);
     final brandData = StBrandResponse.createEmpty().fromMap(responseJson['data']);
-    
     return StResponse<StBrandResponse>(
       data: brandData,
       status: response.statusCode,
@@ -122,7 +115,42 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
     );
   }
 }
+// create color
+Future<StResponse<StVehiclesColorsResponse>>createColor(StColorRquest colorRequest) async {
+  try{
+    final response = await httpPost('$_baseUrl/colors/create', getHeaders(), jsonEncode(colorRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StVehiclesColorsResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StVehiclesColorsResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear el color',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StVehiclesColorsResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final colorData = StVehiclesColorsResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StVehiclesColorsResponse>(
+      data: colorData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StVehiclesColorsResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación del color',
+      error: e.toString(),
+    );
+  }
+}
 
+// getAllBrands
   Future<StResponse<StBrandResponse>> getAllBrands() async{
     try {
       final response = await httpGet('$_baseUrl/brands', getHeaders());
