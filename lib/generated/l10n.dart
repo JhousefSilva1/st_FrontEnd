@@ -147,7 +147,15 @@ class S {
       args: [],
     );
   }
-
+  /// `Description`
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Add Line`
   String get addLine {
     return Intl.message('Add Line', name: 'addLine', desc: '', args: []);

@@ -73,29 +73,6 @@ class BrandProvider extends ChangeNotifier {
     }
   }
   // Mostrar diálogo para agregar marca
-  void goToAddBrand(BuildContext context) {
-    final brandNameController = TextEditingController();
-
-    Utils.textFieldAlert(
-      context: context,
-      content: CustomField(
-        controller: brandNameController,
-        hintText: S.of(context).brand,
-        keyboardType: TextInputType.text,
-        onChanged: (value) {},
-        prefixIcon: const Icon(Icons.drive_eta),
-      ), 
-      negativeText: S.of(context).cancel, 
-      positiveOnPressed: () {
-        if (brandNameController.text.isNotEmpty) {
-          addBrand(brandNameController.text);
-          Navigator.pop(context);
-        }
-      }, 
-      positiveText: S.of(context).add,
-      title: S.of(context).addBrand,
-    );
-  }
 
 
 

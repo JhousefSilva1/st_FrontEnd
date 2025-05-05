@@ -179,17 +179,37 @@ class _BrandsAdminListState extends State<BrandsAdminList> {
 
 void showAddBrandDialog(BuildContext context) {
   final brandNameController = TextEditingController();
+  final brandDescriptionController = TextEditingController();
+  final brandCountryController = TextEditingController();
   final provider = Provider.of<BrandProvider>(context, listen: false);
 
   Utils.textFieldAlert(
     context: context,
-    content: CustomField(
+content: Column(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    CustomField(
       controller: brandNameController,
       hintText: S.of(context).brand,
       keyboardType: TextInputType.text,
-      onChanged: (value) {},
       prefixIcon: const Icon(Icons.drive_eta),
-    ), 
+    ),
+    const SizedBox(height: 10),
+    CustomField(
+      controller: brandDescriptionController,
+      hintText: S.of(context).description,
+      keyboardType: TextInputType.text,
+      prefixIcon: const Icon(Icons.info),
+    ),
+    const SizedBox(height: 10),
+    CustomField(
+      controller: brandCountryController,
+      hintText: S.of(context).country,
+      keyboardType: TextInputType.number,
+      prefixIcon: const Icon(Icons.public),
+    ),
+  ],
+),
     negativeText: S.of(context).cancel, 
     positiveOnPressed: () {
       if (brandNameController.text.isNotEmpty) {
