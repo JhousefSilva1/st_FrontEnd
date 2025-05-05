@@ -4,6 +4,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
 class BrandsAdminView extends StatelessWidget {
@@ -22,7 +23,7 @@ class BrandsAdminView extends StatelessWidget {
         appBar: CustomAppBar(
           actions: [
             IconButton(
-              onPressed: () => brandProvider.goToAddBrand(context),
+              onPressed: () => showAddBrandDialog(context),
               icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
             )
           ],
@@ -173,4 +174,31 @@ class _BrandsAdminListState extends State<BrandsAdminList> {
       ],
     );
   }
+  
 }
+
+void showAddBrandDialog(BuildContext context) {
+  final brandNameController = TextEditingController();
+  final provider = Provider.of<BrandProvider>(context, listen: false);
+
+  Utils.textFieldAlert(
+    context: context,
+    content: CustomField(
+      controller: brandNameController,
+      hintText: S.of(context).brand,
+      keyboardType: TextInputType.text,
+      onChanged: (value) {},
+      prefixIcon: const Icon(Icons.drive_eta),
+    ), 
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () {
+      if (brandNameController.text.isNotEmpty) {
+        provider.addBrand(brandNameController.text);
+        Navigator.pop(context);
+      }
+    }, 
+    positiveText: S.of(context).add,
+    title: S.of(context).addBrand,
+  );
+}
+
