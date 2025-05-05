@@ -50,11 +50,18 @@ class S {
     );
     return instance!;
   }
-
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
-
+  /// `addFuelTypes`
+  String get addFuelTypes {
+    return Intl.message(
+      'addFuelTypes',
+      name: 'addFuelTypes',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Account Number`
   String get accountNumber {
     return Intl.message(
@@ -64,40 +71,11 @@ class S {
       args: [],
     );
   }
-
-  /// `error`
-  String get error {
+  /// `vehicleColor`
+  String get vehicleColor {
     return Intl.message(
-      'error',
-      name: 'error',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `brandNotSpecified`
-  String get brandNotSpecified {
-    return Intl.message(
-      'brandNotSpecified',
-      name: 'brandNotSpecified',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add Fuel Type`
-
-  String get addFuelTypes {
-    return Intl.message(
-      'Add Fuel Type', 
-      name: 'addFuelType', 
-      desc: '', 
-      args: []);
-  }
-  /// `Fuel Type`
-  String get fuelType {
-    return Intl.message(
-      'Fuel Type',
-      name: 'fuelType',
+      'vehicleColor',
+      name: 'vehicleColor',
       desc: '',
       args: [],
     );
@@ -106,23 +84,69 @@ class S {
   String get addColor {
     return Intl.message(
       'Add Color',
-       name: 'addColor',
-       desc: '', 
-       args: []);
+      name: 'addColor',
+      desc: '',
+      args: [],
+    );
   }
-  /// `Retry`
+  /// `retry`
   String get retry {
     return Intl.message(
-      'Retry', 
-      name: 'retry', 
+      'retry',
+      name: 'retry',
       desc: '', 
       args: []);
   }
-  /// `Vehicles Colors`
-  String get vehicleColor {
+  /// `description`
+  String get description {
     return Intl.message(
-      'Vehicles Colors',
-      name: 'vehicleColor',
+      'description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Origin`
+  String get origin{
+    return Intl.message(
+      'Origin',
+      name: 'origin',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Add Fuel Type`
+  String get addFuelType {
+    return Intl.message(
+      'Add Fuel Type',
+      name: 'addFuelType',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Add Color`
+  String get addVehicleColor {
+    return Intl.message(
+      'Add Color',
+      name: 'addVehicleColor',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Add Vehicle`
+  String get addVehicle {
+    return Intl.message(
+      'Add Vehicle',
+      name: 'addVehicle',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `fuelType`
+  String get fuelType {
+    return Intl.message(
+      'fuelType',
+      name: 'fuelType',
       desc: '',
       args: [],
     );
@@ -147,15 +171,7 @@ class S {
       args: [],
     );
   }
-  /// `Description`
-  String get description {
-    return Intl.message(
-      'Description',
-      name: 'description',
-      desc: '',
-      args: [],
-    );
-  }
+
   /// `Add Line`
   String get addLine {
     return Intl.message('Add Line', name: 'addLine', desc: '', args: []);
@@ -268,20 +284,7 @@ class S {
 
   /// `Country`
   String get country {
-  return Intl.message(
-    'Country',
-        name: 'country',
-        desc: '', 
-        args: []);
-  }
-
-  /// `Origin`
-  String get origin {
-  return Intl.message(
-    'Origin',
-      name: 'origin',
-      desc: '',
-      args: []);
+    return Intl.message('Country', name: 'country', desc: '', args: []);
   }
 
   /// `Create a new account in Smart Tolls`
