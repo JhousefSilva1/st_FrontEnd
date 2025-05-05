@@ -65,6 +65,25 @@ class S {
     );
   }
 
+  /// `error`
+  String get error {
+    return Intl.message(
+      'error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `brandNotSpecified`
+  String get brandNotSpecified {
+    return Intl.message(
+      'brandNotSpecified',
+      name: 'brandNotSpecified',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add Fuel Type`
 
   String get addFuelTypes {
@@ -241,7 +260,20 @@ class S {
 
   /// `Country`
   String get country {
-    return Intl.message('Country', name: 'country', desc: '', args: []);
+  return Intl.message(
+    'Country',
+        name: 'country',
+        desc: '', 
+        args: []);
+  }
+
+  /// `Origin`
+  String get origin {
+  return Intl.message(
+    'Origin',
+      name: 'origin',
+      desc: '',
+      args: []);
   }
 
   /// `Create a new account in Smart Tolls`

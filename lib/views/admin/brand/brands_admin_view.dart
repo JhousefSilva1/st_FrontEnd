@@ -138,7 +138,7 @@ class _BrandsAdminListState extends State<BrandsAdminList> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: provider.retryLoading,
-                child: const Text('Reintentar'),
+                child: Text(S.of(context).retry),
               ),
               const SizedBox(height: 16),
             ],

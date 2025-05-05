@@ -102,7 +102,15 @@ class AppRouter {
             name: VehiclesColorsAdminView.routerName,
             path: VehiclesColorsAdminView.routerPath,
             builder: (context, state) => const VehiclesColorsAdminView(),
-            ),
+                      ),
+          GoRoute(
+            name: ModelsAdminView.routerName,
+            path: '/modelAdmin/:brandId', // Nota los dos puntos antes de brandId
+            builder: (context, state) {
+              final brandId = int.tryParse(state.pathParameters['brandId'] ?? '');
+              return ModelsAdminView(brandId: brandId);
+            },
+          ),
         ]
       ),
       ShellRoute(
@@ -196,5 +204,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => WalletProvider()),
     ChangeNotifierProvider(create: (_) => FuelTypeProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesColorsProvider()),
+    ChangeNotifierProvider(create: (_) => ModelProvider()),
   ];
 }

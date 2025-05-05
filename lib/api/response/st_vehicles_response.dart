@@ -18,6 +18,9 @@ class StVehicleResponse implements StResponseService{
   String? engineNumber;
   String? manufacturingYear;
   double? weight;
+  int? idPerson;
+  int? idCity;
+  
   StFuelTypesResponse fuelTypes;
   StVehiclesColorsResponse vehiclesColors;
   StVehiclesModelsResponse vehiclesModels;

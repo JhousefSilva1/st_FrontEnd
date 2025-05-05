@@ -97,57 +97,7 @@ class BrandProvider extends ChangeNotifier {
     );
   }
 
-  // Mostrar diálogo para agregar modelo
-  void goToAddModel(BuildContext context) {
-    final modelNameController = TextEditingController();
 
-    Utils.textFieldAlert(
-      context: context,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          DropdownButton<String>(
-            style: const TextStyle(fontSize: 14, color: Colors.black),
-            value: _selectedBrand ?? (_brands.isNotEmpty ? _brands.first.brandName : null),
-            isExpanded: true,
-            elevation: 16,
-            hint: Text(S.of(context).brand),
-            icon: const Icon(Icons.arrow_drop_down),
-            onChanged: (String? newValue) {
-              _selectedBrand = newValue;
-              notifyListeners();
-            },
-            items: _brands.map<DropdownMenuItem<String>>((StBrandResponse brand) {
-              return DropdownMenuItem<String>(
-                value: brand.brandName,
-                child: Text(brand.brandName ?? ''),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 16),
-          CustomField(
-            controller: modelNameController,
-            hintText: S.of(context).model,
-            keyboardType: TextInputType.text,
-            onChanged: (value) {
-              _newModelName = value;
-            },
-            prefixIcon: const Icon(Icons.drive_eta),
-          ),
-        ],
-      ), 
-      negativeText: S.of(context).cancel, 
-      positiveOnPressed: () {
-        if (_selectedBrand != null && modelNameController.text.isNotEmpty) {
-          // Aquí deberías implementar el método para agregar un nuevo modelo
-          // addModel(_selectedBrand!, modelNameController.text);
-          Navigator.pop(context);
-        }
-      }, 
-      positiveText: S.of(context).add,
-      title: S.of(context).addModel,
-    );
-  }
 
   // Método para recargar datos
   void retryLoading() {
