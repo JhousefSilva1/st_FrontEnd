@@ -1,12 +1,7 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/style/app_style.dart';
-
 import '../generated/l10n.dart';
-import '../providers/model_provider.dart';
 
 class ModelsCard extends StatelessWidget{
   final StVehiclesModelsResponse model;
@@ -80,7 +75,6 @@ class ModelsCard extends StatelessWidget{
                   GestureDetector(
                     onTap: (){
                       // ver detalles
-                      final provider = Provider.of<ModelProvider>(context, listen: false);
                       // provider.goToAddModel(context);
                     },
                     child: const Icon(Icons.add, color: AppStyle.primary, size: 30),

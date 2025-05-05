@@ -15,7 +15,6 @@ class BrandsAdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BrandProvider brandProvider = Provider.of<BrandProvider>(context);
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     
     return SafeArea(

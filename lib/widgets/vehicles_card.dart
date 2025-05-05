@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
 import 'package:smarttolls/api/response/st_vehicles_response.dart';
-import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/assets_images.dart';
 
@@ -15,7 +13,6 @@ class VehiclesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final VehiclesProvider vehiclesProvider = Provider.of<VehiclesProvider>(context);
     return Slidable(
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
