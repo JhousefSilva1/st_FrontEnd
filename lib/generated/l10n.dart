@@ -71,6 +71,15 @@ class S {
       args: [],
     );
   }
+  /// `Gas Type`
+  String get gasType {
+    return Intl.message(
+      'Gas Type',
+      name: 'gasType',
+      desc: '',
+      args: [],
+    );
+  }
   /// `vehicleColor`
   String get color {
     return Intl.message(
@@ -160,6 +169,14 @@ class S {
   /// `Add Brand`
   String get addBrand {
     return Intl.message('Add Brand', name: 'addBrand', desc: '', args: []);
+  }
+  /// `Add Gas`
+  String get addGas {
+    return Intl.message('Add Gas', name: 'addGas', desc: '', args: []);
+  }
+  /// `Add Color`
+  String get addColorVehicle {
+    return Intl.message('Add Color', name: 'addColorVehicle', desc: '', args: []);
   }
 
   /// `Add Employee`

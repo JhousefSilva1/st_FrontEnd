@@ -72,10 +72,10 @@ class BrandProvider extends ChangeNotifier {
     if (response.isSuccess()) {
       await loadBrands(); // Recargar la lista de marcas
     } else {
-      _errorMessage = response.message ?? 'Error al agregar marca';
+      _errorMessage = response.message ?? 'Error al agregar el color';
     }
   } catch (e) {
-    _errorMessage = 'Error al agregar marca: ${e.toString()}';
+    _errorMessage = 'Error al agregar el Color ${e.toString()}';
   } finally {
     _isLoading = false;
     notifyListeners();

@@ -14,7 +14,7 @@ class VehiclesColorsAdminView extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final VehiclesColorsProvider vehiclesColorsProvider = Provider.of<VehiclesColorsProvider>(context);
+    // final VehiclesColorsProvider vehiclesColorsProvider = Provider.of<VehiclesColorsProvider>(context);
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return SafeArea(
       child: Scaffold(
@@ -191,7 +191,7 @@ void showAddColorDialog(BuildContext context){
           prefixIcon: const Icon(Icons.color_lens),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Por favor ingrese el nombre de la marca';
+              return 'Por favor ingrese el color';
             }
             return null;
           },
@@ -222,6 +222,6 @@ void showAddColorDialog(BuildContext context){
       }
     },
     positiveText: S.of(context).add,
-    title: S.of(context).addBrand,
+    title: S.of(context).addColorVehicle,
   );
 }

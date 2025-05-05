@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smarttolls/api/response/st_fuel_types_response.dart';
-import 'package:smarttolls/api/smart_tolls_api.dart';
-import 'package:smarttolls/generated/l10n.dart';
-import 'package:smarttolls/utils/utils.dart';
-import 'package:smarttolls/widgets/custom_field.dart';
+import 'package:smarttolls/api/api.dart';
+
 
 
 class FuelTypeProvider extends ChangeNotifier{
@@ -35,7 +32,7 @@ class FuelTypeProvider extends ChangeNotifier{
   }
 
   // cargar tipos de combustible desde la API
-  Future<void> loadVehiclesType() async{
+  Future<void> loadFuelTypes() async{
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -59,10 +56,22 @@ class FuelTypeProvider extends ChangeNotifier{
   // agregar nuevo tipo de combustible
   Future<void> addFuelType(String fuelTypeName) async{
     _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
 
     try{
       // final response = await SmartTollsApi().addFuelType(fuelTypeName);
+      final request = StFuelTypesRequest(
+        fuelTypeFuel: fuelTypeName,
+      );
+
+      // llamada a la API para agregar el tipo de combustible
+      final response = await SmartTollsApi().createFuelType(request);
+          if (response.isSuccess()) {
+      await loadFuelTypes(); // Recargar la lista de marcas
+    } else {
+      _errorMessage = response.message ?? 'Error al agregar el tipo de combustible';
+    }
 
     }catch(e){
       _errorMessage = 'Error de conexión: ${e.toString()}';
@@ -72,35 +81,9 @@ class FuelTypeProvider extends ChangeNotifier{
     }
   }
 
-  // mostrar el dialogo para agregar un nuevo tipo de combustible
-  void goToAddFuelTypes(BuildContext context){
-    final fuelTypeNameController = TextEditingController();
-
-    Utils.textFieldAlert(
-      context: context,
-      content: CustomField(
-        controller: fuelTypeNameController,
-        hintText: S.of(context).fuel,
-        keyboardType: TextInputType.text,
-        onChanged: (value) {},
-        prefixIcon: const Icon(Icons.oil_barrel)
-      ),
-      negativeText: S.of(context).cancel,
-      positiveOnPressed: () {
-        if(fuelTypeNameController.text.isNotEmpty){
-          addFuelType(fuelTypeNameController.text);
-          Navigator.pop(context);
-        }
-      },
-      positiveText: S.of(context).add,
-      title: S.of(context).addFuelTypes,
-    );
-  }
   // metodo para recargar datos
     void retryLoading(){
-    _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
-    loadVehiclesType();
+    loadFuelTypes();
   }
 }

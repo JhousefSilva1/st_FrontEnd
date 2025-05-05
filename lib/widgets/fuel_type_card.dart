@@ -67,14 +67,6 @@ class FuelTypeCard extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Ver detalles
-                      final provider = Provider.of<FuelTypeProvider>(context, listen: false);
-                      provider.goToAddFuelTypes(context);
-                    },
-                    child: const Icon(Icons.add, color: Colors.blue, size: 30),
-                  ),
-                  GestureDetector(
-                    onTap: () {
                       // editar
                     },child: const Icon(Icons.edit, color: Colors.blue, size: 30),
                   ),

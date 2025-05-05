@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
 import '../../../generated/l10n.dart';
@@ -21,7 +22,7 @@ class FuelTypeAdminView extends StatelessWidget{
         appBar: CustomAppBar(
           actions: [
             IconButton(
-              onPressed: () => fuelTypeProvider.goToAddFuelTypes(context),
+              onPressed: () => showAddFuelTypesDialog(context),
               icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
             )
           ],
@@ -98,7 +99,7 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
   void initState(){
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<FuelTypeProvider>(context, listen: false).loadVehiclesType();
+      Provider.of<FuelTypeProvider>(context, listen: false).loadFuelTypes();
     });
     
   }
@@ -166,9 +167,52 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
                 shrinkWrap: true, 
                 separatorBuilder: (context, index) => const SizedBox(height: 16),
 
-              )
-            
+              )           
       ],
     );
   }
+}
+
+
+void showAddFuelTypesDialog(BuildContext context){
+  final fuelTypeFuelController = TextEditingController();
+  final provider = Provider.of<FuelTypeProvider>(context, listen: false);
+
+   Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: fuelTypeFuelController,
+          hintText: S.of(context).gasType,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.gas_meter),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el tipo de combustible';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (fuelTypeFuelController.text.isNotEmpty ) {
+        await provider.addFuelType(
+          fuelTypeFuelController.text,
+        );
+        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('El tipo de combustible no puede estar vacío')),
+        );
+      }
+    },
+    positiveText: S.of(context).add,
+    title: S.of(context).addFuelType,
+  );
+
 }
