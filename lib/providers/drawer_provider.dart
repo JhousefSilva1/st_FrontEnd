@@ -26,4 +26,8 @@ class DrawerProvider extends ChangeNotifier {
   void goToVehiclesColorsAdmin(BuildContext context) {
     context.pushNamed(VehiclesColorsAdminView.routerName);
   }
+
+  void goToCountriesAdmin(BuildContext context) {
+    context.pushNamed(CountryAdminView.routerName);
+  }
 }

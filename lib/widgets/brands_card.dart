@@ -40,7 +40,7 @@ class BrandsCard extends StatelessWidget {
               child: GestureDetector(
                   onTap: () {
                     final provider = Provider.of<ModelProvider>(context, listen: false);
-                    provider.clearModels();
+                    
                     
                     // Opción 1: Usando pathParameters
                     context.pushNamed(

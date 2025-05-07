@@ -74,6 +74,7 @@ class BrandProvider extends ChangeNotifier {
   // Método para recargar datos
   void retryLoading() {
     _errorMessage = null;
+    
     loadBrands();
   }
 }

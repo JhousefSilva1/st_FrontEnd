@@ -217,6 +217,57 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
     );
   }
 }
+// create Country
+  Future<StResponse<StCountryResponse>> createCountry(StCountryRequest countryRequest) async {
+    try {
+      final response = await httpPost('$_baseUrl/country/create', getHeaders(), jsonEncode(countryRequest.toJson()));
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          return StResponse<StCountryResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try {
+          final errorJson = json.decode(response.body);
+          return StResponse<StCountryResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al crear el país',
+            error: errorJson['error'] ?? '',
+          );
+        } catch (e) {
+          return StResponse<StCountryResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final countryData = StCountryResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StCountryResponse>(
+        data: countryData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    } catch (e) {
+      return StResponse<StCountryResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la creación del país',
+        error: e.toString(),
+      );
+    }
+  }
+// getAllCountries
+  Future<StResponse<StCountryResponse>> getAllCountries() async {
+    try {
+      final response = await httpGet('$_baseUrl/country', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StCountryResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StCountryResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StCountryResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  } 
 
 // getAllBrands
   Future<StResponse<StBrandResponse>> getAllBrands() async{

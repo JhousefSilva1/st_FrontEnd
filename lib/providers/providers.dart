@@ -13,3 +13,4 @@ export 'package:smarttolls/providers/wallet_provider.dart';
 export 'package:smarttolls/providers/fuel_type_provider.dart';
 export 'package:smarttolls/providers/vehicles_colors_provider.dart';
 export 'package:smarttolls/providers/model_provider.dart';
+export 'package:smarttolls/providers/country_provider.dart';

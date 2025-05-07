@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/models/models.dart';
 

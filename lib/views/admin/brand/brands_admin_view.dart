@@ -60,10 +60,8 @@ class BrandsAdminMobileView extends StatelessWidget {
     );
   }
 }
-
 class BrandsAdminTabletView extends StatelessWidget {
   const BrandsAdminTabletView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return const Row(

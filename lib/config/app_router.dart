@@ -111,6 +111,11 @@ class AppRouter {
               return ModelsAdminView(brandId: brandId);
             },
           ),
+          GoRoute(
+            name: CountryAdminView.routerName,
+            path: CountryAdminView.routerPath,
+            builder: (context, state) => const CountryAdminView(),
+          ),
         ]
       ),
       ShellRoute(
@@ -205,5 +210,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => FuelTypeProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesColorsProvider()),
     ChangeNotifierProvider(create: (_) => ModelProvider()),
+    ChangeNotifierProvider(create:  (_) => CountryProvider()),
   ];
 }

@@ -71,6 +71,33 @@ class S {
       args: [],
     );
   }
+/// `Add Country`
+  String get addCountry {
+    return Intl.message(
+      'Add Country',
+      name: 'addCountry',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Country`
+  String get countryName {
+    return Intl.message(
+      'Country',
+      name: 'countryName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get CountryName{
+    return Intl.message(
+      'CountryName',
+      name: 'CountryName',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Gas Type`
   String get gasType {
     return Intl.message(
