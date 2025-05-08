@@ -53,6 +53,26 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+  /// `Road Type`
+  String get roadType {
+    return Intl.message(
+      'Road Type',
+      name: 'roadType',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Add Road Type`
+  String get addRoadType {
+    return Intl.message(
+      'Add Road Type',
+      name: 'addRoadType',
+      desc: '',
+      args: [],
+    );
+  }
+
+
   /// `addFuelTypes`
   String get addFuelTypes {
     return Intl.message(

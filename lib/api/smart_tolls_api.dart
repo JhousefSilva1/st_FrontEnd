@@ -217,6 +217,58 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
     );
   }
 }
+// create road type
+  Future<StResponse<StRoadTypeResponse>> createRoadType(StRoadTypeRequest roadTypeRequest) async {
+    try {
+      final response = await httpPost('$_baseUrl/roadType/create', getHeaders(), jsonEncode(roadTypeRequest.toJson()));
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          return StResponse<StRoadTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try {
+          final errorJson = json.decode(response.body);
+          return StResponse<StRoadTypeResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al crear el tipo de carretera',
+            error: errorJson['error'] ?? '',
+          );
+        } catch (e) {
+          return StResponse<StRoadTypeResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final roadTypeData = StRoadTypeResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StRoadTypeResponse>(
+        data: roadTypeData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    } catch (e) {
+      return StResponse<StRoadTypeResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la creación del tipo de carretera',
+        error: e.toString(),
+      );
+    }
+  }
+
+// get roadType
+  Future<StResponse<StRoadTypeResponse>> getAllRoadTypes() async {
+    try {
+      final response = await httpGet('$_baseUrl/roadType', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StRoadTypeResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StRoadTypeResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StRoadTypeResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
 // create Country
   Future<StResponse<StCountryResponse>> createCountry(StCountryRequest countryRequest) async {
     try {

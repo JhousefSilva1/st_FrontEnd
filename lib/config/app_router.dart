@@ -116,6 +116,11 @@ class AppRouter {
             path: CountryAdminView.routerPath,
             builder: (context, state) => const CountryAdminView(),
           ),
+          GoRoute(
+            name: RoadTypeAdminView.routerName,
+            path: RoadTypeAdminView.routerPath,
+            builder: (context, state) => const RoadTypeAdminView(),
+          )
         ]
       ),
       ShellRoute(
@@ -211,5 +216,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => VehiclesColorsProvider()),
     ChangeNotifierProvider(create: (_) => ModelProvider()),
     ChangeNotifierProvider(create:  (_) => CountryProvider()),
+    ChangeNotifierProvider(create: (_) => RoadTypesProvider()),
   ];
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
-
-
-
 class VehicleTypeProvider extends ChangeNotifier {
   List<StVehiclesTypeResponse> _allVehiclesType = []; // Lista completa
   List<StVehiclesTypeResponse> _vehiclesType = []; // Lista filtrada  

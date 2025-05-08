@@ -6,6 +6,7 @@ export 'package:smarttolls/api/request/St_colors_request.dart';
 export 'package:smarttolls/api/request/st_fuel_type_request.dart';
 export 'package:smarttolls/api/request/st_vehicles_type_request.dart';
 export 'package:smarttolls/api/request/st_country_request.dart';
+export 'package:smarttolls/api/request/st_road_type_request.dart';
 
 // response
 export 'package:smarttolls/api/response/st_audit_response.dart';
@@ -16,6 +17,7 @@ export 'package:smarttolls/api/response/st_vehicles_models_response.dart';
 export 'package:smarttolls/api/response/st_vehicles_response.dart';
 export 'package:smarttolls/api/response/st_vehicles_type_response.dart';
 export 'package:smarttolls/api/response/st_country_response.dart';
+export 'package:smarttolls/api/response/st_road_type_response.dart';
 
 
 
