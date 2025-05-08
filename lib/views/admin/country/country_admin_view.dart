@@ -158,7 +158,7 @@ class _CountryAdminListState extends State<CountryAdminList>{
                 itemCount: provider.countries.length,
                 itemBuilder: (context, index){
                   final country = provider.countries[index];
-                  return CountryCard(countryName: country);
+                  return CountryCard(country: country);
                 },
                 physics: const NeverScrollableScrollPhysics(),
                 primary: false,

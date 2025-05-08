@@ -149,6 +149,57 @@ Future<StResponse<StVehiclesColorsResponse>>createColor(StColorRequest colorRequ
     );
   }
 }
+// create city
+Future<StResponse<StCityResponse>> createCity(StCityRequest cityRequest) async {
+  try {
+    final response = await httpPost('$_baseUrl/city/create', getHeaders(), jsonEncode(cityRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StCityResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StCityResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear la ciudad',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StCityResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final cityData = StCityResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StCityResponse>(
+      data: cityData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StCityResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación de la ciudad',
+      error: e.toString(),
+    );
+  }
+}
+// get city by countryId
+Future<StResponse<StCityResponse>> getCitiesByCountry(int idCountry) async {
+  try {
+    final response = await httpGet('$_baseUrl/city/country/$idCountry', getHeaders());
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        StResponse<StCityResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+        return responseData;
+      }
+      return StResponse.createEmpty();
+    }
+    StResponse<StCityResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StCityResponse.createEmpty());
+    return responseData;
+  } catch (e) {
+    return StResponse.createEmpty();
+  }
+}
 // create fuel type
 Future<StResponse<StFuelTypesResponse>> createFuelType(StFuelTypesRequest fuelTypeRequest) async {
   try {

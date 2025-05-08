@@ -71,7 +71,33 @@ class S {
       args: [],
     );
   }
-
+  /// `Add City`
+  String get addCity {
+    return Intl.message(
+      'Add City',
+      name: 'addCity',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `city`
+  String get city {
+    return Intl.message(
+      'city',
+      name: 'city',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `City Name`
+  String get cityName {
+    return Intl.message(
+      'City Name',
+      name: 'cityName',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `addFuelTypes`
   String get addFuelTypes {
