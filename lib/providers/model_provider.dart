@@ -46,7 +46,7 @@ Future<void> loadModelsByBrand(int brandId) async {
     notifyListeners();
     try {
       final request = StBrandResponse.createEmpty()..idBrand = brandId;
-      final response = await SmartTollsApi().getAllModelsByBrand(request);
+      final response = await SmartTollsApi().getModelsByBrand(brandId);
 
       if(response.isSuccess() && response.dataList != null) {
         _allModels = response.dataList!;
@@ -71,7 +71,7 @@ Future<void> loadModelsByBrand(int brandId) async {
   }
 // add models
 
-  Future<void>  addModels(String modelName) async {
+  Future<void>addModels(String modelName, int brnadId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -85,29 +85,7 @@ Future<void> loadModelsByBrand(int brandId) async {
     }
   }
 // dialogo para agregar modelos
-  void goToAddModels(BuildContext context){
-    final modelNameController = TextEditingController();
 
-    Utils.textFieldAlert(
-      context: context,
-      content: CustomField(
-        controller:modelNameController,
-        hintText: S.of(context).model,
-        keyboardType: TextInputType.text,
-        onChanged: (value) {},
-        prefixIcon: const Icon(Icons.car_repair, color: AppStyle.primary),
-      ),
-      negativeText: S.of(context).cancel,
-      positiveOnPressed: (){
-        if (modelNameController.text.isNotEmpty) {
-          addModels(modelNameController.text);
-          Navigator.pop(context);
-        }
-      },
-      positiveText: S.of(context).add,
-      title: S.of(context).addModel,
-    );
-  }
 
   void retryLoading(){
     _errorMessage = null;

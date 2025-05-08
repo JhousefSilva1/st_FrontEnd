@@ -86,7 +86,7 @@ class VehiclesProvider extends ChangeNotifier {
   }
 
   Future<StResponse<StVehiclesModelsResponse>> getAllModelsByBrand(StBrandResponse request) async {
-    return await SmartTollsApi().getAllModelsByBrand(request);
+    return await SmartTollsApi().getModelsByBrand(request.idBrand);
   }
 
   Future<StResponse<StFuelTypesResponse>> getAllFuelTypes() async {

@@ -39,20 +39,10 @@ class BrandsCard extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                   onTap: () {
-                    final provider = Provider.of<ModelProvider>(context, listen: false);
-                    
-                    
-                    // Opción 1: Usando pathParameters
-                    context.pushNamed(
-                      ModelsAdminView.routerName,
-                      pathParameters: {'brandId': brand.idBrand.toString()},
-                    );
-                    
-                    // Opción 2: Usando extra
-                    // context.pushNamed(
-                    //   ModelsAdminView.routerName,
-                    //   extra: {'brandId': brand.idBrand},
-                    // );
+                      context.goNamed(
+                        ModelsAdminView.routerName,
+                        pathParameters: {'idBrand': brand.idBrand.toString()},
+                      );
                   },
                 child: Row(
                   children: [

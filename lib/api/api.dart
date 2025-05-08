@@ -5,6 +5,7 @@ export 'package:smarttolls/api/request/st_brand_request.dart';
 export 'package:smarttolls/api/request/St_colors_request.dart';
 export 'package:smarttolls/api/request/st_fuel_type_request.dart';
 export 'package:smarttolls/api/request/st_vehicles_type_request.dart';
+export 'package:smarttolls/api/request/st_vehicles_models_request.dart';
 export 'package:smarttolls/api/request/st_country_request.dart';
 export 'package:smarttolls/api/request/st_road_type_request.dart';
 export 'package:smarttolls/api/request/st_city_request.dart';

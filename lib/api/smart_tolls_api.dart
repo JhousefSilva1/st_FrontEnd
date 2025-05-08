@@ -441,9 +441,27 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
     }
   }
 
-  Future<StResponse<StVehiclesModelsResponse>> getAllModelsByBrand(StBrandResponse request) async{
-    try {
-      final response = await httpGet('$_baseUrl/models/byBrand/${request.idBrand}', getHeaders());
+  // Future<StResponse<StVehiclesModelsResponse>> getAllModelsByBrand(StBrandResponse request) async{
+  //   try {
+  //     final response = await httpGet('$_baseUrl/models/byBrand/${request.idBrand}', getHeaders());
+  //     if (response.statusCode >= HttpStatus.badRequest) {
+  //       if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+  //         StResponse<StVehiclesModelsResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+  //         return responseData;
+  //       }
+  //       return StResponse.createEmpty();
+  //     }
+  //     StResponse<StVehiclesModelsResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehiclesModelsResponse.createEmpty());
+  //     return responseData;
+  //   } catch (e) {
+  //     return StResponse.createEmpty();
+  //   }
+  // }
+
+// get models by brandId
+  Future<StResponse<StVehiclesModelsResponse>> getModelsByBrand(int idBrand) async{
+    try{
+      final response = await httpGet('$_baseUrl/models/byBrand/$idBrand', getHeaders());
       if (response.statusCode >= HttpStatus.badRequest) {
         if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
           StResponse<StVehiclesModelsResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
@@ -453,9 +471,43 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       }
       StResponse<StVehiclesModelsResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehiclesModelsResponse.createEmpty());
       return responseData;
-    } catch (e) {
+    }catch(e){
       return StResponse.createEmpty();
     }
+  }   
+  // create models
+  Future<StResponse<StVehiclesModelsResponse>> createModels(StVehiclesModelsRequest modelsRequest) async{
+    try{
+      final response = await httpPost('$_baseUrl/models/create', getHeaders(), jsonEncode(modelsRequest.toJson()));
+      if(response.statusCode >= HttpStatus.badRequest){
+        if(response.statusCode == HttpStatus.networkConnectTimeoutError){
+          return StResponse<StVehiclesModelsResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try{
+          final errorJson = json.decode(response.body);
+          return StResponse<StVehiclesModelsResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al crear el modelo',
+            error: errorJson['error'] ?? '',
+          );
+        }catch(e){
+          return StResponse<StVehiclesModelsResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final modelData = StVehiclesModelsResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StVehiclesModelsResponse>(
+        data: modelData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    }catch(e){
+      return StResponse<StVehiclesModelsResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la creación del modelo',
+        error: e.toString(),
+      );
+    } 
   }
   
   Future<StResponse<StVehiclesTypeResponse>> getAllTypeVehicles() async{

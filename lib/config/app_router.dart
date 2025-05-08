@@ -105,10 +105,10 @@ class AppRouter {
                       ),
           GoRoute(
             name: ModelsAdminView.routerName,
-            path: '/modelAdmin/:brandId', // Nota los dos puntos antes de brandId
+            path: '/modelAdmin/:idBrand', // Nota los dos puntos antes de brandId
             builder: (context, state) {
-              final brandId = int.tryParse(state.pathParameters['brandId'] ?? '');
-              return ModelsAdminView(brandId: brandId);
+              final brandId = int.parse(state.pathParameters['idBrand'] ?? '');
+              return ModelsAdminView(brandId: brandId); // Usa parse directamente si siempre es válido
             },
           ),
           // city
