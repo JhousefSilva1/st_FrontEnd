@@ -12,7 +12,7 @@ class FuelTypeAdminView extends StatelessWidget{
   const FuelTypeAdminView({super.key});
   @override
   Widget build(BuildContext context) {
-    final FuelTypeProvider fuelTypeProvider = Provider.of<FuelTypeProvider>(context);
+    // final FuelTypeProvider fuelTypeProvider = Provider.of<FuelTypeProvider>(context);
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return SafeArea(
       child: Scaffold(

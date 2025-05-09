@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/widgets/widgets.dart';
-
-import '../generated/l10n.dart';
-import '../utils/utils.dart';
-
 class ModelProvider  extends ChangeNotifier{
   List<StVehiclesModelsResponse> _allModels = [];
   List<StVehiclesModelsResponse> _models = []; // Lista filtrada
@@ -45,7 +39,7 @@ Future<void> loadModelsByBrand(int brandId) async {
     _models = [];
     notifyListeners();
     try {
-      final request = StBrandResponse.createEmpty()..idBrand = brandId;
+      // final request = StBrandResponse.createEmpty().idBrand = brandId;
       final response = await SmartTollsApi().getModelsByBrand(brandId);
 
       if(response.isSuccess() && response.dataList != null) {

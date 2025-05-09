@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
-import 'package:smarttolls/providers/fuel_type_provider.dart';
+
 
 class FuelTypeCard extends StatelessWidget {
   final StFuelTypesResponse fuelTypesName;

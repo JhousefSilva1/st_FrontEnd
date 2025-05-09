@@ -14,7 +14,7 @@ class VehicleTypeAdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context){
-    final VehicleTypeProvider vehicleTypeProvider = Provider.of<VehicleTypeProvider>(context);
+    // final VehicleTypeProvider vehicleTypeProvider = Provider.of<VehicleTypeProvider>(context);
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     
     return SafeArea(

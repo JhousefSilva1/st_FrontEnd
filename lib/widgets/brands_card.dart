@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:smarttolls/api/response/st_brand_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/views/views.dart';
 
-import '../providers/model_provider.dart';
 
 class BrandsCard extends StatelessWidget {
   final StBrandResponse brand;
