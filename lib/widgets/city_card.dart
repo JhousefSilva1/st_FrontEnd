@@ -1,8 +1,10 @@
 // city_card.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/views/views.dart';
 
 
 
@@ -40,30 +42,48 @@ class CityCard extends StatelessWidget {
                   const Icon(Icons.location_city, color: AppStyle.primary, size: 50),
                   const SizedBox(width: 16),
                   Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        context.goNamed(
+                          PlaceAdminView.routerName,
+                          pathParameters: {'idCity ': city.idCity.toString()},
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 8),
+                          const Icon(Icons.public, color: AppStyle.primary, size: 50),
+                          const SizedBox(width: 16),
+                          Expanded(
                               flex: 2,
-                              child: Text(S.of(context).city,
-                                  style: const TextStyle(
-                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              flex: 2,
-                              child: Text(city.cityName ?? 'N/A',
-                                  style: const TextStyle(
-                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(S.of(context).city,
+                                            style: const TextStyle(
+                                                fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(city.cityName ?? 'N/A',
+                                            style: const TextStyle(
+                                                fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                          )
+                        ],
+                      ),
+                    )
+
                   )
                 ],
               ),

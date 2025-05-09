@@ -200,6 +200,57 @@ Future<StResponse<StCityResponse>> getCitiesByCountry(int idCountry) async {
     return StResponse.createEmpty();
   }
 }
+// Create place
+Future<StResponse<StPlaceResponse>> createPlace(StPlacesRequest placeRequest) async {
+  try {
+    final response = await httpPost('$_baseUrl/places/create', getHeaders(), jsonEncode(placeRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StPlaceResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StPlaceResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear el lugar',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StPlaceResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final placeData = StPlaceResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StPlaceResponse>(
+      data: placeData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StPlaceResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación del lugar',
+      error: e.toString(),
+    );
+  }
+}
+// get places by cityId
+Future<StResponse<StPlaceResponse>> getPlacesByCity(int idCity) async {
+  try {
+    final response = await httpGet('$_baseUrl/places/city/$idCity', getHeaders());
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        StResponse<StPlaceResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+        return responseData;
+      }
+      return StResponse.createEmpty();
+    }
+    StResponse<StPlaceResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StPlaceResponse.createEmpty());
+    return responseData;
+  } catch (e) {
+    return StResponse.createEmpty();
+  }
+}
 // create fuel type
 Future<StResponse<StFuelTypesResponse>> createFuelType(StFuelTypesRequest fuelTypeRequest) async {
   try {

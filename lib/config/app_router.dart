@@ -120,7 +120,17 @@ class AppRouter {
                 return CityAdminView(countryId: countryId);
               },
             ),
-                  GoRoute(
+
+            // place
+            GoRoute(
+              name: PlaceAdminView.routerName,
+              path: '/placeAdmin/:idCity',
+              builder: (context, state) {
+                final cityId = int.parse(state.pathParameters['idCity']!); // Usa parse directamente si siempre es válido
+                return PlaceAdminView(cityId: cityId);
+              },
+            ),
+            GoRoute(
             name: CountryAdminView.routerName,
             path: CountryAdminView.routerPath,
             builder: (context, state) => const CountryAdminView(),
@@ -226,6 +236,7 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => ModelProvider()),
     ChangeNotifierProvider(create:  (_) => CountryProvider()),
     ChangeNotifierProvider(create: (_) => CityProvider()),
+    ChangeNotifierProvider(create: (_) => PlaceProvider()),
     ChangeNotifierProvider(create: (_) => RoadTypesProvider()),
   ];
 }

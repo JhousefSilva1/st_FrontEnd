@@ -15,4 +15,5 @@ export 'package:smarttolls/providers/vehicles_colors_provider.dart';
 export 'package:smarttolls/providers/model_provider.dart';
 export 'package:smarttolls/providers/country_provider.dart';
 export 'package:smarttolls/providers/city_provider.dart';
+export 'package:smarttolls/providers/place_provider.dart';
 export 'package:smarttolls/providers/road_types_provider.dart';

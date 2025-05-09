@@ -20,4 +20,5 @@ export 'package:smarttolls/widgets/vehicles_colors_card.dart';
 export 'package:smarttolls/widgets/models_card.dart';
 export 'package:smarttolls/widgets/country_card.dart';
 export 'package:smarttolls/widgets/city_card.dart';
+export 'package:smarttolls/widgets/place_card.dart';
 export 'package:smarttolls/widgets/road_type_card.dart';

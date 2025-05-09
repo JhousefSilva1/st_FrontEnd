@@ -89,6 +89,15 @@ class S {
       args: [],
     );
   }
+  /// `place`
+  String get place {
+    return Intl.message(
+      'place',
+      name: 'place',
+      desc: '',
+      args: [],
+    );
+  }
   /// `City Name`
   String get cityName {
     return Intl.message(
