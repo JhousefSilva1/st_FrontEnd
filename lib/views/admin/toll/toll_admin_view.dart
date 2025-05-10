@@ -6,8 +6,6 @@ import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
-import '../../../api/api.dart';
-import '../../../models/models.dart';
 import '../../../providers/providers.dart';
 
 class TollAdminView extends StatelessWidget {
@@ -39,12 +37,12 @@ class TollAdminView extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      const TollAdminList(),
+                      TollAdminList(),
                     ],
                   ),
                 ),
               )
-            : const TollAdminTabletView(),
+            : TollAdminTabletView(),
       ),
     );
   }
@@ -65,12 +63,12 @@ class TollAdminTabletView extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  const TollAdminList(),
+                  TollAdminList(),
                 ],
               ),
             ),
-          ),
-        ),
+          )
+        )
       ],
     );
   }
@@ -131,8 +129,7 @@ class _TollAdminListState extends State<TollAdminList> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: provider.retryLoading,
-                child: Text(
-                  S.of(context).retry,
+                child: Text(S.of(context).retry,
                   style: const TextStyle(
                     fontSize: 16,
                     color: AppStyle.white,
@@ -146,8 +143,7 @@ class _TollAdminListState extends State<TollAdminList> {
         if(!provider.isLoading && provider.tolls.isEmpty && provider.errorMessage == null)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 32),
-            child: Text(
-              'No Hay Peajes Registrados',
+            child: Text('No Hay Peajes',
               style: const TextStyle(
                 fontSize: 16,
                 color: AppStyle.primary,
@@ -166,7 +162,7 @@ class _TollAdminListState extends State<TollAdminList> {
             primary: false,
             shrinkWrap: true,
             separatorBuilder: (context, index) => const SizedBox(height: 12),
-          ),
+          )
       ],
     );
   }
@@ -175,136 +171,123 @@ class _TollAdminListState extends State<TollAdminList> {
 void showAddTollDialog(BuildContext context) {
   final tollNameController = TextEditingController();
   final provider = Provider.of<TollProvider>(context, listen: false);
-  
-  // Variables para los selectores
-  int? selectedCountryId;
-  int? selectedCityId;
-  int? selectedPlaceId;
-  List<StCityResponse> cities = [];
-  List<StPlaceResponse> places = [];
-
-  // Cargar países inicialmente
   final countryProvider = Provider.of<CountryProvider>(context, listen: false);
   final cityProvider = Provider.of<CityProvider>(context, listen: false);
   final placeProvider = Provider.of<PlaceProvider>(context, listen: false);
 
-  // Pre-cargar países antes de mostrar el diálogo
-  final countriesFuture = countryProvider.loadCountries();
+  // Inicializar valores si es necesario
+  String? selectedCountry;
+  String? selectedCity;
+  String? selectedPlace;
+  int? selectedCountryId;
+  int? selectedCityId;
+  int? selectedPlaceId;
 
   Utils.textFieldAlert(
     context: context,
-    content: FutureBuilder(
-      future: countriesFuture,
-      builder: (context, countriesSnapshot) {
-        if (countriesSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomField(
-                    controller: tollNameController,
-                    hintText: S.of(context).tollName,
-                    keyboardType: TextInputType.text,
-                    prefixIcon: const Icon(Icons.route, color: AppStyle.primary),
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  // Selector de País
-                  DropdownButtonFormField<int>(
-                    decoration: InputDecoration(
-                      labelText: S.of(context).country,
-                      prefixIcon: const Icon(Icons.flag, color: AppStyle.primary),
-                    ),
-                    value: selectedCountryId,
-                    items: countryProvider.countries.map((country) {
-                      return DropdownMenuItem<int>(
-                        value: country.idCountry,
-                        child: Text(country.countryName ?? 'Sin nombre'),
-                      );
-                    }).toList(),
-                    onChanged: (value) async {
-                      setState(() {
-                        selectedCountryId = value;
-                        selectedCityId = null;
-                        selectedPlaceId = null;
-                        cities = [];
-                        places = [];
-                      });
-                      
-                      // Cargar ciudades fuera del setState
-                      if (value != null) {
-                        await cityProvider.loadCitiesByCountry(value);
-                        setState(() {
-                          cities = cityProvider.cities;
-                        });
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  // Selector de Ciudad
-                  if (selectedCountryId != null)
-                    DropdownButtonFormField<int>(
-                      decoration: InputDecoration(
-                        labelText: S.of(context).city,
-                        prefixIcon: const Icon(Icons.location_city, color: AppStyle.primary),
-                      ),
-                      value: selectedCityId,
-                      items: cities.map((city) {
-                        return DropdownMenuItem<int>(
-                          value: city.idCity,
-                          child: Text(city.cityName ?? 'Sin nombre'),
-                        );
-                      }).toList(),
-                      onChanged: (value) async {
-                        setState(() {
-                          selectedCityId = value;
-                          selectedPlaceId = null;
-                          places = [];
-                        });
-                        
-                        // Cargar lugares fuera del setState
-                        if (value != null) {
-                          await placeProvider.loadPlacesByCity(value);
-                          setState(() {
-                            places = placeProvider.places;
-                          });
-                        }
-                      },
-                    ),
-                  const SizedBox(height: 16),
-                  
-                  // Selector de Lugar
-                  if (selectedCityId != null)
-                    DropdownButtonFormField<int>(
-                      decoration: InputDecoration(
-                        labelText: S.of(context).place,
-                        prefixIcon: const Icon(Icons.place, color: AppStyle.primary),
-                      ),
-                      value: selectedPlaceId,
-                      items: places.map((place) {
-                        return DropdownMenuItem<int>(
-                          value: place.idPlaces,
-                          child: Text(place.placeName ?? 'Sin nombre'),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedPlaceId = value;
-                        });
-                      },
-                    ),
-                ],
+    content: SingleChildScrollView( // <-- Envuelve el contenido en un SingleChildScrollView
+      child: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Column(
+            mainAxisSize: MainAxisSize.min, // <-- Importante mantener mainAxisSize.min
+            children: [
+              CustomField(
+                controller: tollNameController,
+                hintText: S.of(context).tollName,
+                keyboardType: TextInputType.text,
+                prefixIcon: const Icon(Icons.route, color: AppStyle.primary),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el nombre del peaje';
+                  }
+                  return null;
+                },
               ),
-            );
-          },
-        );
-      },
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: selectedCountry,
+                hint: Text(S.of(context).selectCountry),
+                items: countryProvider.countries.map((country) {
+                  return DropdownMenuItem<String>(
+                    value: country.idCountry.toString(),
+                    child: Text(country.countryName ?? 'N/A'),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCountry = value;
+                    selectedCountryId = int.tryParse(value ?? '0');
+                    selectedCity = null;
+                    selectedCityId = null;
+                    selectedPlace = null;
+                    selectedPlaceId = null;
+                    if (selectedCountryId != null) {
+                      cityProvider.loadCitiesByCountry(selectedCountryId!);
+                    }
+                  });
+                },
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.flag, color: AppStyle.primary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: selectedCity,
+                hint: Text(S.of(context).selectCity),
+                items: cityProvider.cities.map((city) {
+                  return DropdownMenuItem<String>(
+                    value: city.idCity.toString(),
+                    child: Text(city.cityName ?? 'N/A'),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCity = value;
+                    selectedCityId = int.tryParse(value ?? '0');
+                    selectedPlace = null;
+                    selectedPlaceId = null;
+                    if (selectedCityId != null) {
+                      placeProvider.loadPlacesByCity(selectedCityId!);
+                    }
+                  });
+                },
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.location_city, color: AppStyle.primary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: selectedPlace,
+                hint: Text(S.of(context).selectPlace),
+                items: placeProvider.places.map((place) {
+                  return DropdownMenuItem<String>(
+                    value: place.idPlaces.toString(),
+                    child: Text(place.placeName ?? 'N/A'),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedPlace = value;
+                    selectedPlaceId = int.tryParse(value ?? '0');
+                  });
+                },
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.place, color: AppStyle.primary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     ),
     negativeText: S.of(context).cancel,
     positiveOnPressed: () async {
@@ -313,7 +296,7 @@ void showAddTollDialog(BuildContext context) {
         Navigator.of(context, rootNavigator: true).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Complete todos los campos requeridos')),
+          const SnackBar(content: Text('Todos los campos son requeridos')),
         );
       }
     },

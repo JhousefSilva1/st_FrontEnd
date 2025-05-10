@@ -1,20 +1,20 @@
-class StTollRequest{
+class StTollsRequest {
   final String tollsName;
-  final int idPlace;
+  final int idPlaces;
 
-  StTollRequest({
+  StTollsRequest({
     required this.tollsName,
-    required this.idPlace,
+    required this.idPlaces,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'tollsName': tollsName,
-      'idPlace': idPlace,
+      'idPlaces': idPlaces,
     };
   }
 
   debugPrint() {
-    print('Tolls Name: $tollsName, Place ID: $idPlace');
+    print('Toll Name: $tollsName, Place ID: $idPlaces');
   }
 }

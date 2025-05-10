@@ -185,33 +185,33 @@ Future<StResponse<StCityResponse>> createCity(StCityRequest cityRequest) async {
   }
 }
 // create a toll
-Future<StResponse<StTollResponse>> createToll(StTollRequest tollsRequest) async {
+Future<StResponse<StTollsResponse>> createToll(StTollsRequest tollsRequest) async {
   try {
     final response = await httpPost('$_baseUrl/toll/create', getHeaders(), jsonEncode(tollsRequest.toJson()));
     if (response.statusCode >= HttpStatus.badRequest) {
       if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
-        return StResponse<StTollResponse>(status: HttpStatus.networkConnectTimeoutError);
+        return StResponse<StTollsResponse>(status: HttpStatus.networkConnectTimeoutError);
       }
       try {
         final errorJson = json.decode(response.body);
-        return StResponse<StTollResponse>(
+        return StResponse<StTollsResponse>(
           status: response.statusCode,
           message: errorJson['message'] ?? 'Error al crear el peaje',
           error: errorJson['error'] ?? '',
         );
       } catch (e) {
-        return StResponse<StTollResponse>.createEmpty();
+        return StResponse<StTollsResponse>.createEmpty();
       }
     }
     final responseJson = json.decode(response.body);
-    final tollData = StTollResponse.createEmpty().fromMap(responseJson['data']);
-    return StResponse<StTollResponse>(
+    final tollData = StTollsResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StTollsResponse>(
       data: tollData,
       status: response.statusCode,
       message: responseJson['message'],
     );
   } catch (e) {
-    return StResponse<StTollResponse>(
+    return StResponse<StTollsResponse>(
       status: HttpStatus.internalServerError,
       message: 'Error durante la creación del peaje',
       error: e.toString(),
@@ -238,30 +238,20 @@ Future<StResponse<StTollResponse>> createToll(StTollRequest tollsRequest) async 
 // }
 
 // get all tolls
-
-Future<StResponse<StTollResponse>> getAllTolls() async {
+// getAllTolls
+Future<StResponse<StTollsResponse>> getAllTolls() async {
   try {
     final response = await httpGet('$_baseUrl/toll', getHeaders());
-    
-    // Agrega logs para debug
-    debugPrint('Raw API Response: ${response.statusCode} - ${response.body}');
-    
     if (response.statusCode >= HttpStatus.badRequest) {
       if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
-        return StResponse<StTollResponse>(status: HttpStatus.networkConnectTimeoutError);
+        StResponse<StTollsResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+        return responseData;
       }
       return StResponse.createEmpty();
     }
-    
-    final responseData = StResponse.fromJsonList(
-      utf8.decode(response.bodyBytes), 
-      StTollResponse.createEmpty()
-    );
-    
-    debugPrint('Parsed Response: ${responseData.dataList?.length}');
+    StResponse<StTollsResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StTollsResponse.createEmpty());
     return responseData;
   } catch (e) {
-    debugPrint('Error in getAllTolls: $e');
     return StResponse.createEmpty();
   }
 }

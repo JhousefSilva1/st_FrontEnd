@@ -2,61 +2,60 @@ import 'dart:convert';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/models/st_response.dart';
 
-class StTollResponse implements StResponseService {
-
+class StTollsResponse implements StResponseService {
   int idTolls;
   String? tollsName;
-  int tollStatus;
+  int tollsStatus;
   StPlaceResponse places;
   StAuditResponse audit;
 
-  StTollResponse({
+  StTollsResponse({
     required this.idTolls,
     this.tollsName,
-    required this.tollStatus,
+    required this.tollsStatus,
     required this.places,
     required this.audit,
   });
 
-  factory StTollResponse.createEmpty()=> StTollResponse(
-    idTolls: 0,
-    tollsName: '',
-    tollStatus: 0,
-    places: StPlaceResponse.createEmpty(),
-    audit: StAuditResponse.createEmpty(),
-  );
+  factory StTollsResponse.createEmpty() => StTollsResponse(
+        idTolls: 0,
+        tollsName: '',
+        tollsStatus: 0,
+        places: StPlaceResponse.createEmpty(),
+        audit: StAuditResponse.createEmpty(),
+      );
 
   @override
   String toJson() => json.encode(toMap());
 
-    factory StTollResponse.fromJson(Map<String, dynamic> json) => StTollResponse(
-      idTolls: json["idTolls"] ?? 0, // Agrega valores por defecto
-      tollsName: json["tollsName"],
-      tollStatus: json["tollStatus"] ?? json["tollsStatus"] ?? 0, // Verifica el nombre correcto
-      places: StPlaceResponse.fromJson(json["places"] ?? {}), // Maneja null
-      audit: StAuditResponse.fromJson(json["audit"] ?? {}), // Maneja null
-    );
+  factory StTollsResponse.fromJson(Map<String, dynamic> json) => StTollsResponse(
+        idTolls: json["idTolls"],
+        tollsName: json["tollsName"],
+        tollsStatus: json["tollsStatus"],
+        places: StPlaceResponse.fromJson(json["places"]),
+        audit: StAuditResponse.fromJson(json["audit"]),
+      );
 
   @override
   Map<String, dynamic> toMap() => {
-    "idTolls": idTolls,
-    "tollsName": tollsName,
-    "tollStatus": tollStatus,
-    "places": places.toJson(),
-    "audit": audit.toJson(),
-  };
+        "idTolls": idTolls,
+        "tollsName": tollsName,
+        "tollsStatus": tollsStatus,
+        "places": places.toJson(),
+        "audit": audit.toJson(),
+      };
 
   @override
-  StTollResponse fromJson(String json) {
+  StTollsResponse fromJson(String json) {
     return fromMap(jsonDecode(json));
   }
 
   @override
-  StTollResponse fromMap(Map<String, dynamic> json) => StTollResponse(
-    idTolls: json["idTolls"],
-    tollsName: json["tollsName"],
-    tollStatus: json["tollStatus"],
-    places: StPlaceResponse.fromJson(json["places"]),
-    audit: StAuditResponse.fromJson(json["audit"]),
-  );
+  StTollsResponse fromMap(Map<String, dynamic> json) => StTollsResponse(
+        idTolls: json["idTolls"],
+        tollsName: json["tollsName"],
+        tollsStatus: json["tollsStatus"],
+        places: StPlaceResponse.fromJson(json["places"]),
+        audit: StAuditResponse.fromJson(json["audit"]),
+      );
 }

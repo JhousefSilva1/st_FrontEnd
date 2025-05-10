@@ -143,10 +143,10 @@ class _CountryAdminListState extends State<CountryAdminList>{
           ),
           // Lista vacia
           if(!provider.isLoading && provider.countries.isEmpty && provider.errorMessage == null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32),
+            const Padding(
+              padding:  EdgeInsets.symmetric(vertical: 32),
               child: Text('No hay paises disponibles',
-                style: const TextStyle(
+                style:  TextStyle(
                   color: AppStyle.primary,
                   fontSize: 16)
                   ),

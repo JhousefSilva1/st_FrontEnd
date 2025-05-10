@@ -4,7 +4,7 @@ import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
 class TollCard extends StatelessWidget {
-  final StTollResponse toll;
+  final StTollsResponse toll;
 
   const TollCard({
     super.key,
@@ -40,15 +40,79 @@ class TollCard extends StatelessWidget {
                     flex: 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // Nombre del peaje
-                        _buildInfoRow(context, S.of(context).toll, toll.tollsName ?? 'N/A'),
-                        // Lugar
-                        _buildInfoRow(context, S.of(context).place, toll.places.placeName ?? 'N/A'),
-                        // Ciudad
-                        _buildInfoRow(context, S.of(context).city, toll.places.city.cityName ?? 'N/A'),
-                        // País
-                        _buildInfoRow(context, S.of(context).country, toll.places.city.country.countryName ?? 'N/A'),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(S.of(context).toll,
+                                  style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              flex: 2,
+                              child: Text(toll.tollsName ?? 'N/A',
+                                  style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(S.of(context).place,
+                                  style: const TextStyle(
+                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              flex: 2,
+                              child: Text(toll.places.placeName ?? 'N/A',
+                                  style: const TextStyle(
+                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(S.of(context).city,
+                                  style: const TextStyle(
+                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              flex: 2,
+                              child: Text(toll.places.city.cityName ?? 'N/A',
+                                  style: const TextStyle(
+                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(S.of(context).country,
+                                  style: const TextStyle(
+                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              flex: 2,
+                              child: Text(toll.places.city.country.countryName ?? 'N/A',
+                                  style: const TextStyle(
+                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -56,58 +120,29 @@ class TollCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const SizedBox(width: 8),
                   GestureDetector(
-                    onTap: () {
-                      // Editar
-                    },
-                    child: const Icon(Icons.edit, color: AppStyle.primary),
+                      onTap: () {
+                        // editar
+                      },
+                      child: const Icon(Icons.edit, color: AppStyle.primary)
                   ),
                   const SizedBox(width: 8),
                   GestureDetector(
-                    onTap: () {
-                      // Eliminar
-                    },
-                    child: const Icon(Icons.delete, color: AppStyle.red),
+                      onTap: () {
+                        // eliminar
+                      },
+                      child: const Icon(Icons.delete, color: AppStyle.red)
                   ),
                 ],
-              ),
-            ),
+              )
+            )
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(BuildContext context, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              value,
-              style: const TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

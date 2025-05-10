@@ -62,6 +62,34 @@ class S {
       args: [],
     );
   }
+  /// `SselectCountry`
+  String get selectCountry {
+    return Intl.message(
+      'SselectCountry',
+      name: 'selectCountry',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Select City`
+  String get selectCity {
+    return Intl.message(
+      'Select City',
+      name: 'selectCity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Place`
+  String get selectPlace {
+    return Intl.message(
+      'Select Place',
+      name: 'selectPlace',
+      desc: '',
+      args: [],
+    );
+  } 
   /// `Add Road Type`
   String get addRoadType {
     return Intl.message(
