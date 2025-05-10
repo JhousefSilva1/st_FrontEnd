@@ -71,6 +71,33 @@ class S {
       args: [],
     );
   }
+  /// `toll`
+  String get toll {
+    return Intl.message(
+      'toll',
+      name: 'toll',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Add Toll`
+  String get addToll{
+    return Intl.message(
+      'Add Toll',
+      name: 'addToll',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `tollName`
+  String get tollName {
+    return Intl.message(
+      'tollName',
+      name: 'tollName',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Add City`
   String get addCity {
     return Intl.message(
@@ -281,10 +308,7 @@ class S {
     return Intl.message('Add Model', name: 'addModel', desc: '', args: []);
   }
 
-  /// `Add Toll`
-  String get addToll {
-    return Intl.message('Add Toll', name: 'addToll', desc: '', args: []);
-  }
+ 
 
   /// `Add New Vehicle`
   String get addVehicles {

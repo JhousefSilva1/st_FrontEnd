@@ -38,15 +38,12 @@ class CityCard extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  const SizedBox(width: 8),
-                  const Icon(Icons.location_city, color: AppStyle.primary, size: 50),
-                  const SizedBox(width: 16),
                   Expanded(
                     child: GestureDetector(
                       onTap: (){
                         context.goNamed(
                           PlaceAdminView.routerName,
-                          pathParameters: {'idCity ': city.idCity.toString()},
+                          pathParameters: {'idCity': city.idCity.toString()},
                         );
                       },
                       child: Row(

@@ -43,7 +43,7 @@ class SmartTollsDrawer extends StatelessWidget {
             DrawerListTile(icon: Icons.public, onTap: () => drawerProvider.goToCountriesAdmin(context), title: S.of(context).country),
             DrawerListTile(icon: Icons.location_on_rounded, onTap: () => drawerProvider.goToRoadTypeAdmin(context), title: S.of(context).roadType),
             DrawerListTile(icon: Icons.supervised_user_circle_rounded, onTap: () {}, title: S.of(context).staff),
-            DrawerListTile(icon: Icons.business_outlined, onTap: () {}, title: S.of(context).tolls),
+            DrawerListTile(icon: Icons.business_outlined, onTap: () => drawerProvider.goToTollAdmin(context), title: S.of(context).tolls),
             DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () {}, title: S.of(context).reports),
             // const Spacer(),
             DrawerListTile(icon: Icons.logout_rounded, onTap: () {}, title: S.of(context).logout),

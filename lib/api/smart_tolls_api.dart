@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:smarttolls/api/api.dart';
@@ -183,6 +184,88 @@ Future<StResponse<StCityResponse>> createCity(StCityRequest cityRequest) async {
     );
   }
 }
+// create a toll
+Future<StResponse<StTollResponse>> createToll(StTollRequest tollsRequest) async {
+  try {
+    final response = await httpPost('$_baseUrl/toll/create', getHeaders(), jsonEncode(tollsRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StTollResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StTollResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear el peaje',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StTollResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final tollData = StTollResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StTollResponse>(
+      data: tollData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StTollResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación del peaje',
+      error: e.toString(),
+    );
+  }
+}
+
+// get toll by placeId
+// Future<StResponse<StTollResponse>> getTollByPlace(int idPlace) async {
+//   try {
+//     final response = await httpGet('$_baseUrl/toll/place/$idPlace', getHeaders());
+//     if (response.statusCode >= HttpStatus.badRequest) {
+//       if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+//         StResponse<StTollResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+//         return responseData;
+//       }
+//       return StResponse.createEmpty();
+//     }
+//     StResponse<StTollResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StTollResponse.createEmpty());
+//     return responseData;
+//   } catch (e) {
+//     return StResponse.createEmpty();
+//   }
+// }
+
+// get all tolls
+
+Future<StResponse<StTollResponse>> getAllTolls() async {
+  try {
+    final response = await httpGet('$_baseUrl/toll', getHeaders());
+    
+    // Agrega logs para debug
+    debugPrint('Raw API Response: ${response.statusCode} - ${response.body}');
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StTollResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      return StResponse.createEmpty();
+    }
+    
+    final responseData = StResponse.fromJsonList(
+      utf8.decode(response.bodyBytes), 
+      StTollResponse.createEmpty()
+    );
+    
+    debugPrint('Parsed Response: ${responseData.dataList?.length}');
+    return responseData;
+  } catch (e) {
+    debugPrint('Error in getAllTolls: $e');
+    return StResponse.createEmpty();
+  }
+}
+
 // get city by countryId
 Future<StResponse<StCityResponse>> getCitiesByCountry(int idCountry) async {
   try {
@@ -440,7 +523,7 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       return StResponse.createEmpty();
     }
   }
-
+// get all colors
   Future<StResponse<StVehiclesColorsResponse>> getAllColors() async{
     try {
       final response = await httpGet('$_baseUrl/colors', getHeaders());
@@ -457,7 +540,7 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       return StResponse.createEmpty();
     }
   }
-
+// get fuel types
   Future<StResponse<StFuelTypesResponse>> getAllFuelTypes() async{
     try {
       final response = await httpGet('$_baseUrl/fuelTypes', getHeaders());
@@ -474,7 +557,7 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       return StResponse.createEmpty();
     }
   }
-
+// get all models
   Future<StResponse<StVehiclesModelsResponse>> getAllModels() async{
     try {
       final response = await httpGet('$_baseUrl/models', getHeaders());
@@ -560,7 +643,7 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       );
     } 
   }
-  
+  // get all vehicle types
   Future<StResponse<StVehiclesTypeResponse>> getAllTypeVehicles() async{
     try {
       final response = await httpGet('$_baseUrl/vehicleType', getHeaders());
@@ -577,7 +660,7 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       return StResponse.createEmpty();
     }
   }
-
+// get all vehicles
   Future<StResponse<StVehicleResponse>> getAllVehicles() async{
     try {
       final response = await httpGet('$_baseUrl/vehicles', getHeaders());

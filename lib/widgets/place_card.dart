@@ -82,7 +82,7 @@ class PlaceCard extends StatelessWidget{
                       onTap: () {
                         // eliminar
                       },
-                      child: const Icon(Icons.delete, color: AppStyle.primary)
+                      child: const Icon(Icons.delete, color: AppStyle.red)
                   ),
                 ],
               )
