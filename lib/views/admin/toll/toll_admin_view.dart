@@ -175,21 +175,23 @@ void showAddTollDialog(BuildContext context) {
   final cityProvider = Provider.of<CityProvider>(context, listen: false);
   final placeProvider = Provider.of<PlaceProvider>(context, listen: false);
 
-  // Inicializar valores si es necesario
-  String? selectedCountry;
-  String? selectedCity;
-  String? selectedPlace;
-  int? selectedCountryId;
-  int? selectedCityId;
-  int? selectedPlaceId;
+  // Variables para almacenar las selecciones
+  String? selectedCountryId;
+  String? selectedCityId;
+  String? selectedPlaceId;
+
+  // Variables para los nombres mostrados
+  String? selectedCountryName;
+  String? selectedCityName;
+  String? selectedPlaceName;
 
   Utils.textFieldAlert(
     context: context,
-    content: SingleChildScrollView( // <-- Envuelve el contenido en un SingleChildScrollView
+    content: SingleChildScrollView(
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return Column(
-            mainAxisSize: MainAxisSize.min, // <-- Importante mantener mainAxisSize.min
+            mainAxisSize: MainAxisSize.min,
             children: [
               CustomField(
                 controller: tollNameController,
@@ -204,85 +206,115 @@ void showAddTollDialog(BuildContext context) {
                 },
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: selectedCountry,
-                hint: Text(S.of(context).selectCountry),
-                items: countryProvider.countries.map((country) {
-                  return DropdownMenuItem<String>(
-                    value: country.idCountry.toString(),
-                    child: Text(country.countryName ?? 'N/A'),
+              
+              // Dropdown de Países
+              Consumer<CountryProvider>(
+                builder: (context, countryProvider, _) {
+                  return DropdownButtonFormField<String>(
+                    value: selectedCountryId,
+                    hint: Text(S.of(context).selectCountry),
+                    items: countryProvider.countries.map((country) {
+                      return DropdownMenuItem<String>(
+                        value: country.idCountry.toString(),
+                        child: Text(country.countryName ?? 'N/A'),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCountryId = value;
+                        selectedCountryName = countryProvider.countries
+                            .firstWhere((c) => c.idCountry.toString() == value)
+                            .countryName;
+                        
+                        // Resetear selecciones dependientes
+                        selectedCityId = null;
+                        selectedCityName = null;
+                        selectedPlaceId = null;
+                        selectedPlaceName = null;
+                        
+                        if (value != null) {
+                          cityProvider.loadCitiesByCountry(int.parse(value));
+                        }
+                      });
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.flag, color: AppStyle.primary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                   );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCountry = value;
-                    selectedCountryId = int.tryParse(value ?? '0');
-                    selectedCity = null;
-                    selectedCityId = null;
-                    selectedPlace = null;
-                    selectedPlaceId = null;
-                    if (selectedCountryId != null) {
-                      cityProvider.loadCitiesByCountry(selectedCountryId!);
-                    }
-                  });
                 },
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.flag, color: AppStyle.primary),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: selectedCity,
-                hint: Text(S.of(context).selectCity),
-                items: cityProvider.cities.map((city) {
-                  return DropdownMenuItem<String>(
-                    value: city.idCity.toString(),
-                    child: Text(city.cityName ?? 'N/A'),
+              
+              // Dropdown de Ciudades
+              Consumer<CityProvider>(
+                builder: (context, cityProvider, _) {
+                  return DropdownButtonFormField<String>(
+                    value: selectedCityId,
+                    hint: Text(S.of(context).selectCity),
+                    items: cityProvider.cities.map((city) {
+                      return DropdownMenuItem<String>(
+                        value: city.idCity.toString(),
+                        child: Text(city.cityName ?? 'N/A'),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCityId = value;
+                        selectedCityName = cityProvider.cities
+                            .firstWhere((c) => c.idCity.toString() == value)
+                            .cityName;
+                        
+                        // Resetear selección de lugares
+                        selectedPlaceId = null;
+                        selectedPlaceName = null;
+                        
+                        if (value != null) {
+                          placeProvider.loadPlacesByCity(int.parse(value));
+                        }
+                      });
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.location_city, color: AppStyle.primary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                   );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCity = value;
-                    selectedCityId = int.tryParse(value ?? '0');
-                    selectedPlace = null;
-                    selectedPlaceId = null;
-                    if (selectedCityId != null) {
-                      placeProvider.loadPlacesByCity(selectedCityId!);
-                    }
-                  });
                 },
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.location_city, color: AppStyle.primary),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: selectedPlace,
-                hint: Text(S.of(context).selectPlace),
-                items: placeProvider.places.map((place) {
-                  return DropdownMenuItem<String>(
-                    value: place.idPlaces.toString(),
-                    child: Text(place.placeName ?? 'N/A'),
+              
+              // Dropdown de Lugares
+              Consumer<PlaceProvider>(
+                builder: (context, placeProvider, _) {
+                  return DropdownButtonFormField<String>(
+                    value: selectedPlaceId,
+                    hint: Text(S.of(context).selectPlace),
+                    items: placeProvider.places.map((place) {
+                      return DropdownMenuItem<String>(
+                        value: place.idPlaces.toString(),
+                        child: Text(place.placeName ?? 'N/A'),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPlaceId = value;
+                        selectedPlaceName = placeProvider.places
+                            .firstWhere((p) => p.idPlaces.toString() == value)
+                            .placeName;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.place, color: AppStyle.primary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                   );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedPlace = value;
-                    selectedPlaceId = int.tryParse(value ?? '0');
-                  });
                 },
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.place, color: AppStyle.primary),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
               ),
             ],
           );
@@ -292,7 +324,10 @@ void showAddTollDialog(BuildContext context) {
     negativeText: S.of(context).cancel,
     positiveOnPressed: () async {
       if (tollNameController.text.isNotEmpty && selectedPlaceId != null) {
-        await provider.addToll(tollNameController.text, selectedPlaceId!);
+        await provider.addToll(
+          tollNameController.text, 
+          int.parse(selectedPlaceId!)
+        );
         Navigator.of(context, rootNavigator: true).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
