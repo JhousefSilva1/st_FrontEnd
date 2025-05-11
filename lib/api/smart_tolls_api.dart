@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/widgets.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'package:smarttolls/api/api.dart';
@@ -64,22 +64,22 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
   }
 }
 
-  Future<StResponse<StVehicleResponse>> createVehicle(StVehicleResponse authRequest) async {
-    try {
-      final response = await httpPost('$_baseAuthUrl/vehicle', getHeaders(), authRequest.toJson());
-      if (response.statusCode >= HttpStatus.badRequest) {
-        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
-          StResponse<StVehicleResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
-          return responseData;
-        }
-        return StResponse.createEmpty();
-      }
-      StResponse<StVehicleResponse> responseData = StResponse.fromJsonT(response.body, StVehicleResponse.createEmpty());
-      return responseData;
-    } catch (e) {
-      return StResponse.createEmpty();
-    }
-  }
+  // Future<StResponse<StVehicleResponse>> createVehicle(StVehicleResponse authRequest) async {
+  //   try {
+  //     final response = await httpPost('$_baseAuthUrl/vehicle', getHeaders(), authRequest.toJson());
+  //     if (response.statusCode >= HttpStatus.badRequest) {
+  //       if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+  //         StResponse<StVehicleResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+  //         return responseData;
+  //       }
+  //       return StResponse.createEmpty();
+  //     }
+  //     StResponse<StVehicleResponse> responseData = StResponse.fromJsonT(response.body, StVehicleResponse.createEmpty());
+  //     return responseData;
+  //   } catch (e) {
+  //     return StResponse.createEmpty();
+  //   }
+  // }
 
   // create brand
   Future<StResponse<StBrandResponse>> createBrands(StBrandRequest brandRequest) async {
@@ -647,6 +647,58 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       StResponse<StVehiclesTypeResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StVehiclesTypeResponse.createEmpty());
       return responseData;
     } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+// create a gender
+  Future<StResponse<StGenderResponse>> createGender(StGenderRequest genderRequest) async{
+    try{
+      final response = await httpPost('$_baseUrl/gender/create', getHeaders(), jsonEncode(genderRequest.toJson()));
+      if(response.statusCode >= HttpStatus.badRequest){
+        if(response.statusCode == HttpStatus.networkConnectTimeoutError){
+          return StResponse<StGenderResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try{
+          final errorJson = json.decode(response.body);
+          return StResponse<StGenderResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al crear el género',
+            error: errorJson['error'] ?? '',
+          );
+        }catch(e){
+          return StResponse<StGenderResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final genderData = StGenderResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StGenderResponse>(
+        data: genderData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    }catch(e){
+      return StResponse<StGenderResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la creación del género',
+        error: e.toString(),
+      );
+    }
+  }
+
+//  get all genders
+  Future<StResponse<StGenderResponse>> getAllGenders() async{
+    try{
+      final response = await httpGet('$_baseUrl/gender', getHeaders());
+      if(response.statusCode >= HttpStatus.badRequest){
+        if(response.statusCode == HttpStatus.networkConnectTimeoutError){
+          StResponse<StGenderResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StGenderResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StGenderResponse.createEmpty());
+      return responseData;
+    }catch(e){
       return StResponse.createEmpty();
     }
   }

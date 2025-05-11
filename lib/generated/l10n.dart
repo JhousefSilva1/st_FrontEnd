@@ -62,7 +62,7 @@ class S {
       args: [],
     );
   }
-  /// `SselectCountry`
+  /// `SelectCountry`
   String get selectCountry {
     return Intl.message(
       'SselectCountry',
@@ -71,6 +71,17 @@ class S {
       args: [],
     );
   }
+  /// `AddGender`
+  String get addGender{
+    return Intl.message(
+      'AddGender',
+      name: 'addGender',
+      desc: '',
+      args: [],
+    );
+  }
+
+
   /// `Select City`
   String get selectCity {
     return Intl.message(

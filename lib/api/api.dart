@@ -11,6 +11,7 @@ export 'package:smarttolls/api/request/st_road_type_request.dart';
 export 'package:smarttolls/api/request/st_city_request.dart';
 export 'package:smarttolls/api/request/st_places_request.dart';
 export 'package:smarttolls/api/request/st_toll_request.dart';
+export 'package:smarttolls/api/request/st_gender_request.dart';
 
 // response
 export 'package:smarttolls/api/response/st_audit_response.dart';
@@ -25,6 +26,7 @@ export 'package:smarttolls/api/response/st_road_type_response.dart';
 export 'package:smarttolls/api/response/st_city_response.dart';
 export 'package:smarttolls/api/response/st_places_response.dart';
 export 'package:smarttolls/api/response/st_toll_response.dart';
+export 'package:smarttolls/api/response/st_gender_response.dart';
 
 
 

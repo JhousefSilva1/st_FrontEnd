@@ -97,7 +97,12 @@ class AppRouter {
             name: VehiclesColorsAdminView.routerName,
             path: VehiclesColorsAdminView.routerPath,
             builder: (context, state) => const VehiclesColorsAdminView(),
-                      ),
+            ),
+          GoRoute(
+            name: GenderAdminView.routerName,
+            path: GenderAdminView.routerPath,
+            builder: (context, state) => const GenderAdminView(),
+          ),
           GoRoute(
             name: ModelsAdminView.routerName,
             path: '/modelAdmin/:idBrand', // Nota los dos puntos antes de brandId
@@ -233,5 +238,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => CityProvider()),
     ChangeNotifierProvider(create: (_) => PlaceProvider()),
     ChangeNotifierProvider(create: (_) => RoadTypesProvider()),
+    ChangeNotifierProvider(create: (_) => GenderProvider()),
   ];
 }

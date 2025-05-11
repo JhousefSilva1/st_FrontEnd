@@ -38,4 +38,8 @@ class DrawerProvider extends ChangeNotifier {
   void goToTollAdmin(BuildContext context) {
     context.pushNamed(TollAdminView.routerName);
   }
+
+  void goToGenderAdmin(BuildContext context) {
+    context.pushNamed(GenderAdminView.routerName);
+  }
 }

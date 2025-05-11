@@ -1,115 +1,98 @@
-// To parse this JSON data, do
-//
-//     final vehicleResponse = vehicleResponseFromJson(jsonString);
-
+import '../../models/st_response.dart';
 import 'dart:convert';
-
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/models/models.dart';
+class StVehicleResponse implements StResponseService {
 
-List<StVehicleResponse> vehicleResponseFromJson(String str) => List<StVehicleResponse>.from(json.decode(str).map((x) => StVehicleResponse.fromJson(x)));
-
-String vehicleResponseToJson(List<StVehicleResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class StVehicleResponse implements StResponseService{
-  int? idVehicle;
+  int idVehicle;
   String? licensePlate;
   String? chassisNumber;
   String? engineNumber;
   String? manufacturingYear;
-  double? weight;
-  int? idPerson;
-  int? idCity;
-  
-  StFuelTypesResponse fuelTypes;
+  double weight;
+  // StPersonResponse person;
+  StCityResponse city;
   StVehiclesColorsResponse vehiclesColors;
-  StVehiclesModelsResponse vehiclesModels;
   StVehiclesTypeResponse vehiclesType;
-  int status;
-  StAuditResponse audit;
+  StVehiclesModelsResponse vehiclesModels;
 
   StVehicleResponse({
-    this.idVehicle,
+    required this.idVehicle,
     this.licensePlate,
     this.chassisNumber,
     this.engineNumber,
     this.manufacturingYear,
-    this.weight,
-    required this.fuelTypes,
+    required this.weight,
+    // required this.person,
+    required this.city,
     required this.vehiclesColors,
-    required this.vehiclesModels,
     required this.vehiclesType,
-    required this.status,
-    required this.audit,
+    required this.vehiclesModels,
   });
 
   factory StVehicleResponse.createEmpty() => StVehicleResponse(
-    idVehicle: 0,
-    licensePlate: "",
-    chassisNumber: "",
-    engineNumber: "",
-    manufacturingYear: "",
-    weight: 0,
-    fuelTypes: StFuelTypesResponse.createEmpty(),
-    vehiclesColors: StVehiclesColorsResponse.createEmpty(),
-    vehiclesModels: StVehiclesModelsResponse.createEmpty(),
-    vehiclesType: StVehiclesTypeResponse.createEmpty(),
-    status: 0,
-    audit: StAuditResponse.createEmpty(),
-  );
+        idVehicle: 0,
+        licensePlate: '',
+        chassisNumber: '',
+        engineNumber: '',
+        manufacturingYear: '',
+        weight: 0.0,
+        // person: StPersonResponse.createEmpty(),
+        city: StCityResponse.createEmpty(),
+        vehiclesColors: StVehiclesColorsResponse.createEmpty(),
+        vehiclesType: StVehiclesTypeResponse.createEmpty(),
+        vehiclesModels: StVehiclesModelsResponse.createEmpty(),
+      );
 
-  @override
-  String toJson() => json.encode(toMap());
+      @override
+      String toJson() => json.encode(toMap());
 
   factory StVehicleResponse.fromJson(Map<String, dynamic> json) => StVehicleResponse(
-    idVehicle: json["idVehicle"],
-    licensePlate: json["licensePlate"],
-    chassisNumber: json["chassisNumber"],
-    engineNumber: json["engineNumber"],
-    manufacturingYear: json["manufacturingYear"],
-    weight: json["weight"],
-    fuelTypes: StFuelTypesResponse.fromJson(json["fuelTypes"]),
-    vehiclesColors: StVehiclesColorsResponse.fromJson(json["vehiclesColors"]),
-    vehiclesModels: StVehiclesModelsResponse.fromJson(json["vehiclesModels"]),
-    vehiclesType: StVehiclesTypeResponse.fromJson(json["vehiclesType"]),
-    status: json["status"],
-    audit: StAuditResponse.fromJson(json["audit"]),
-  );
+        idVehicle: json["idVehicle"],
+        licensePlate: json["licensePlate"],
+        chassisNumber: json["chassisNumber"],
+        engineNumber: json["engineNumber"],
+        manufacturingYear: json["manufacturingYear"],
+        weight: json["weight"].toDouble(),
+        // person: StPersonResponse.fromJson(json["person"]),
+        city: StCityResponse.fromJson(json["city"]),
+        vehiclesColors: StVehiclesColorsResponse.fromJson(json["vehiclesColors"]),
+        vehiclesType: StVehiclesTypeResponse.fromJson(json["vehiclesType"]),
+        vehiclesModels: StVehiclesModelsResponse.fromJson(json["vehiclesModels"]),
+      );
+
+      @override
+      Map<String, dynamic> toMap() => {
+        "idVehicle": idVehicle,
+        "licensePlate": licensePlate,
+        "chassisNumber": chassisNumber,
+        "engineNumber": engineNumber,
+        "manufacturingYear": manufacturingYear,
+        "weight": weight,
+        // "person": person.toJson(),
+        "city": city.toJson(),
+        "vehiclesColors": vehiclesColors.toJson(),
+        "vehiclesType": vehiclesType.toJson(),
+        "vehiclesModels": vehiclesModels.toJson(),
+      };
+
+      @override
+      StVehicleResponse fromJson(String json) {
+        return fromMap(jsonDecode(json));
+      }
+
+      @override
+      StVehicleResponse fromMap(Map<String, dynamic> json) => StVehicleResponse(
+        idVehicle: json["idVehicle"],
+        licensePlate: json["licensePlate"],
+        chassisNumber: json["chassisNumber"],
+        engineNumber: json["engineNumber"],
+        manufacturingYear: json["manufacturingYear"],
+        weight: json["weight"].toDouble(),
+        // person: StPersonResponse.fromJson(json["person"]),
+        city: StCityResponse.fromJson(json["city"]),
+        vehiclesColors: StVehiclesColorsResponse.fromJson(json["vehiclesColors"]),
+        vehiclesType: StVehiclesTypeResponse.fromJson(json["vehiclesType"]),
+        vehiclesModels: StVehiclesModelsResponse.fromJson(json["vehiclesModels"]),
+      );
   
-  @override
-  Map<String, dynamic> toMap() => {
-    "idVehicle": idVehicle,
-    "licensePlate": licensePlate,
-    "chassisNumber": chassisNumber,
-    "engineNumber": engineNumber,
-    "manufacturingYear": manufacturingYear,
-    "weight": weight,
-    "fuelTypes": fuelTypes.toJson(),
-    "vehiclesColors": vehiclesColors.toJson(),
-    "vehiclesModels": vehiclesModels.toJson(),
-    "vehiclesType": vehiclesType.toJson(),
-    "status": status,
-    "audit": audit.toJson(),
-  };
-  
-  @override
-  StVehicleResponse fromJson(String json) {
-    return fromMap(jsonDecode(json));
-  }
-  
-  @override
-  StVehicleResponse fromMap(Map<String, dynamic> json) => StVehicleResponse(
-    idVehicle: json["idVehicle"],
-    licensePlate: json["licensePlate"],
-    chassisNumber: json["chassisNumber"],
-    engineNumber: json["engineNumber"],
-    manufacturingYear: json["manufacturingYear"],
-    weight: json["weight"],
-    fuelTypes: StFuelTypesResponse.fromJson(json["fuelTypes"]),
-    vehiclesColors: StVehiclesColorsResponse.fromJson(json["vehiclesColors"]),
-    vehiclesModels: StVehiclesModelsResponse.fromJson(json["vehiclesModels"]),
-    vehiclesType: StVehiclesTypeResponse.fromJson(json["vehiclesType"]),
-    status: json["status"],
-    audit: StAuditResponse.fromJson(json["audit"])
-  );
 }

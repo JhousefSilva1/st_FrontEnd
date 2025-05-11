@@ -19,6 +19,7 @@ export 'package:smarttolls/views/admin/country/country_admin_view.dart';
 export 'package:smarttolls/views/admin/city/city_admin_view.dart';
 export 'package:smarttolls/views/admin/place/place_admin_view.dart';
 export 'package:smarttolls/views/admin/roadType/road_type_admin_view.dart';
+export 'package:smarttolls/views/admin/gender/gender_admin_view.dart';
 export 'package:smarttolls/views/customer/home/home_view.dart';
 export 'package:smarttolls/views/customer/navBar/nav_bar_view.dart';
 export 'package:smarttolls/views/customer/notification/notification_view.dart';
