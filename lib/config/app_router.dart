@@ -139,7 +139,12 @@ class AppRouter {
             name: RoadTypeAdminView.routerName,
             path: RoadTypeAdminView.routerPath,
             builder: (context, state) => const RoadTypeAdminView(),
-          )
+          ),
+            GoRoute(
+            name: PersonTypeAdminView.routerName,
+            path: PersonTypeAdminView.routerPath,
+            builder: (context, state) => const PersonTypeAdminView(),
+            ),
         ]
       ),
       ShellRoute(
@@ -239,5 +244,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => PlaceProvider()),
     ChangeNotifierProvider(create: (_) => RoadTypesProvider()),
     ChangeNotifierProvider(create: (_) => GenderProvider()),
+    ChangeNotifierProvider(create: (_) => PersonTypeProvider()),
   ];
 }

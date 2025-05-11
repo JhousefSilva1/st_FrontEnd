@@ -1,5 +1,5 @@
 class StGenderRequest {
-  final genderName;
+  final String genderName;
 
   StGenderRequest({
     required this.genderName,

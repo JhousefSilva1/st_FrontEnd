@@ -71,6 +71,25 @@ class S {
       args: [],
     );
   }
+
+  /// `personType`
+  String get personType {
+    return Intl.message(
+      'personType',
+      name: 'personType',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Add Person Type`
+  String get addPersonType {
+    return Intl.message(
+      'Add Person Type',
+      name: 'addPersonType',
+      desc: '',
+      args: [],
+    );
+  }
   /// `AddGender`
   String get addGender{
     return Intl.message(

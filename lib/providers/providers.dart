@@ -18,3 +18,4 @@ export 'package:smarttolls/providers/city_provider.dart';
 export 'package:smarttolls/providers/place_provider.dart';
 export 'package:smarttolls/providers/road_types_provider.dart';
 export 'package:smarttolls/providers/gender_provider.dart';
+export 'package:smarttolls/providers/person_type_provider.dart';

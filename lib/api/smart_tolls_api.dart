@@ -702,6 +702,58 @@ Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeReque
       return StResponse.createEmpty();
     }
   }
+// create PersonType
+  Future<StResponse<StPersonTypeResponse>> createPersonType(StPersonTypeRequest personTypeRequest) async{
+    try{
+      final response = await httpPost('$_baseUrl/personsType/create', getHeaders(), jsonEncode(personTypeRequest.toJson()));
+      if(response.statusCode >= HttpStatus.badRequest){
+        if(response.statusCode == HttpStatus.networkConnectTimeoutError){
+          return StResponse<StPersonTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try{
+          final errorJson = json.decode(response.body);
+          return StResponse<StPersonTypeResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al crear el tipo de persona',
+            error: errorJson['error'] ?? '',
+          );
+        }catch(e){
+          return StResponse<StPersonTypeResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final personTypeData = StPersonTypeResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StPersonTypeResponse>(
+        data: personTypeData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    }catch(e){
+      return StResponse<StPersonTypeResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la creación del tipo de persona',
+        error: e.toString(),
+      );
+    }
+  }
+// get all person types
+  Future<StResponse<StPersonTypeResponse>> getAllPersonTypes() async{
+    try{
+      final response = await httpGet('$_baseUrl/personsType', getHeaders());
+      if(response.statusCode >= HttpStatus.badRequest){
+        if(response.statusCode == HttpStatus.networkConnectTimeoutError){
+          StResponse<StPersonTypeResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StPersonTypeResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StPersonTypeResponse.createEmpty());
+      return responseData;
+    }catch(e){
+      return StResponse.createEmpty();
+    }
+  }
+
 // get all vehicles
   Future<StResponse<StVehicleResponse>> getAllVehicles() async{
     try {
