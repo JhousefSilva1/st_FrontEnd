@@ -36,4 +36,5 @@ export 'package:smarttolls/views/selectMode/select_mode_view.dart';
 export 'package:smarttolls/views/signup/signup_view.dart';
 export 'package:smarttolls/views/signup/signup_step_two_view.dart';
 export 'package:smarttolls/views/welcome/welcome_view.dart';
+export 'package:smarttolls/views/admin/staff/staff_preview_admin_view.dart';
 

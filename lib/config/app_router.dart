@@ -145,6 +145,13 @@ class AppRouter {
             path: PersonTypeAdminView.routerPath,
             builder: (context, state) => const PersonTypeAdminView(),
             ),
+
+            // staff Type
+            GoRoute(
+            name: StaffPreviewAdminView.routerName,
+            path: StaffPreviewAdminView.routerPath,
+            builder: (context, state) => const StaffPreviewAdminView(),
+            ),
         ]
       ),
       ShellRoute(
@@ -245,5 +252,6 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => RoadTypesProvider()),
     ChangeNotifierProvider(create: (_) => GenderProvider()),
     ChangeNotifierProvider(create: (_) => PersonTypeProvider()),
+    ChangeNotifierProvider(create: (_) => StaffPreviewProvider()),
   ];
 }

@@ -64,23 +64,6 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
   }
 }
 
-  // Future<StResponse<StVehicleResponse>> createVehicle(StVehicleResponse authRequest) async {
-  //   try {
-  //     final response = await httpPost('$_baseAuthUrl/vehicle', getHeaders(), authRequest.toJson());
-  //     if (response.statusCode >= HttpStatus.badRequest) {
-  //       if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
-  //         StResponse<StVehicleResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
-  //         return responseData;
-  //       }
-  //       return StResponse.createEmpty();
-  //     }
-  //     StResponse<StVehicleResponse> responseData = StResponse.fromJsonT(response.body, StVehicleResponse.createEmpty());
-  //     return responseData;
-  //   } catch (e) {
-  //     return StResponse.createEmpty();
-  //   }
-  // }
-
   // create brand
   Future<StResponse<StBrandResponse>> createBrands(StBrandRequest brandRequest) async {
   try {
@@ -218,6 +201,7 @@ Future<StResponse<StTollsResponse>> createToll(StTollsRequest tollsRequest) asyn
     );
   }
 }
+
 
 // get toll by placeId
 // Future<StResponse<StTollResponse>> getTollByPlace(int idPlace) async {

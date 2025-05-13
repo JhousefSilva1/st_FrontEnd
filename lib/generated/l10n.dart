@@ -62,6 +62,15 @@ class S {
       args: [],
     );
   }
+  /// `staffType`
+  String get staffType {
+    return Intl.message(
+      'Staff Type',
+      name: 'Staff Type',
+      desc: '',
+      args: [],
+    );
+  }
   /// `SelectCountry`
   String get selectCountry {
     return Intl.message(
