@@ -64,6 +64,41 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
   }
 }
 
+// getAllPersons
+  Future<StResponse<StPersonResponse>> getAllPersons() async {
+    try {
+      final response = await httpGet('$_baseUrl/persons', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StPersonResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StPersonResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StPersonResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
+
+  // getAllPerson By PersonTypeId
+  Future<StResponse<StPersonResponse>> getAllPersonsByPersonType(int idPersonType) async {
+    try {
+      final response = await httpGet('$_baseUrl/persons/personType/$idPersonType', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          StResponse<StPersonResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+          return responseData;
+        }
+        return StResponse.createEmpty();
+      }
+      StResponse<StPersonResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StPersonResponse.createEmpty());
+      return responseData;
+    } catch (e) {
+      return StResponse.createEmpty();
+    }
+  }
   // create brand
   Future<StResponse<StBrandResponse>> createBrands(StBrandRequest brandRequest) async {
   try {
