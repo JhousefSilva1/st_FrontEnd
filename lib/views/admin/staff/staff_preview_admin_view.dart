@@ -6,7 +6,6 @@ import 'package:smarttolls/widgets/widgets.dart';
 import '../../../generated/l10n.dart';
 import '../../../providers/providers.dart';
 import '../../../style/app_style.dart';
-import '../../../utils/utils.dart';
 
 
 class StaffPreviewAdminView extends StatelessWidget {

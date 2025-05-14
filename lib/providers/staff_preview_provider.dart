@@ -7,12 +7,14 @@ class StaffPreviewProvider extends ChangeNotifier{
   bool _isLoading = false;
   String? _errorMessage = '';// Mensaje de error
   String? _selectedStaffType = '';// Tipo de persona seleccionado
+  int? _currentPersonTypeId;// ID del tipo de persona actual
 
 
   List<StPersonTypeResponse> get staffsTypes => _staffsTypes;// Lista de tipos de persona
   bool get isLoading => _isLoading;// Estado de carga
   String? get errorMessage => _errorMessage;// Mensaje de error
   String? get selectedStaffType => _selectedStaffType;// Tipo de persona seleccionado
+  int? get currentPersonTypeId => _currentPersonTypeId;// ID del tipo de persona actual
 
   // Método para buscar tipos de Staff
   void searchStaffsTypes(String query) {

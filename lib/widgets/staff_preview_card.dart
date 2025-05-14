@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarttolls/api/api.dart';
+import 'package:smarttolls/views/views.dart';
 
 import '../generated/l10n.dart';
 
@@ -30,38 +32,53 @@ class StaffPreviewCard extends StatelessWidget{
         padding: const EdgeInsets.all(8),
         child:Row(
           children: [
-            const SizedBox(width: 8),
-            const Icon(Icons.person, color: Colors.blue, size: 50),
-            const SizedBox(width: 16),
             Expanded(
-              flex:2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex:2,
-                        child: Text(S.of(context).staffType,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
+              child: Row(
+                children:[
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        context.goNamed(
+                          StaffAdminView.routerName,
+                          pathParameters: {'idPersonType': staffType.idPersonType.toString()},
+
+
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 8),
+                          const Icon(Icons.person, color: Colors.blue, size: 50),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        S.of(context).staffType,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                Text(staffType.personType ?? 'No name'),
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        flex:2,
-                        child: Text(staffType.personType ?? 'N/A',
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      )
-                    ],
-                  )
+                    ),
+                  ),
                 ],
               ),
             ),

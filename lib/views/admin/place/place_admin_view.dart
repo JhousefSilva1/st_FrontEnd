@@ -37,7 +37,7 @@ class PlaceAdminView extends StatelessWidget{
         body: isMobile
             ? SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
                       PlaceAdminList(cityId: cityId), // Pasa el cityId aquí
@@ -129,7 +129,10 @@ class _PlaceAdminListState extends State<PlaceAdminList> {
         if(provider.isLoading && provider.places.isEmpty)
           const Padding(
             padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(color: AppStyle.primary, strokeWidth: 2.5),
+            child: CircularProgressIndicator(
+              color: AppStyle.primary,
+               strokeWidth: 2.5
+               ),
           ),
 
           if(provider.errorMessage != null)
@@ -157,10 +160,10 @@ class _PlaceAdminListState extends State<PlaceAdminList> {
           ),
 
           if(!provider.isLoading && provider.places.isEmpty && provider.errorMessage == null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32),
+            const Padding(
+              padding:  EdgeInsets.symmetric(vertical: 32),
               child: Text('No Hay Lugares',
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 16,
                   color: AppStyle.primary,
                 ),

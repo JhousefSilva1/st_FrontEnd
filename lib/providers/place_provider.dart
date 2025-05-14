@@ -6,14 +6,14 @@ class PlaceProvider extends ChangeNotifier{
   List<StPlaceResponse> _places = []; // 
   bool _isLoading = false;
   String? _errorMessage = '';
-  String? _selectedPlace = '';
+  // String? _selectedPlace = '';
   String? _newPlaceName;
   int? _currentCityId; // Añade esta variable para trackear la ciudad actual
 
   List<StPlaceResponse> get places => _places;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  String? get selectedPlace => _selectedPlace;
+  // String? get selectedPlace => _selectedPlace;
   String? get newPlaceName => _newPlaceName;
   int? get currentCityId => _currentCityId; // Getter para la ciudad actual
 
@@ -85,13 +85,13 @@ class PlaceProvider extends ChangeNotifier{
     }
   }
 
-  void clearState(){
-    _allPlaces = []; // Limpia la lista de lugares
-    _places = []; // Limpia la lista de lugares
-    _isLoading = false; // Cambia a false para ocultar el loader
-    _errorMessage = null; // Limpia el mensaje de error
-    _selectedPlace = null; // Limpia el lugar seleccionado
-    _newPlaceName = null; // Limpia el nuevo nombre del lugar
-    notifyListeners(); // Notifica a los listeners para que actualicen la UI
-  }
+  // void clearState(){
+  //   _allPlaces = []; // Limpia la lista de lugares
+  //   _places = []; // Limpia la lista de lugares
+  //   _isLoading = false; // Cambia a false para ocultar el loader
+  //   _errorMessage = null; // Limpia el mensaje de error
+  //   _selectedPlace = null; // Limpia el lugar seleccionado
+  //   _newPlaceName = null; // Limpia el nuevo nombre del lugar
+  //   notifyListeners(); // Notifica a los listeners para que actualicen la UI
+  // }
 }

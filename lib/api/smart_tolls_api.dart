@@ -83,22 +83,49 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
   }
 
   // getAllPerson By PersonTypeId
-  Future<StResponse<StPersonResponse>> getAllPersonsByPersonType(int idPersonType) async {
-    try {
-      final response = await httpGet('$_baseUrl/persons/personType/$idPersonType', getHeaders());
-      if (response.statusCode >= HttpStatus.badRequest) {
-        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
-          StResponse<StPersonResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
-          return responseData;
+Future<StResponse<StPersonResponse>> getAllPersonsByPersonType(int idPersonType) async {
+  try {
+    final response = await httpGet('$_baseUrl/persons/personType/$idPersonType', getHeaders());
+    
+    if (response.statusCode == 200) {
+      // Debug: Imprime la respuesta completa
+      print('Raw response: ${response.body}');
+      
+      // Parsea manualmente para mejor control
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      
+      if (responseBody['data'] is List) {
+        final List<StPersonResponse> persons = [];
+        
+        for (var item in responseBody['data']) {
+          try {
+            persons.add(StPersonResponse.fromJson(item));
+          } catch (e) {
+            print('Error parsing person: $e');
+            print('Problematic item: $item');
+          }
         }
-        return StResponse.createEmpty();
+        
+        return StResponse(
+          status: 200,
+          message: 'OK',
+          dataList: persons,
+        );
       }
-      StResponse<StPersonResponse> responseData = StResponse.fromJsonList(utf8.decode(response.bodyBytes), StPersonResponse.createEmpty());
-      return responseData;
-    } catch (e) {
-      return StResponse.createEmpty();
     }
+    
+    return StResponse(
+      status: response.statusCode,
+      message: 'Error parsing response',
+    );
+  } catch (e) {
+    print('Exception in getAllPersonsByPersonType: $e');
+    return StResponse(
+      status: 500,
+      message: 'Exception: ${e.toString()}',
+    );
   }
+}
   // create brand
   Future<StResponse<StBrandResponse>> createBrands(StBrandRequest brandRequest) async {
   try {

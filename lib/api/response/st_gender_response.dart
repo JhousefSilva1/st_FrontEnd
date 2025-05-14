@@ -26,12 +26,12 @@ class StGenderResponse implements StResponseService {
   @override
   String toJson() => json.encode(toMap());
 
-  factory StGenderResponse.fromJson(Map<String, dynamic> json) => StGenderResponse(
-        idGender: json["idGender"],
-        genderName: json["genderName"],
-        genderStatus: json["genderStatus"],
-        audit: StAuditResponse.fromJson(json["audit"]),
-      );
+factory StGenderResponse.fromJson(Map<String, dynamic> json) => StGenderResponse(
+      idGender: json["idGender"] as int,
+      genderName: json["genderName"] as String,
+      genderStatus: json["genderStatus"] as int,
+      audit: StAuditResponse.fromJson(json["audit"] as Map<String, dynamic>),
+    );
   
   @override
   Map<String, dynamic> toMap() =>{

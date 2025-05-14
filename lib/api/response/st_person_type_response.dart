@@ -26,12 +26,12 @@ class StPersonTypeResponse implements StResponseService {
   @override
   String toJson() => json.encode(toMap());
 
-  factory StPersonTypeResponse.fromJson(Map<String, dynamic> json) => StPersonTypeResponse(
-        idPersonType: json["idPersonType"],
-        personType: json["personType"],
-        personTypeStatus: json["personTypeStatus"],
-        audit: StAuditResponse.fromJson(json["audit"]),
-      );
+factory StPersonTypeResponse.fromJson(Map<String, dynamic> json) => StPersonTypeResponse(
+      idPersonType: json["idPersonType"] as int,
+      personType: json["personType"] as String,
+      personTypeStatus: json["personTypeStatus"] as int,
+      audit: StAuditResponse.fromJson(json["audit"] as Map<String, dynamic>),
+    );
 
   @override
   Map<String, dynamic> toMap() =>{
