@@ -107,7 +107,7 @@ class AppRouter {
             name: ModelsAdminView.routerName,
             path: '/modelAdmin/:idBrand', // Nota los dos puntos antes de brandId
             builder: (context, state) {
-              final brandId = int.parse(state.pathParameters['idBrand'] ?? '');
+              final brandId = int.parse(state.pathParameters['idBrand'] !);
               return ModelsAdminView(brandId: brandId); // Usa parse directamente si siempre es válido
             },
           ),

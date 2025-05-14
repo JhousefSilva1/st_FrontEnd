@@ -30,13 +30,10 @@ class ModelProvider  extends ChangeNotifier{
   }
 
 Future<void> loadModelsByBrand(int brandId) async {
-    if (_currentBrandId == brandId && _allModels.isNotEmpty) return;
-    
+   
     _currentBrandId = brandId; // Actualiza la marca actual
     _isLoading = true;
     _errorMessage = null;
-    _allModels = []; // Limpia los modelos anteriores
-    _models = [];
     notifyListeners();
     try {
       // final request = StBrandResponse.createEmpty().idBrand = brandId;
@@ -57,20 +54,31 @@ Future<void> loadModelsByBrand(int brandId) async {
 
 
   }
-    void clearModels() {
-    _currentBrandId = null;
-    _allModels = [];
-    _models = [];
-    notifyListeners();
-  }
+  //   void clearModels() {
+  //   _currentBrandId = null;
+  //   _allModels = [];
+  //   _models = [];
+  //   notifyListeners();
+  // }
 // add models
 
   Future<void>addModels(String modelName, int brnadId) async {
     _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
 
     try{
         // logica para agregar un nuevo modelo
+        final request = StVehiclesModelsRequest(
+          modelName: modelName,
+          idBrand: brnadId,
+        );
+        final response = await SmartTollsApi().createModels(request);
+        if(response.isSuccess()){
+          await loadModelsByBrand(brnadId); // Recargar la lista de modelos
+        }else{
+          _errorMessage = response.message ?? 'Error al agregar el modelo';
+        }
     }catch (e){
       _errorMessage = 'Error de conexión: ${e.toString()}';
     }finally{
@@ -82,8 +90,9 @@ Future<void> loadModelsByBrand(int brandId) async {
 
 
   void retryLoading(){
-    _errorMessage = null;
-    notifyListeners();
-    loadModelsByBrand(int.parse(_selectedModel!));
+    if(_currentBrandId != null){
+      _errorMessage = null;
+      loadModelsByBrand(_currentBrandId!);
+    }
   }
 }

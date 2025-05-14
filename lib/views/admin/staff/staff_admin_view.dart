@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -167,27 +166,24 @@ class _StaffAdminListState extends State<StaffAdminList> {
         ),
       );
     }
+    if (provider.filteredStaff.isNotEmpty) {
+      return ListView.separated(
+        itemCount: provider.filteredStaff.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) => StaffCard(
+          staff: provider.filteredStaff[index], onEdit: () {  }, onDelete: () {  },
 
-    return ListView.separated(
-      itemCount: provider.filteredStaff.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (context, index) => StaffCard(
-        staff: provider.filteredStaff[index],
-        onEdit: () => _editStaff(context, provider.filteredStaff[index]),
-        onDelete: () => _deleteStaff(context, provider.filteredStaff[index]),
-      ),
-    );
+        ),
+      );
+    }
+
+    // Default return statement to ensure a Widget is always returned
+    return const SizedBox.shrink();
   }
 
-  void _editStaff(BuildContext context, StPersonResponse staff) {
-    // Implementar lógica de edición
-  }
 
-  void _deleteStaff(BuildContext context, StPersonResponse staff) {
-    // Implementar lógica de eliminación
-  }
 }
 
 void showAddStaffDialog(BuildContext context, int personTypeId) {

@@ -59,6 +59,7 @@ Future<void> loadPersonsByPersonTypeId(int personTypeId) async {
   
   try {
     final response = await SmartTollsApi().getAllPersonsByPersonType(personTypeId);
+    print('API Response: ${response.dataList?.length} persons loaded');
     
     if (response.isSuccess()) {
       _allStaff = response.dataList ?? [];
@@ -68,6 +69,10 @@ Future<void> loadPersonsByPersonTypeId(int personTypeId) async {
         _errorMessage = 'No se encontraron registros';
       } else {
         _errorMessage = null;
+        // Debug: Imprime los primeros 3 registros para verificar
+        for (var i = 0; i < (_allStaff.length > 3 ? 3 : _allStaff.length); i++) {
+          print('Person ${i+1}: ${_allStaff[i].personName} ${_allStaff[i].personSurname}');
+        }
       }
     } else {
       _errorMessage = response.message ?? 'Error al cargar los datos';
@@ -75,8 +80,8 @@ Future<void> loadPersonsByPersonTypeId(int personTypeId) async {
       _filteredStaff = [];
     }
   } catch (e, stackTrace) {
-    _errorMessage = 'Error al procesar los datos: ${e.toString()}';
-    debugPrint('Error stack trace: $stackTrace');
+    _errorMessage = 'Error: ${e.toString()}';
+    print('Error stack trace: $stackTrace');
     _allStaff = [];
     _filteredStaff = [];
   } finally {

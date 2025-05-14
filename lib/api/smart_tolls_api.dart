@@ -87,21 +87,23 @@ Future<StResponse<StPersonResponse>> getAllPersonsByPersonType(int idPersonType)
   try {
     final response = await httpGet('$_baseUrl/persons/personType/$idPersonType', getHeaders());
     
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
     if (response.statusCode == 200) {
-      // Debug: Imprime la respuesta completa
-      print('Raw response: ${response.body}');
+      final responseBody = jsonDecode(response.body);
       
-      // Parsea manualmente para mejor control
-      final Map<String, dynamic> responseBody = jsonDecode(response.body);
-      
-      if (responseBody['data'] is List) {
+      if (responseBody['data'] != null && responseBody['data'] is List) {
         final List<StPersonResponse> persons = [];
         
         for (var item in responseBody['data']) {
           try {
-            persons.add(StPersonResponse.fromJson(item));
-          } catch (e) {
+            final person = StPersonResponse.fromJson(item);
+            print('Parsed person: ${person.personName} ${person.personSurname}');
+            persons.add(person);
+          } catch (e, stackTrace) {
             print('Error parsing person: $e');
+            print('Stack trace: $stackTrace');
             print('Problematic item: $item');
           }
         }
@@ -112,14 +114,20 @@ Future<StResponse<StPersonResponse>> getAllPersonsByPersonType(int idPersonType)
           dataList: persons,
         );
       }
+      return StResponse(
+        status: 200,
+        message: 'No data found',
+        dataList: [],
+      );
     }
     
     return StResponse(
       status: response.statusCode,
-      message: 'Error parsing response',
+      message: 'Error: ${response.reasonPhrase}',
     );
-  } catch (e) {
+  } catch (e, stackTrace) {
     print('Exception in getAllPersonsByPersonType: $e');
+    print('Stack trace: $stackTrace');
     return StResponse(
       status: 500,
       message: 'Exception: ${e.toString()}',
@@ -161,6 +169,41 @@ Future<StResponse<StPersonResponse>> getAllPersonsByPersonType(int idPersonType)
     );
   }
 }
+// create model by brandId
+Future<StResponse<StVehiclesModelsResponse>> createModelByBrand(StVehiclesModelsRequest modelsRequest) async {
+  try {
+    final response = await httpPost('$_baseUrl/models/create', getHeaders(), jsonEncode(modelsRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StVehiclesModelsResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StVehiclesModelsResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear el modelo',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StVehiclesModelsResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final modelData = StVehiclesModelsResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StVehiclesModelsResponse>(
+      data: modelData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StVehiclesModelsResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación del modelo',
+      error: e.toString(),
+    );
+  }
+}
+
 // create color
 Future<StResponse<StVehiclesColorsResponse>>createColor(StColorRequest colorRequest) async {
   try{

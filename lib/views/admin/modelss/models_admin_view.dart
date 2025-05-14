@@ -30,7 +30,7 @@ class ModelsAdminView extends StatelessWidget {
             )
           ],
           centerTitle: true,
-          text: S.of(context).city,
+          text: S.of(context).model,
         ),
         backgroundColor: AppStyle.white,
         body: isMobile
@@ -206,11 +206,11 @@ void showAddModelDialog(BuildContext context, int brandId) {
         Navigator.of(context, rootNavigator: true).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('El nombre de la ciudad es requerido')),
+          const SnackBar(content: Text('El nombre del modelo requerido')),
         );
       }
     },
     positiveText: S.of(context).add,
-    title: S.of(context).addCity,
+    title: S.of(context).addModel,
   );
 }
