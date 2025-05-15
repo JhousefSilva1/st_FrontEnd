@@ -73,7 +73,7 @@ Future<void> loadModelsByBrand(int brandId) async {
           modelName: modelName,
           idBrand: brnadId,
         );
-        final response = await SmartTollsApi().createModels(request);
+        final response = await SmartTollsApi().createModelByBrand(request);
         if(response.isSuccess()){
           await loadModelsByBrand(brnadId); // Recargar la lista de modelos
         }else{

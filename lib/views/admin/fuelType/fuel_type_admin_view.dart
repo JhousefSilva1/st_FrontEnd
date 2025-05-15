@@ -169,7 +169,7 @@ void showAddFuelTypesDialog(BuildContext context){
       children: [
         CustomField(
           controller: fuelTypeFuelController,
-          hintText: S.of(context).gasType,
+          hintText: S.of(context).fuelType,
           keyboardType: TextInputType.text,
           prefixIcon: const Icon(Icons.gas_meter),
           validator: (value) {

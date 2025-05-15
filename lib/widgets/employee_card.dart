@@ -37,7 +37,7 @@ class EmployeeCard extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: Text(S.of(context).lastNameF, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                        child: Text(S.of(context).name, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                       ),
                       const SizedBox(width: 16),
                       const Expanded(
@@ -50,7 +50,7 @@ class EmployeeCard extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: Text(S.of(context).lastNameM, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                        child: Text(S.of(context).name, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                       ),
                       const SizedBox(width: 16),
                       const Expanded(

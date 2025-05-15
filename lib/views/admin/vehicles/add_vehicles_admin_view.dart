@@ -315,7 +315,7 @@ class AddCustomerForm extends StatelessWidget {
             Expanded(
               flex: 2,
               child: CustomField(
-                hintText: S.of(context).lastNameM,
+                hintText: S.of(context).name,
                 keyboardType: TextInputType.text,
                 onChanged: (value) {},
                 prefixIcon: const Icon(Icons.person),
@@ -326,7 +326,7 @@ class AddCustomerForm extends StatelessWidget {
             Expanded(
               flex: 2,
               child: CustomField(
-                hintText: S.of(context).lastNameF,
+                hintText: S.of(context).name,
                 keyboardType: TextInputType.text,
                 onChanged: (value) {},
                 prefixIcon: const Icon(Icons.person),

@@ -225,7 +225,7 @@ void showAddPlaceDialog(BuildContext context, int cityId) {
       }
     },
     positiveText: S.of(context).add,
-    title: S.of(context).addCity,
+    title: S.of(context).addPlace,
   );
 
 }

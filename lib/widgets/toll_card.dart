@@ -46,7 +46,7 @@ class TollCard extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 2,
-                              child: Text(S.of(context).toll,
+                              child: Text(S.of(context).tollName,
                                   style: const TextStyle(
                                       fontSize: 16.0, fontWeight: FontWeight.w700)),
                             ),

@@ -97,9 +97,9 @@ class VehiclesProvider extends ChangeNotifier {
     return await SmartTollsApi().getAllTypeVehicles();
   }
 
-  Future<StResponse> getAllVehicles() async {
-    return await SmartTollsApi().getAllVehicles();
-  }
+  // Future<StResponse> getAllVehicles() async {
+  //   return await SmartTollsApi().getAllVehicles();
+  // }
 
   Future fetchAllBrands() async {
     StResponse<StBrandResponse> response = await getAllBrands();

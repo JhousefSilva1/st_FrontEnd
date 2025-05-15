@@ -130,14 +130,14 @@ class SignUpForm extends StatelessWidget {
           const CustomProgressIndicator(current: 1, height: 4),
           const SizedBox(height: 24),
           CustomField(
-            hintText: S.of(context).lastNameF,
+            hintText: S.of(context).name,
             keyboardType: TextInputType.name,
             onChanged: (value) {},
             prefixIcon: const Icon(Icons.person),
           ),
           const SizedBox(height: 8),
           CustomField(
-            hintText: S.of(context).lastNameM,
+            hintText: S.of(context).name,
             keyboardType: TextInputType.name,
             onChanged: (value) {},
             prefixIcon: const Icon(Icons.person),

@@ -37,14 +37,14 @@ class StaffPreviewCard extends StatelessWidget{
                 children:[
                   Expanded(
                     child: GestureDetector(
-                      onTap: (){
-                        context.goNamed(
-                          StaffAdminView.routerName,
-                          pathParameters: {'idPersonType': staffType.idPersonType.toString()},
+                      // onTap: (){
+                      //   context.goNamed(
+                      //     PersonAdminView.routerName,
+                      //     pathParameters: {'idPersonType': staffType.idPersonType.toString()},
 
 
-                        );
-                      },
+                      //   );
+                      // },
                       child: Row(
                         children: [
                           const SizedBox(width: 8),
@@ -61,7 +61,7 @@ class StaffPreviewCard extends StatelessWidget{
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        S.of(context).staffType,
+                                        S.of(context).personType,
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,

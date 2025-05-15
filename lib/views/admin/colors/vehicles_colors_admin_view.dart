@@ -222,6 +222,6 @@ void showAddColorDialog(BuildContext context){
       }
     },
     positiveText: S.of(context).add,
-    title: S.of(context).addColorVehicle,
+    title: S.of(context).addColor,
   );
 }

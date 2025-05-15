@@ -3,14 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'intl/messages_all.dart';
 
-// **************************************************************************
-// Generator: Flutter Intl IDE plugin
-// Made by Localizely
-// **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
-// ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class S {
   S();
@@ -50,166 +43,9 @@ class S {
     );
     return instance!;
   }
+
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
-  }
-  /// `Road Type`
-  String get roadType {
-    return Intl.message(
-      'Road Type',
-      name: 'roadType',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `staffType`
-  String get staffType {
-    return Intl.message(
-      'Staff Type',
-      name: 'Staff Type',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `SelectCountry`
-  String get selectCountry {
-    return Intl.message(
-      'SselectCountry',
-      name: 'selectCountry',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `personType`
-  String get personType {
-    return Intl.message(
-      'personType',
-      name: 'personType',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add Person Type`
-  String get addPersonType {
-    return Intl.message(
-      'Add Person Type',
-      name: 'addPersonType',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `AddGender`
-  String get addGender{
-    return Intl.message(
-      'AddGender',
-      name: 'addGender',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-  /// `Select City`
-  String get selectCity {
-    return Intl.message(
-      'Select City',
-      name: 'selectCity',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select Place`
-  String get selectPlace {
-    return Intl.message(
-      'Select Place',
-      name: 'selectPlace',
-      desc: '',
-      args: [],
-    );
-  } 
-  /// `Add Road Type`
-  String get addRoadType {
-    return Intl.message(
-      'Add Road Type',
-      name: 'addRoadType',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `toll`
-  String get toll {
-    return Intl.message(
-      'toll',
-      name: 'toll',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add Toll`
-  String get addToll{
-    return Intl.message(
-      'Add Toll',
-      name: 'addToll',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `tollName`
-  String get tollName {
-    return Intl.message(
-      'tollName',
-      name: 'tollName',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add City`
-  String get addCity {
-    return Intl.message(
-      'Add City',
-      name: 'addCity',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `city`
-  String get city {
-    return Intl.message(
-      'city',
-      name: 'city',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `place`
-  String get place {
-    return Intl.message(
-      'place',
-      name: 'place',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `City Name`
-  String get cityName {
-    return Intl.message(
-      'City Name',
-      name: 'cityName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `addFuelTypes`
-  String get addFuelTypes {
-    return Intl.message(
-      'addFuelTypes',
-      name: 'addFuelTypes',
-      desc: '',
-      args: [],
-    );
   }
   /// `Account Number`
   String get accountNumber {
@@ -220,141 +56,14 @@ class S {
       args: [],
     );
   }
-/// `Add Country`
-  String get addCountry {
-    return Intl.message(
-      'Add Country',
-      name: 'addCountry',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Country`
-  String get countryName {
-    return Intl.message(
-      'Country',
-      name: 'countryName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get CountryName{
-    return Intl.message(
-      'CountryName',
-      name: 'CountryName',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Gas Type`
-  String get gasType {
-    return Intl.message(
-      'Gas Type',
-      name: 'gasType',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `vehicleColor`
-  String get color {
-    return Intl.message(
-      'color',
-      name: 'color',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add Color`
-  String get addColor {
-    return Intl.message(
-      'Add Color',
-      name: 'addColor',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `retry`
-  String get retry {
-    return Intl.message(
-      'retry',
-      name: 'retry',
-      desc: '', 
-      args: []);
-  }
-  /// `description`
-  String get description {
-    return Intl.message(
-      'description',
-      name: 'description',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Origin`
-  String get origin{
-    return Intl.message(
-      'Origin',
-      name: 'origin',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add Fuel Type`
-  String get addFuelType {
-    return Intl.message(
-      'Add Fuel Type',
-      name: 'addFuelType',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add Color`
-  String get addVehicleColor {
-    return Intl.message(
-      'Add Color',
-      name: 'addVehicleColor',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add Vehicle`
-  String get addVehicle {
-    return Intl.message(
-      'Add Vehicle',
-      name: 'addVehicle',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `fuelType`
-  String get fuelType {
-    return Intl.message(
-      'fuelType',
-      name: 'fuelType',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Add`
   String get add {
     return Intl.message('Add', name: 'add', desc: '', args: []);
   }
-
   /// `Add Brand`
   String get addBrand {
     return Intl.message('Add Brand', name: 'addBrand', desc: '', args: []);
   }
-  /// `Add Gas`
-  String get addGas {
-    return Intl.message('Add Gas', name: 'addGas', desc: '', args: []);
-  }
-  /// `Add Color`
-  String get addColorVehicle {
-    return Intl.message('Add Color', name: 'addColorVehicle', desc: '', args: []);
-  }
-
   /// `Add Employee`
   String get addEmployee {
     return Intl.message(
@@ -364,18 +73,95 @@ class S {
       args: [],
     );
   }
-
+  /// `place`
+  String get place {
+    return Intl.message('place', name: 'place', desc: '', args: []);
+  }
+  /// `add place`
+  String get addPlace {
+    return Intl.message('place', name: 'addPlace', desc: '', args: []);
+  }
+  /// `add city`
+  String get addCity {
+    return Intl.message('city', name: 'addCity', desc: '', args: []);
+  }
+  /// `road type`
+  String get roadType {
+    return Intl.message('road type', name: 'roadType', desc: '', args: []);
+  }
+  /// `add road type`
+  String get addRoadType {
+    return Intl.message('road type', name: 'addRoadType', desc: '', args: []);
+  }
+  /// `city`
+  String get city {
+    return Intl.message('city', name: 'city', desc: '', args: []);
+  }
+  /// `Add color`
+  String get addColor {
+    return Intl.message('color', name: 'addColor', desc: '', args: []);
+  }
+  /// `Fuel Type`
+  String get fuelType {
+    return Intl.message('Fuel Type', name: 'addFuelType', desc: '', args: []);
+  }
+  /// `Add Fuel Type`
+  String get addFuelType {
+    return Intl.message('Add Fuel Type', name: 'addFuelType', desc: '', args: []);
+  }
+  /// `Add Gender`
+  String get addGender {
+    return Intl.message('Add Gender', name: 'addGender', desc: '', args: []);
+  }
+  /// `personType`
+  String get personType {
+    return Intl.message('personType', name: 'personType', desc: '', args: []);
+  }
+  /// `Add Person Type`
+  String get addPersonType {
+    return Intl.message('Add Person Type', name: 'addPersonType', desc: '', args: []);
+  }
+  /// `color`
+  String get color {
+    return Intl.message('color', name: 'color', desc: '', args: []);
+  }
+  /// `add Country`
+  String get addCountry {
+    return Intl.message('add Country', name: 'addCountry', desc: '', args: []);
+  }
+  /// `retry`
+  String get retry {
+    return Intl.message('retry', name: 'retry', desc: '', args: []);
+  }
+  /// `Description`
+  String get description {
+    return Intl.message('Description', name: 'description', desc: '', args: []);
+  }
   /// `Add Line`
   String get addLine {
     return Intl.message('Add Line', name: 'addLine', desc: '', args: []);
   }
-
+  /// `Toll Name`
+  String get tollName {
+    return Intl.message('Toll Name', name: 'tollName', desc: '', args: []);
+  }
+  /// `Origin`
+  String get origin {
+    return Intl.message('Origin', name: 'origin', desc: '', args: []);
+  }
+  /// `Download`
+  String get download {
+    return Intl.message('Download', name: 'download', desc: '', args: []);
+  }
   /// `Add Model`
   String get addModel {
     return Intl.message('Add Model', name: 'addModel', desc: '', args: []);
   }
 
- 
+  /// `Add Toll`
+  String get addToll {
+    return Intl.message('Add Toll', name: 'addToll', desc: '', args: []);
+  }
 
   /// `Add New Vehicle`
   String get addVehicles {
@@ -492,10 +278,6 @@ class S {
     return Intl.message('Customer', name: 'customer', desc: '', args: []);
   }
 
-  /// `Department`
-  String get department {
-    return Intl.message('Department', name: 'department', desc: '', args: []);
-  }
 
   /// `DNI`
   String get dni {
@@ -512,10 +294,6 @@ class S {
     );
   }
 
-  /// `Download`
-  String get download {
-    return Intl.message('Download', name: 'download', desc: '', args: []);
-  }
 
   /// `Edit`
   String get edit {
@@ -617,25 +395,7 @@ class S {
     );
   }
 
-  /// `Last Name (Father)`
-  String get lastNameF {
-    return Intl.message(
-      'Last Name (Father)',
-      name: 'lastNameF',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Last Name (Mother)`
-  String get lastNameM {
-    return Intl.message(
-      'Last Name (Mother)',
-      name: 'lastNameM',
-      desc: '',
-      args: [],
-    );
-  }
+  
 
   /// `Last One Step`
   String get lastOneStep {
@@ -707,25 +467,8 @@ class S {
     );
   }
 
-  /// `Number of Doors`
-  String get numberOfDoors {
-    return Intl.message(
-      'Number of Doors',
-      name: 'numberOfDoors',
-      desc: '',
-      args: [],
-    );
-  }
 
-  /// `Number of Passengers`
-  String get numberOfPassengers {
-    return Intl.message(
-      'Number of Passengers',
-      name: 'numberOfPassengers',
-      desc: '',
-      args: [],
-    );
-  }
+ 
 
   /// `Password`
   String get password {
@@ -757,10 +500,6 @@ class S {
     return Intl.message('Profile', name: 'profile', desc: '', args: []);
   }
 
-  /// `Province`
-  String get province {
-    return Intl.message('Province', name: 'province', desc: '', args: []);
-  }
 
   /// `Recharge Wallet`
   String get rechargeWallet {

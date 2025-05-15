@@ -9,7 +9,6 @@ export 'package:smarttolls/views/admin/toll/add_toll_admin_view.dart';
 export 'package:smarttolls/views/admin/toll/toll_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicles/add_vehicles_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicles/edit_vehicle_admin_view.dart';
-export 'package:smarttolls/views/admin/vehicleType/add_vehicle_type_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicleType/vehicle_type_admin_view.dart';
 export 'package:smarttolls/views/admin/vehicles/vehicles_admin_view.dart';
 export 'package:smarttolls/views/admin/fuelType/fuel_type_admin_view.dart';
@@ -37,5 +36,5 @@ export 'package:smarttolls/views/signup/signup_view.dart';
 export 'package:smarttolls/views/signup/signup_step_two_view.dart';
 export 'package:smarttolls/views/welcome/welcome_view.dart';
 export 'package:smarttolls/views/admin/staff/staff_preview_admin_view.dart';
-export 'package:smarttolls/views/admin/staff/staff_admin_view.dart';
+export 'package:smarttolls/views/admin/persons/persons_admin_view.dart';
 

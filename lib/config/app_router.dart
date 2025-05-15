@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import 'package:smarttolls/providers/providers.dart';
+import 'package:smarttolls/views/admin/persons/persons_admin_view.dart';
 import 'package:smarttolls/views/views.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -37,11 +38,7 @@ class AppRouter {
             path: AddEmployeeAdminView.routerPath,
             builder: (context, state) => const AddEmployeeAdminView(),
           ),
-          GoRoute(
-            name: AddVehicleTypeAdminView.routerName,
-            path: AddVehicleTypeAdminView.routerPath,
-            builder: (context, state) => const AddVehicleTypeAdminView(),
-          ),
+
           GoRoute(
             name: AddVehiclesAdminView.routerName,
             path: AddVehiclesAdminView.routerPath,
@@ -129,6 +126,7 @@ class AppRouter {
                 return PlaceAdminView(cityId: cityId);
               },
             ),
+
             GoRoute(
             name: CountryAdminView.routerName,
             path: CountryAdminView.routerPath,
@@ -150,14 +148,11 @@ class AppRouter {
             path: StaffPreviewAdminView.routerPath,
             builder: (context, state) => const StaffPreviewAdminView(),
             ),
-            // personss by personTypeId
+            // persons
             GoRoute(
-              name: StaffAdminView.routerName,
-              path: '/staffAdmin/:idPersonType',
-              builder: (context, state) {
-                final personTypeId= int.parse(state.pathParameters['idPersonType']!); // Usa parse directamente si siempre es válido
-                return StaffAdminView(personTypeId: personTypeId);
-              },
+              name: PersonAdminView.routerName,
+              path: PersonAdminView.routerPath,
+              builder: (context, state) => const PersonAdminView(),
             ),
         ]
       ),
@@ -260,6 +255,8 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => GenderProvider()),
     ChangeNotifierProvider(create: (_) => PersonTypeProvider()),
     ChangeNotifierProvider(create: (_) => StaffPreviewProvider()),
-    ChangeNotifierProvider(create: (_) => StaffProvider()),
+    ChangeNotifierProvider(create: (_) => PersonProvider()),
+
+
   ];
 }

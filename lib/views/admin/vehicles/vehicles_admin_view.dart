@@ -89,7 +89,7 @@ class VehiclesAdminBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final VehiclesProvider vehiclesProvider = Provider.of<VehiclesProvider>(context);
     return FutureBuilder(
-      future: vehiclesProvider.getAllVehicles(),
+      future: vehiclesProvider.getAllBrands(),
       builder:(context, snapshot){
         if(snapshot.connectionState == ConnectionState.waiting){
           return const Center(child: CircularProgressIndicator());

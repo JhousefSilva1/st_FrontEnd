@@ -22,7 +22,7 @@ class StaffPreviewAdminView extends StatelessWidget {
       child: Scaffold(
         appBar: CustomAppBar(
           centerTitle: true,
-          text: S.of(context).staffType,
+          text: S.of(context).personType,
         ),
         backgroundColor: AppStyle.white,
         drawer: isMobile ? const SmartTollsDrawer() : null,

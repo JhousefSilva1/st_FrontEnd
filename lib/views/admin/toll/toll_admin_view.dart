@@ -53,7 +53,7 @@ class TollAdminTabletView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         const SmartTollsDrawer(),
         Expanded(
@@ -212,7 +212,7 @@ void showAddTollDialog(BuildContext context) {
                 builder: (context, countryProvider, _) {
                   return DropdownButtonFormField<String>(
                     value: selectedCountryId,
-                    hint: Text(S.of(context).selectCountry),
+                    hint: Text(S.of(context).country),
                     items: countryProvider.countries.map((country) {
                       return DropdownMenuItem<String>(
                         value: country.idCountry.toString(),
@@ -253,7 +253,7 @@ void showAddTollDialog(BuildContext context) {
                 builder: (context, cityProvider, _) {
                   return DropdownButtonFormField<String>(
                     value: selectedCityId,
-                    hint: Text(S.of(context).selectCity),
+                    hint: Text(S.of(context).city),
                     items: cityProvider.cities.map((city) {
                       return DropdownMenuItem<String>(
                         value: city.idCity.toString(),
@@ -292,7 +292,7 @@ void showAddTollDialog(BuildContext context) {
                 builder: (context, placeProvider, _) {
                   return DropdownButtonFormField<String>(
                     value: selectedPlaceId,
-                    hint: Text(S.of(context).selectPlace),
+                    hint: Text(S.of(context).place),
                     items: placeProvider.places.map((place) {
                       return DropdownMenuItem<String>(
                         value: place.idPlaces.toString(),

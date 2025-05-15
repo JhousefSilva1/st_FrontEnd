@@ -20,4 +20,4 @@ export 'package:smarttolls/providers/road_types_provider.dart';
 export 'package:smarttolls/providers/gender_provider.dart';
 export 'package:smarttolls/providers/person_type_provider.dart';
 export 'package:smarttolls/providers/staff_preview_provider.dart';
-export 'package:smarttolls/providers/staff_provider.dart';
+export 'package:smarttolls/providers/person_provider.dart';
