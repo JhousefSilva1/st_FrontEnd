@@ -47,7 +47,7 @@ class PersonsCard extends StatelessWidget{
                           children: [
                             Expanded(
                               flex:2,
-                              child: Text(S.of(context).addPersonType,
+                              child: Text(S.of(context).personName,
                                   style: const TextStyle(
                                     fontSize: 16.0, fontWeight: FontWeight.w700)),
                               ),
@@ -59,7 +59,205 @@ class PersonsCard extends StatelessWidget{
                                       fontSize: 16.0, fontWeight: FontWeight.w700)),
                               )
                           ],
-                        )
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:2,
+                              child: Text(S.of(context).personSurname,
+                                  style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex:2,
+                                child: Text(person.personSurname ?? 'N/A',
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:2,
+                              child: Text(S.of(context).bornDate,
+                                  style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex:2,
+                                child: Text(person.personBirthdate ?? 'N/A',
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:2,
+                              child: Text(S.of(context).email,
+                                  style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex:2,
+                                child: Text(person.personEmail ?? 'N/A',
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:2,
+                              child: Text(S.of(context).whatsApp,
+                                  style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex:2,
+                                child: Text(person.personWhatsappNumber ?? 'N/A',
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:2,
+                              child: Text(S.of(context).dni,
+                                  style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex:2,
+                                child: Text(person.personDni ?? 'N/A',
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:2,
+                              child: Text(S.of(context).address,
+                                  style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex:2,
+                                child: Text(person.personAddress ?? 'N/A',
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:2,
+                              child: Text(S.of(context).age,
+                                  style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex:2,
+                                child: Text(person.personAge ?? 'N/A',
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                              )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex:2,
+                                child: Text(S.of(context).gender,
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  flex:2,
+                                  child: Text(person.gender.genderName ?? 'N/A',
+                                      style: const TextStyle(
+                                        fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                )
+                            ],
+                          ),
+                        const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex:2,
+                                child: Text(S.of(context).personType,
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  flex:2,
+                                  child: Text(person.personType.personType ?? 'N/A',
+                                      style: const TextStyle(
+                                        fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                )
+                            ],
+                          ),
+                        const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex:2,
+                                child: Text(S.of(context).country,
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  flex:2,
+                                  child: Text(person.country.countryName ?? 'N/A',
+                                      style: const TextStyle(
+                                        fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                )
+                            ],
+                          ),
+                        const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex:2,
+                                child: Text(S.of(context).city,
+                                    style: const TextStyle(
+                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  flex:2,
+                                  child: Text(person.city.cityName ?? 'N/A',
+                                      style: const TextStyle(
+                                        fontSize: 16.0, fontWeight: FontWeight.w700)),
+                                )
+                            ],
+                          ),
                       ]
                     ),
                   )

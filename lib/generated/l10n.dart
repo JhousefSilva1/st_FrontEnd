@@ -47,6 +47,60 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+  /// `Person Name`
+  String get personName {
+    return Intl.message(
+      'Person Name',
+      name: 'personName',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Person Surname`
+  String get personSurname {
+    return Intl.message(
+      'Person Surname',
+      name: 'personSurname',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Born Date`
+  String get bornDate {
+    return Intl.message(
+      'Born Date',
+      name: 'bornDate',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `WhatsApp`
+  String get whatsApp {
+    return Intl.message(
+      'WhatsApp',
+      name: 'whatsapp',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Address`
+  String get address {
+    return Intl.message(
+      'Address',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Age`
+  String get age {
+    return Intl.message(
+      'Age',
+      name: 'age',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Account Number`
   String get accountNumber {
     return Intl.message(
