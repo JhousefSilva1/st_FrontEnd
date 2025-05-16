@@ -19,23 +19,31 @@ class SmartTollsDrawer extends StatelessWidget {
           children: [
             DrawerHeader(
               child: Column(
-                children: [
-                  AssetsImages.logoAvatar(height: 70),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Jose Pozo',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    'Administrador',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              children: [
+                AssetsImages.logoAvatar(height: 70),
+                const SizedBox(height: 8),
+                Consumer<UserProvider>(
+                  builder: (context, userProvider, child) {
+                    return Column(
+                      children: [
+                        Text(
+                          '${userProvider.name ?? ''} ${userProvider.lastName ?? ''}',
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                         '${userProvider.role ?? ''} ${userProvider.personId ?? ''}',
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
               )
             ),
             DrawerListTile(icon: Icons.home, onTap: () => drawerProvider.goToHomeAdmin(context), title: S.of(context).home),
             DrawerListTile(icon: Icons.account_circle_rounded, onTap: () {}, title: S.of(context).profile),
-            DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehiclesAdmin(context), title: S.of(context).vehicles),
+            DrawerListTile(icon: Icons.car_repair_rounded, onTap: () {}, title: S.of(context).vehicles),
             DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehicleTypeAdmin(context), title: S.of(context).vehicleType),
             DrawerListTile(icon: Icons.badge_rounded, onTap: () => drawerProvider.goToBrandsAdmin(context), title: S.of(context).brand),
             DrawerListTile(icon: Icons.oil_barrel_sharp, onTap: ()=> drawerProvider.goToFuelTypeAdmin(context), title: S.of(context).fuel),

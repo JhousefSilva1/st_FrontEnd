@@ -39,21 +39,13 @@ class AppRouter {
             builder: (context, state) => const AddEmployeeAdminView(),
           ),
 
-          GoRoute(
-            name: AddVehiclesAdminView.routerName,
-            path: AddVehiclesAdminView.routerPath,
-            builder: (context, state) => const AddVehiclesAdminView(),
-          ),
+
           GoRoute(
             name: BrandsAdminView.routerName,
             path: BrandsAdminView.routerPath,
             builder: (context, state) => const BrandsAdminView(),
           ),
-          GoRoute(
-            name: EditVehicleAdminView.routerName,
-            path: EditVehicleAdminView.routerPath,
-            builder: (context, state) => const EditVehicleAdminView(),
-          ),
+ 
           GoRoute(
             name: EmployeeAdminView.routerName,
             path: EmployeeAdminView.routerPath,
@@ -74,11 +66,7 @@ class AppRouter {
             path: TollAdminView.routerPath,
             builder: (context, state) => const TollAdminView(),
           ),
-          GoRoute(
-            name: VehiclesAdminView.routerName,
-            path: VehiclesAdminView.routerPath,
-            builder: (context, state) => const VehiclesAdminView(),
-          ),
+
           GoRoute(
             path: VehicleTypeAdminView.routerPath,
             name: VehicleTypeAdminView.routerName,
@@ -256,6 +244,8 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => PersonTypeProvider()),
     ChangeNotifierProvider(create: (_) => StaffPreviewProvider()),
     ChangeNotifierProvider(create: (_) => PersonProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+
 
 
   ];

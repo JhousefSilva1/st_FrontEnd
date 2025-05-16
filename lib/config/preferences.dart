@@ -8,6 +8,7 @@ class Preferences {
   final keyName = 'name';
   final keyRefreshToken = 'refreshToken';
   final keyRole = 'role';
+  final keyPersonId = 'personId';
 
   Future<String> accessToken() async{
     String value = await _storage.read(key: keyAccessToken) ?? '';
@@ -29,6 +30,12 @@ class Preferences {
     return value;
   }
 
+  Future<int> personId() async {
+    String value = await _storage.read(key: keyPersonId) ?? '0'; // '0' por defecto si es null
+    return int.tryParse(value) ?? 0; // Convierte a int, si falla retorna 0
+  }
+
+
   Future<String> refreshToken() async{
     String value = await _storage.read(key: keyRefreshToken) ?? '';
     return value;
@@ -42,6 +49,8 @@ class Preferences {
   Future<void> setAccessToken(String value) async{
     await _storage.write(key: keyAccessToken, value: value);
   }
+
+  
 
   Future<void> setEmail(String value) async{
     await _storage.write(key: keyEmail, value: value);
@@ -61,5 +70,10 @@ class Preferences {
 
   Future<void> setRole(String value) async{
     await _storage.write(key: keyRole, value: value);
+  }
+  
+
+  Future<void> setPersonId(int value) async {
+    await _storage.write(key: keyPersonId, value: value.toString()); // Guarda como String
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:provider/provider.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/config/preferences.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/views/views.dart';
 import 'package:smarttolls/widgets/widgets.dart';
@@ -46,10 +48,20 @@ void goHome(BuildContext context) async {
         Preferences().setEmail(data['email'] ?? '');
         Preferences().setLastName(data['lastName'] ?? '');
         Preferences().setName(data['name'] ?? '');
-        Preferences().setRole(data['roles']?[0] ?? 'ROLE_CUSTOMER'); // Ajuste para el campo roles
-        
+        Preferences().setRole(data['roles']?[0] ?? ''); // Ajuste para el campo roles
+        Preferences().setPersonId(data['personId'] ?? 0); // Si es null, guarda 0
+        // En tu LoginProvider
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        final role = data['roles']?[0] ?? '';
+        userProvider.setUserData(
+          data['name'] ?? '',
+          data['lastName'] ?? '',
+          role,
+          data['email'] ?? '',
+          data['personId'] ?? 0 
+
+        );
         // Redirección basada en el rol
-        final role = data['roles']?[0] ?? 'ROLE_CUSTOMER';
         if(context.mounted) {
           if(role == 'ROLE_ADMINISTRADOR'){
             context.goNamed(HomeAdminView.routerName);
@@ -92,5 +104,7 @@ void goHome(BuildContext context) async {
     notifyListeners();
     return isValid;
   }
+
+  
 }
 

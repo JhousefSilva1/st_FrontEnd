@@ -61,17 +61,7 @@ class VehiclesProvider extends ChangeNotifier {
     context.pushNamed(AddVehiclesView.routerName);
   }
 
-  void goToAddVehicleAdmin(BuildContext context) async {
-    context.pushNamed(AddVehiclesAdminView.routerName);
-  }
 
-  void goToEditVehicleAdmin(BuildContext context) {
-    context.pushNamed(EditVehicleAdminView.routerName);
-  }
-
-  void goToVehicleAdmin(BuildContext context) {
-    context.pushNamed(VehiclesAdminView.routerName);
-  }
 
   Future<StResponse<StBrandResponse>> getAllBrands() async {
     return await SmartTollsApi().getAllBrands();

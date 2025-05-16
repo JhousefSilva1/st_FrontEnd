@@ -8,9 +8,7 @@ class DrawerProvider extends ChangeNotifier {
     context.pushNamed(HomeAdminView.routerName);
   }
 
-  void goToVehiclesAdmin(BuildContext context) {
-    context.pushNamed(VehiclesAdminView.routerName);
-  }
+
 
   void goToBrandsAdmin(BuildContext context) {
     context.pushNamed(BrandsAdminView.routerName);
