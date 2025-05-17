@@ -736,6 +736,7 @@ Future<StResponse<StPlaceResponse>> getPlacesByCity(int idCity) async {
   //     return StResponse.createEmpty();
   //   }
   // }
+  // Get All Persons
 Future<StResponse<StPersonResponse>> getAllPersons() async {
   try {
     final response = await httpGet('$_baseUrl/persons', getHeaders());
@@ -780,6 +781,45 @@ Future<StResponse<StPersonResponse>> getAllPersons() async {
     return StResponse.createEmpty();
   } catch (e, stackTrace) {
     debugPrint('Error en getAllPersons: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
+// get person by id
+Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
+  try {
+    final response = await httpGet('$_baseUrl/persons/$personId', getHeaders());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    if (responseData['data'] == null) {
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'No data available',
+      );
+    }
+    
+    final person = StPersonResponse.fromJson(responseData['data']);
+    return StResponse(
+      status: responseData['status'] ?? 200,
+      message: responseData['message'] ?? 'OK',
+      data: person,
+      dataList: [person],
+    );
+    
+  } catch (e, stackTrace) {
+    debugPrint('Error en getPersonById: $e');
     debugPrint('Stack trace: $stackTrace');
     return StResponse(
       status: 500,
