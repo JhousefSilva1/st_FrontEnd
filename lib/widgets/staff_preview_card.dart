@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/views/views.dart';
 
 import '../generated/l10n.dart';
 

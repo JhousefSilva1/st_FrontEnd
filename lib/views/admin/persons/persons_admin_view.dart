@@ -17,35 +17,39 @@ class PersonAdminView extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                // Navigator.pushNamed(context, '/addPerson');
-              },
-            ),
-          ],
           centerTitle: true,
-          text: S.of(context).personData,
+          text: S.of(context).personType,
         ),
         backgroundColor: AppStyle.white,
+        drawer: isMobile ? const SmartTollsDrawer() : null,
         body: isMobile
-            ? SingleChildScrollView(
+            ? const SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(16),
                   child: Column(
-                    children:[
-                      PersonAdminList(),
-                    ]
+                    children: [
+                      PersonAdminMobileView(),
+                    ],
                   ),
-                )
-            )
-            : PersonAdminTabletView(),
+                ),
+              )
+            : const PersonAdminTabletView(),
       ),
+    );
+  }
+}
+
+class PersonAdminMobileView extends StatelessWidget{
+  const PersonAdminMobileView({super.key});
+  @override
+  Widget build(BuildContext context){
+    return const Column(
+      children: [
+        PersonAdminList(),
+      ],
     );
   }
 }
@@ -57,7 +61,7 @@ class PersonAdminTabletView extends StatelessWidget{
   Widget build(BuildContext context){
     return const  Row(
       children: [
-        const SmartTollsDrawer(),
+         SmartTollsDrawer(),
         Expanded(
           flex:2,
           child: SingleChildScrollView(

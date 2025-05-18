@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smarttolls/api/response/st_person_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
-
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
-
 import '../../../providers/providers.dart';
 
 class ProfileView extends StatelessWidget {
@@ -17,17 +15,40 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          centerTitle: true,
-          text: S.of(context).profile,
-        ),
-        body: ChangeNotifierProvider(
-          create: (_) => ProfileProvider()..loadCurrentUserData(),
-          child: const ProfileContent(),
+    return Scaffold(
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Para tablet (ancho mayor a 600) mostramos el drawer permanente
+            if (constraints.maxWidth > 600) {
+              return Row(
+                children: [
+                  const SmartTollsDrawer(),
+                  Expanded(
+                    child: _buildProfileContent(),
+                  ),
+                ],
+              );
+            }
+            // Para mobile mostramos el contenido normal con posibilidad de abrir drawer
+            return Scaffold(
+              drawer: const SmartTollsDrawer(),
+              appBar: CustomAppBar(
+                centerTitle: true,
+                text: S.of(context).profile,
+              ),
+              body: _buildProfileContent(),
+            );
+          },
         ),
       ),
+    );
+  }
+
+  Widget _buildProfileContent() {
+    return ChangeNotifierProvider(
+      create: (_) => ProfileProvider()..loadCurrentUserData(),
+      child: const ProfileContent(),
     );
   }
 }
@@ -64,17 +85,48 @@ class ProfileContent extends StatelessWidget {
       return Center(child: Text(S.of(context).noUserData));
     }
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          _buildProfileHeader(context, user),
-          const SizedBox(height: 24),
-          _buildPersonalInfoSection(context, user),
-          const SizedBox(height: 24),
-          _buildContactInfoSection(context, user),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Para tablet mostramos un diseño de dos columnas
+        if (constraints.maxWidth > 600) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      _buildProfileHeader(context, user),
+                      const SizedBox(height: 32),
+                      _buildPersonalInfoSection(context, user),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 24),
+                Expanded(
+                  flex: 1,
+                  child: _buildContactInfoSection(context, user),
+                ),
+              ],
+            ),
+          );
+        }
+        // Para mobile mantenemos el diseño original de una columna
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              _buildProfileHeader(context, user),
+              const SizedBox(height: 24),
+              _buildPersonalInfoSection(context, user),
+              const SizedBox(height: 24),
+              _buildContactInfoSection(context, user),
+            ],
+          ),
+        );
+      },
     );
   }
 

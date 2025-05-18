@@ -56,7 +56,7 @@ class PersonsCard extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppStyle.primary.withOpacity(0.1),
+              color: AppStyle.primary.withOpacity(0.1), //avatar color
               border: Border.all(color: AppStyle.primary, width: 1.5),
             ),
             child: Icon(
@@ -86,11 +86,11 @@ class PersonsCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: AppStyle.primary.withOpacity(0.05),
+                    color: AppStyle.primary.withOpacity(0.1), //tipe person
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    person.personType?.personType ?? 'N/A',
+                    person.personType.personType ?? 'N/A',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[600],
@@ -105,8 +105,8 @@ class PersonsCard extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                icon: Icon(Icons.edit, size: 20, color: AppStyle.primary),
+              IconButton (
+                icon:  const Icon(Icons.edit, size: 20, color: AppStyle.primary),
                 onPressed: onEdit,
               ),
               IconButton(
@@ -134,7 +134,7 @@ class PersonsCard extends StatelessWidget {
         _buildInfoItem(
           person.gender == 'M' ? Icons.male : Icons.female, 
           S.of(context).gender, 
-          person.gender?.genderName ?? 'N/A'
+          person.gender.genderName ?? 'N/A'
         ),
       ],
     );
@@ -176,7 +176,7 @@ class PersonsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppStyle.primary.withOpacity(0.03),
+        color: AppStyle.primary.withOpacity(0.03), // mapa color
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(12),
           bottomRight: Radius.circular(12),
@@ -184,11 +184,11 @@ class PersonsCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.location_on, size: 18, color: AppStyle.primary),
+          const Icon(Icons.location_on, size: 18, color: AppStyle.primary),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              '${person.city?.cityName ?? 'N/A'}, ${person.country?.countryName ?? 'N/A'}',
+              '${person.city.cityName ?? 'N/A'}, ${person.country.countryName ?? 'N/A'}',
               style: TextStyle(
                 fontSize: 13,
                 color: Colors.grey[700],
@@ -201,7 +201,7 @@ class PersonsCard extends StatelessWidget {
   }
 
   IconData _getAvatarIcon() {
-    final type = person.personType?.personType?.toLowerCase() ?? '';
+    final type = person.personType.personType?.toLowerCase() ?? '';
     if (type.contains('admin')) return Icons.admin_panel_settings;
     if (type.contains('driver')) return Icons.directions_car;
     if (type.contains('employee')) return Icons.work;
