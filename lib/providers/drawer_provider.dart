@@ -52,4 +52,8 @@ class DrawerProvider extends ChangeNotifier {
   void goToPersonAdmin(BuildContext context) {
     context.pushNamed(PersonAdminView.routerName);
   }
+
+  void goToProfile(BuildContext context) {
+  context.goNamed(ProfileView.routerName);
+}
 }

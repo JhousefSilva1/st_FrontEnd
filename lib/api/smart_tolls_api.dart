@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/config/enviroment.dart';
+import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/models/models.dart';
 
 class SmartTollsApi {
@@ -803,20 +804,30 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
     
     final responseData = jsonDecode(utf8.decode(response.bodyBytes));
     
-    if (responseData['data'] == null) {
+    // Verifica si hay datos y si tienen la estructura esperada
+    if (responseData['data'] == null || responseData['data'] is! Map) {
       return StResponse(
-        status: responseData['status'] ?? 200,
-        message: responseData['message'] ?? 'No data available',
+        status: responseData['status'] ?? 404,
+        message: responseData['message'] ?? 'Datos de persona no encontrados',
       );
     }
     
-    final person = StPersonResponse.fromJson(responseData['data']);
-    return StResponse(
-      status: responseData['status'] ?? 200,
-      message: responseData['message'] ?? 'OK',
-      data: person,
-      dataList: [person],
-    );
+    try {
+      final person = StPersonResponse.fromJson(responseData['data']);
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'OK',
+        data: person,
+        dataList: [person],
+      );
+    } catch (e, stackTrace) {
+      debugPrint('Error parsing person data: $e');
+      debugPrint('Stack trace: $stackTrace');
+      return StResponse(
+        status: 500,
+        message: 'Error al procesar los datos de la persona',
+      );
+    }
     
   } catch (e, stackTrace) {
     debugPrint('Error en getPersonById: $e');
@@ -824,6 +835,32 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
     return StResponse(
       status: 500,
       message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
+
+// En tu archivo api.dart
+Future<StResponse<StPersonResponse>> getCurrentUserData() async {
+  try {
+    // Obtener el personId del almacenamiento seguro
+    final personId = await Preferences().personId();
+    
+    if (personId == 0) {
+      return StResponse(
+        status: 401,
+        message: 'No se pudo obtener el ID del usuario',
+      );
+    }
+    
+    // Usar el método existente getPersonById con el personId del token
+    return await getPersonById(personId);
+  } catch (e, stackTrace) {
+    debugPrint('Error en getCurrentUserData: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error al obtener datos del usuario: ${e.toString()}',
     );
   }
 }

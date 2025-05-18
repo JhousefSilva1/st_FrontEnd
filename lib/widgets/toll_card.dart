@@ -107,7 +107,7 @@ class TollCard extends StatelessWidget {
                             const SizedBox(width: 16),
                             Expanded(
                               flex: 2,
-                              child: Text(toll.places.city.country.countryName ?? 'N/A',
+                              child: Text(toll.places.city.country?.countryName ?? 'N/A',
                                   style: const TextStyle(
                                       fontSize: 14.0, fontWeight: FontWeight.w500)),
                             ),

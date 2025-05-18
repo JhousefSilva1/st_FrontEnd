@@ -79,9 +79,9 @@ factory StPersonResponse.fromJson(Map<String, dynamic> json) => StPersonResponse
       city: json["city"] != null
           ? StCityResponse.fromJson(json["city"] as Map<String, dynamic>)
           : StCityResponse.createEmpty(),
-      country: json["country"] != null
-          ? StCountryResponse.fromJson(json["country"] as Map<String, dynamic>)
-          : StCountryResponse.createEmpty(),
+  country: json["country"] != null
+      ? StCountryResponse.fromJson(json["country"] as Map<String, dynamic>)
+      : StCountryResponse.createEmpty(),
     );
 
   @override

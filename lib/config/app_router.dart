@@ -142,6 +142,12 @@ class AppRouter {
               path: PersonAdminView.routerPath,
               builder: (context, state) => const PersonAdminView(),
             ),
+            // En tu configuración de rutas
+            GoRoute(
+              path: ProfileView.routerPath,
+              name: ProfileView.routerName,
+              builder: (context, state) => const ProfileView(),
+            ),
         ]
       ),
       ShellRoute(
@@ -244,8 +250,9 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => PersonTypeProvider()),
     ChangeNotifierProvider(create: (_) => StaffPreviewProvider()),
     ChangeNotifierProvider(create: (_) => PersonProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-
+    ChangeNotifierProvider(create: (_) => UserProvider()),
+    ChangeNotifierProvider(create: (_) => ProfileProvider(),
+),
 
 
   ];

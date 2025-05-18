@@ -211,12 +211,29 @@ class S {
   String get addModel {
     return Intl.message('Add Model', name: 'addModel', desc: '', args: []);
   }
-
   /// `Add Toll`
   String get addToll {
     return Intl.message('Add Toll', name: 'addToll', desc: '', args: []);
   }
-
+  /// `noUserData`
+  String get noUserData {
+    return Intl.message('noUserData',name: 'noUserData',desc: '',args: []);
+  }
+  /// `personalInfo`
+  String get personalInfo {
+    return Intl.message(
+      'personalInfo',name: 'personalInfo',desc: '',args: [],);
+  }
+  /// `contactInfo`
+  String get contactInfo {
+    return Intl.message(
+      'contactInfo',name: 'contactInfo',desc: '',args: [],);
+  }
+  /// `location`
+  String get location {
+    return Intl.message(
+      'location',name: 'location',desc: '',args: [],);
+  }
   /// `Add New Vehicle`
   String get addVehicles {
     return Intl.message(
