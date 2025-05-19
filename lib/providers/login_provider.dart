@@ -65,7 +65,7 @@ void goHome(BuildContext context) async {
         if(context.mounted) {
           if(role == 'ROLE_ADMINISTRADOR'){
             context.goNamed(HomeAdminView.routerName);
-          } else {
+          } else if(role == 'ROLE_CLIENTE') {
             context.goNamed(HomeView.routerName);
           }
         }
