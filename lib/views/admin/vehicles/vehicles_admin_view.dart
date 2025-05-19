@@ -94,11 +94,14 @@ class _VehicleAdminListState extends State<VehicleAdminList>{
   void _loadVehicles(){
     WidgetsBinding.instance.addPostFrameCallback((_){
       final provider = Provider.of<VehiclesProvider>(context, listen:false);
-      provider.loadAllVehicles().then((_){
-        ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(provider.errorMessage!)),
-          );
-      });
+provider.loadAllVehicles().then((_){
+  final errorMsg = provider.errorMessage;
+  if (errorMsg != null && errorMsg.isNotEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMsg)),
+    );
+  }
+});
     });
   }
     @override
