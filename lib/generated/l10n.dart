@@ -47,6 +47,33 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+  /// `licensePlate`
+  String get licensePlate {
+    return Intl.message(
+      'licensePlate',
+      name: 'licensePlate',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `chassisNumber`
+  String get chassisNumber {
+    return Intl.message(
+      'chassisNumber',
+      name: 'chassisNumber',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `manufacturingYear`
+  String get manufacturingYear {
+    return Intl.message(
+      'manufacturingYear',
+      name: 'manufacturingYear',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Person Name`
   String get personName {
     return Intl.message(

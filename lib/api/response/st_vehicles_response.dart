@@ -8,12 +8,16 @@ class StVehicleResponse implements StResponseService {
   String? chassisNumber;
   String? engineNumber;
   String? manufacturingYear;
-  double weight;
-  // StPersonResponse person;
-  StCityResponse city;
+  double? weight;
+  int vehicleStatus;
+  StFuelTypesResponse fuelTypes;
   StVehiclesColorsResponse vehiclesColors;
-  StVehiclesTypeResponse vehiclesType;
   StVehiclesModelsResponse vehiclesModels;
+  StVehiclesTypeResponse vehiclesType;
+  StCityResponse city;
+  StCountryResponse country;
+  StPersonResponse person;
+  // StAuditResponse audit;
 
   StVehicleResponse({
     required this.idVehicle,
@@ -21,78 +25,121 @@ class StVehicleResponse implements StResponseService {
     this.chassisNumber,
     this.engineNumber,
     this.manufacturingYear,
-    required this.weight,
-    // required this.person,
-    required this.city,
+    this.weight,
+    required this.vehicleStatus,
+    required this.fuelTypes,
     required this.vehiclesColors,
-    required this.vehiclesType,
     required this.vehiclesModels,
+    required this.vehiclesType,
+    required this.city,
+    required this.country,
+    required this.person,
+    // required this.audit,
   });
-
-  factory StVehicleResponse.createEmpty() => StVehicleResponse(
+  factory StVehicleResponse.create() => StVehicleResponse(
         idVehicle: 0,
         licensePlate: '',
         chassisNumber: '',
         engineNumber: '',
         manufacturingYear: '',
         weight: 0.0,
-        // person: StPersonResponse.createEmpty(),
-        city: StCityResponse.createEmpty(),
+        vehicleStatus: 0,
+        fuelTypes: StFuelTypesResponse.createEmpty(),
         vehiclesColors: StVehiclesColorsResponse.createEmpty(),
-        vehiclesType: StVehiclesTypeResponse.createEmpty(),
         vehiclesModels: StVehiclesModelsResponse.createEmpty(),
+        vehiclesType: StVehiclesTypeResponse.createEmpty(),
+        city: StCityResponse.createEmpty(),
+        country: StCountryResponse.createEmpty(),
+        person: StPersonResponse.createEmpty(),
+        // audit: StAuditResponse.createEmpty(),
       );
-
-      @override
-      String toJson() => json.encode(toMap());
+  @override
+  String toJson() => json.encode(toMap());
 
   factory StVehicleResponse.fromJson(Map<String, dynamic> json) => StVehicleResponse(
-        idVehicle: json["idVehicle"],
-        licensePlate: json["licensePlate"],
-        chassisNumber: json["chassisNumber"],
-        engineNumber: json["engineNumber"],
-        manufacturingYear: json["manufacturingYear"],
-        weight: json["weight"].toDouble(),
-        // person: StPersonResponse.fromJson(json["person"]),
-        city: StCityResponse.fromJson(json["city"]),
-        vehiclesColors: StVehiclesColorsResponse.fromJson(json["vehiclesColors"]),
-        vehiclesType: StVehiclesTypeResponse.fromJson(json["vehiclesType"]),
-        vehiclesModels: StVehiclesModelsResponse.fromJson(json["vehiclesModels"]),
+        idVehicle: json['idVehicle'] as int,
+        licensePlate: json['licensePlate'] as String?,
+        chassisNumber: json['chassisNumber'] as String?,
+        engineNumber: json['engineNumber'] as String?,
+        manufacturingYear: json['manufacturingYear'] as String?,
+        weight: (json['weight'] as num?)?.toDouble(),
+        vehicleStatus: json['vehicleStatus'] as int? ?? 0,
+        fuelTypes: json["fuelTypes"]!=null
+            ? StFuelTypesResponse.fromJson(json["fuelTypes"] as Map<String, dynamic>)
+            : StFuelTypesResponse.createEmpty(),
+        vehiclesColors: json["vehiclesColors"]!=null
+            ? StVehiclesColorsResponse.fromJson(json["vehiclesColors"] as Map<String, dynamic>)
+            : StVehiclesColorsResponse.createEmpty(),
+        vehiclesModels: json["vehiclesModels"]!=null
+            ? StVehiclesModelsResponse.fromJson(json["vehiclesModels"] as Map<String, dynamic>)
+            : StVehiclesModelsResponse.createEmpty(),
+        vehiclesType: json["vehiclesType"]!=null
+            ? StVehiclesTypeResponse.fromJson(json["vehiclesType"] as Map<String, dynamic>)
+            : StVehiclesTypeResponse.createEmpty(),
+        city: json["city"]!=null
+            ? StCityResponse.fromJson(json["city"] as Map<String, dynamic>)
+            : StCityResponse.createEmpty(),
+        country: json["country"]!=null
+            ? StCountryResponse.fromJson(json["country"] as Map<String, dynamic>)
+            : StCountryResponse.createEmpty(),
+        person: json["person"]!=null
+            ? StPersonResponse.fromJson(json["person"] as Map<String, dynamic>)
+            : StPersonResponse.createEmpty(),
       );
 
-      @override
-      Map<String, dynamic> toMap() => {
-        "idVehicle": idVehicle,
-        "licensePlate": licensePlate,
-        "chassisNumber": chassisNumber,
-        "engineNumber": engineNumber,
-        "manufacturingYear": manufacturingYear,
-        "weight": weight,
-        // "person": person.toJson(),
-        "city": city.toJson(),
-        "vehiclesColors": vehiclesColors.toJson(),
-        "vehiclesType": vehiclesType.toJson(),
-        "vehiclesModels": vehiclesModels.toJson(),
-      };
+    @override
+    Map<String, dynamic> toMap() =>{
+      "idVehicle": idVehicle,
+      "licensePlate": licensePlate,
+      "chassisNumber": chassisNumber,
+      "engineNumber": engineNumber,
+      "manufacturingYear": manufacturingYear,
+      "weight": weight,
+      "vehicleStatus": vehicleStatus,
+      "fuelTypes": fuelTypes.toJson(),
+      "vehiclesColors": vehiclesColors.toJson(),
+      "vehiclesModels": vehiclesModels.toJson(),
+      "vehiclesType": vehiclesType.toJson(),
+      "city": city.toMap(),
+      "country": country.toMap(),
+      "person": person.toMap(),
+    };
 
-      @override
-      StVehicleResponse fromJson(String json) {
-        return fromMap(jsonDecode(json));
-      }
+    @override
+    StVehicleResponse fromJson(String json) {
+      return fromMap(jsonDecode(json));
+    }
 
-      @override
-      StVehicleResponse fromMap(Map<String, dynamic> json) => StVehicleResponse(
-        idVehicle: json["idVehicle"],
-        licensePlate: json["licensePlate"],
-        chassisNumber: json["chassisNumber"],
-        engineNumber: json["engineNumber"],
-        manufacturingYear: json["manufacturingYear"],
-        weight: json["weight"].toDouble(),
-        // person: StPersonResponse.fromJson(json["person"]),
-        city: StCityResponse.fromJson(json["city"]),
-        vehiclesColors: StVehiclesColorsResponse.fromJson(json["vehiclesColors"]),
-        vehiclesType: StVehiclesTypeResponse.fromJson(json["vehiclesType"]),
-        vehiclesModels: StVehiclesModelsResponse.fromJson(json["vehiclesModels"]),
-      );
-  
+    @override
+    @override
+    StVehicleResponse fromMap(Map<String, dynamic> json)=> StVehicleResponse(
+              idVehicle: json['idVehicle'] as int,
+        licensePlate: json['licensePlate'] as String?,
+        chassisNumber: json['chassisNumber'] as String?,
+        engineNumber: json['engineNumber'] as String?,
+        manufacturingYear: json['manufacturingYear'] as String?,
+        weight: (json['weight'] as num?)?.toDouble(),
+        vehicleStatus: json['vehicleStatus'] as int? ?? 0,
+        fuelTypes: json["fuelTypes"]!=null
+            ? StFuelTypesResponse.fromJson(json["fuelTypes"] as Map<String, dynamic>)
+            : StFuelTypesResponse.createEmpty(),
+        vehiclesColors: json["vehiclesColors"]!=null
+            ? StVehiclesColorsResponse.fromJson(json["vehiclesColors"] as Map<String, dynamic>)
+            : StVehiclesColorsResponse.createEmpty(),
+        vehiclesModels: json["vehiclesModels"]!=null
+            ? StVehiclesModelsResponse.fromJson(json["vehiclesModels"] as Map<String, dynamic>)
+            : StVehiclesModelsResponse.createEmpty(),
+        vehiclesType: json["vehiclesType"]!=null
+            ? StVehiclesTypeResponse.fromJson(json["vehiclesType"] as Map<String, dynamic>)
+            : StVehiclesTypeResponse.createEmpty(),
+        city: json["city"]!=null
+            ? StCityResponse.fromJson(json["city"] as Map<String, dynamic>)
+            : StCityResponse.createEmpty(),
+        country: json["country"]!=null
+            ? StCountryResponse.fromJson(json["country"] as Map<String, dynamic>)
+            : StCountryResponse.createEmpty(),
+        person: json["person"]!=null
+            ? StPersonResponse.fromJson(json["person"] as Map<String, dynamic>)
+            : StPersonResponse.createEmpty(),
+    );
 }

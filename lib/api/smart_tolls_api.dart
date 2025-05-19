@@ -346,6 +346,60 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
                   return StResponse.createEmpty();
                 }
               }
+// - VEHICLE 
+    // GET ALL VEHICLES
+Future<StResponse<StVehicleResponse>> getAllVehicles() async {
+  try {
+    final response = await httpGet('$_baseUrl/vehicles', getHeaders());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    // Verificar si hay datos
+    if (responseData['data'] == null) {
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'No data available',
+      );
+    }
+    
+    // Manejar tanto respuesta individual como lista
+    if (responseData['data'] is Map) {
+      final vehicles = StVehicleResponse.fromJson(responseData['data']);
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'OK',
+        data: vehicles,
+        dataList: [vehicles],
+      );
+    } else if (responseData['data'] is List) {
+      final persons = (responseData['data'] as List)
+          .map((item) => StVehicleResponse.fromJson(item))
+          .toList();
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'OK',
+        dataList: persons,
+      );
+    }
+    
+    return StResponse.createEmpty();
+  } catch (e, stackTrace) {
+    debugPrint('Error en getAllPersons: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
 
 // COUNTRY AND CITY MS
 

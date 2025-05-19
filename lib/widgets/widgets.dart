@@ -12,7 +12,6 @@ export 'package:smarttolls/widgets/line_card.dart';
 export 'package:smarttolls/widgets/loading.dart';
 export 'package:smarttolls/widgets/recharge_wallet.dart';
 export 'package:smarttolls/widgets/toll_card.dart';
-export 'package:smarttolls/widgets/vehicle_card.dart';
 export 'package:smarttolls/widgets/vehicles_card.dart';
 export 'package:smarttolls/widgets/vehicle_type_card.dart';
 export 'package:smarttolls/widgets/fuel_type_card.dart';

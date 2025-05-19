@@ -54,6 +54,11 @@ class DrawerProvider extends ChangeNotifier {
   }
 
   void goToProfile(BuildContext context) {
-  context.goNamed(ProfileView.routerName);
-}
+  context.goNamed(ProfileView.routerName);  
+  }
+
+  void goToVehiclesAdmin(BuildContext context) {
+    context.pushNamed(VehiclesAdminView.routerName);
+  }
+
 }

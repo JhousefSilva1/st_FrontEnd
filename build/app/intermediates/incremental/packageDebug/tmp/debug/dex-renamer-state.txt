@@ -1,4 +1,4 @@
-#Sat May 17 20:02:36 BOT 2025
+#Mon May 19 12:59:08 BOT 2025
 base.0=C\:\\ProyectoDeGrado\\Front\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\ProyectoDeGrado\\Front\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\ProyectoDeGrado\\Front\\st_FrontEnd\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex

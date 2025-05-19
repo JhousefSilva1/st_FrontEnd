@@ -22,7 +22,6 @@ export 'package:smarttolls/views/customer/home/home_view.dart';
 export 'package:smarttolls/views/customer/navBar/nav_bar_view.dart';
 export 'package:smarttolls/views/customer/notification/notification_view.dart';
 export 'package:smarttolls/views/customer/vehicles/add_vehicles_view.dart';
-export 'package:smarttolls/views/customer/vehicles/vehicles_view.dart';
 export 'package:smarttolls/views/customer/wallet/qr_view.dart';
 export 'package:smarttolls/views/customer/wallet/recharge_wallet_view.dart';
 export 'package:smarttolls/views/customer/wallet/transaction_history_view.dart';

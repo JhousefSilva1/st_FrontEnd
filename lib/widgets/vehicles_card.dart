@@ -1,94 +1,208 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:smarttolls/api/response/st_vehicles_response.dart';
+import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/assets_images.dart';
 
 class VehiclesCard extends StatelessWidget {
+  final StVehicleResponse vehicle;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+
   const VehiclesCard({
     super.key,
-    required this.vehicle
+    required this.vehicle,
+    this.onEdit,
+    this.onDelete,
   });
-  final StVehicleResponse vehicle;
 
   @override
-  Widget build(BuildContext context) {
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: const DrawerMotion(),
+  Widget build(BuildContext context){
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical:8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SlidableAction(
-            flex: 2,
-            onPressed: (BuildContext context) {},
-            backgroundColor: AppStyle.red,
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Delete',
+          // Sección superior con avatar y nombre
+          _buildTopSection(context),
+
+          // Divisor
+          const Divider(height: 1, thickness: 1),
+
+          // Información con iconos
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: _buildInfoSection(context),
           ),
-          SlidableAction(
-            borderRadius: const BorderRadius.only(bottomRight: Radius.circular(16), topRight: Radius.circular(16)), 
-            flex: 2,
-            onPressed: (BuildContext context) {},
-            backgroundColor: AppStyle.primary,
-            foregroundColor: Colors.white,
-            icon: Icons.edit,
-            label: 'Edit',
+
+          // Sección de ubicación
+          _buildLocationSection(),
+        ],
+      
+        
+      )
+    );
+  }
+  Widget _buildTopSection(BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child:  Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppStyle.primary.withOpacity(0.1), //avatar color
+              border: Border.all(color: AppStyle.primary, width: 1.5),
+            ),
+            child: const Icon(
+              Icons.car_repair,
+              color: AppStyle.primary,
+              size: 24
+            ),
           ),
+
+          const SizedBox(width: 12),
+
+          // marca y modelo
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  ' ${vehicle.vehiclesModels.modelName}'.trim(),
+                  style: const TextStyle(
+                    fontSize:16.0,
+                    fontWeight: FontWeight.w700
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color:AppStyle.primary.withOpacity(0.1), //brand
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    vehicle.vehiclesType.vehiclesTypesName ?? 'N/A',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: AppStyle.primary,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          // botones de acción
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.edit, color: AppStyle.primary),
+                onPressed: onEdit,
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: AppStyle.red),
+                onPressed: onDelete,
+              ),
+            ],
+          ),
+
         ],
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: AppStyle.white, width: 1),
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: AppStyle.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              spreadRadius: 1
-            ),
-          ]
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
+    );
+  }
+
+  Widget _buildInfoSection(BuildContext context){
+    return Column(
+      children: [
+        _buildInfoItem(Icons.car_crash, S.of(context).licensePlate, vehicle.licensePlate ?? 'N/A'),
+        const SizedBox(height: 8),
+        _buildInfoItem(Icons.confirmation_number, S.of(context).chassisNumber, vehicle.chassisNumber ?? 'N/A'),
+        const SizedBox(height: 8),
+        _buildInfoItem(Icons.numbers, S.of(context).engineNumber, vehicle.engineNumber ?? 'N/A'),
+        const SizedBox(height: 8),
+        _buildInfoItem(Icons.calendar_today, S.of(context).manufacturingYear, vehicle.manufacturingYear ?? 'N/A'),
+        const SizedBox(height: 8),
+        _buildInfoItem(Icons.monitor_weight, S.of(context).weight, vehicle.weight != null ? '${vehicle.weight} kg' : 'N/A'),
+        const SizedBox(height: 8),
+        _buildInfoItem(Icons.local_gas_station, S.of(context).fuelType, vehicle.fuelTypes.fuelTypeName ?? 'N/A'),
+        const SizedBox(height: 8),
+        _buildInfoItem(Icons.color_lens, S.of(context).color, vehicle.vehiclesColors.colorName ?? 'N/A'),
+        const SizedBox(height: 8),
+        _buildInfoItem(Icons.card_membership_sharp, S.of(context).city, vehicle.city.cityName ?? 'N/A'),
+        const SizedBox(height: 8),
+
+      ],
+    );
+  }
+
+    Widget _buildInfoItem(IconData icon, String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 20, color: AppStyle.primary),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 2,
-                child: Image.asset('assets/car.jpg', height: 120, width: 120),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text('${vehicle.vehiclesModels.brand.brandName} - ${vehicle.vehiclesModels.modelName}', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                    Text(vehicle.licensePlate ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                    Text(vehicle.vehiclesType.vehiclesTypesName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                    // Text(vehicle.fuelTypes.fuelTypeName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                    Text(vehicle.vehiclesColors.colorName ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                    Text(vehicle.manufacturingYear ?? '', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                  ],
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-
-                    GestureDetector(
-                      onTap: () {},
-                      child: AssetsImages.singleFingerLeftSlip(width: 30, height: 30)
-                    ),
-                  ],
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildLocationSection(){
+          return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppStyle.primary.withOpacity(0.03), // mapa color
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        ),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.location_on, size: 18, color: AppStyle.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              '${vehicle.city.cityName?? 'N/A'}, ${vehicle.country.countryName ?? 'N/A'}',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.grey[700],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

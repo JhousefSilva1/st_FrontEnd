@@ -144,12 +144,18 @@ class AppRouter {
             ),
             // En tu configuración de rutas
             GoRoute(
-              path: ProfileView.routerPath,
               name: ProfileView.routerName,
+              path: ProfileView.routerPath,
               builder: (context, state) => const ProfileView(),
+            ),
+            GoRoute(
+              name: VehiclesAdminView.routerName,
+              path: VehiclesAdminView.routerPath,
+              builder: (context, state) => const VehiclesAdminView(),
             ),
         ]
       ),
+      // cliete
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
           return NavBarView(child: child);
@@ -186,11 +192,7 @@ class AppRouter {
             path: TransactionHistoryView.routerPath,
             builder: (context, state) => const TransactionHistoryView(),
           ),
-          GoRoute(
-            name: VehiclesView.routerName,
-            path: VehiclesView.routerPath,
-            builder: (context, state) => const VehiclesView(),
-          ),
+
           GoRoute(
             name: WalletListView.routerName,
             path: WalletListView.routerPath,
