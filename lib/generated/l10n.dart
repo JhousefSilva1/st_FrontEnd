@@ -56,6 +56,15 @@ class S {
       args: [],
     );
   }
+  /// `MyVehicles`
+  String get myVehicles {
+    return Intl.message(
+      'MyVehicles',
+      name: 'myVehicles',
+      desc: '',
+      args: [],
+    );
+  }
   /// `chassisNumber`
   String get chassisNumber {
     return Intl.message(

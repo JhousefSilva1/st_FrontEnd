@@ -8,7 +8,7 @@ import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/country_card.dart';
 import 'package:smarttolls/widgets/custom_app_bar.dart';
 import 'package:smarttolls/widgets/custom_field.dart';
-import 'package:smarttolls/widgets/drawer.dart';
+import 'package:smarttolls/widgets/menu/desktop/drawer.dart';
 
 class CountryAdminView extends StatelessWidget{
   static const String routerName = 'countryAdmin';

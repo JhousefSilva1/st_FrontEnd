@@ -5,7 +5,7 @@ export 'package:smarttolls/widgets/custom_dialog.dart';
 export 'package:smarttolls/widgets/custom_field.dart';
 export 'package:smarttolls/widgets/custom_icon.dart';
 export 'package:smarttolls/widgets/custom_progress_indicator.dart';
-export 'package:smarttolls/widgets/drawer.dart';
+export 'package:smarttolls/widgets/menu/desktop/drawer.dart';
 export 'package:smarttolls/widgets/employee_card.dart';
 export 'package:smarttolls/widgets/extra_data.dart';
 export 'package:smarttolls/widgets/line_card.dart';

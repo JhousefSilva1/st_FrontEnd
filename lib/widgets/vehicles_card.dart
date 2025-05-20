@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:smarttolls/api/response/st_vehicles_response.dart';
+import 'package:smarttolls/api/response/admin/st_vehicles_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/utils/assets_images.dart';
+
 
 class VehiclesCard extends StatelessWidget {
   final StVehicleResponse vehicle;

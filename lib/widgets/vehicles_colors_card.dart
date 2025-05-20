@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smarttolls/api/response/st_vehicles_colors_response.dart';
+import 'package:smarttolls/api/response/admin/st_vehicles_colors_response.dart';
 
 import '../generated/l10n.dart';
 

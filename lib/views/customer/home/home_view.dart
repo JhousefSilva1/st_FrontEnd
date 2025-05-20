@@ -4,7 +4,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/widgets/drawer.dart';
+import 'package:smarttolls/widgets/menu/desktop/drawer.dart';
+import 'package:smarttolls/widgets/menu/mobile/drawerMobile.dart';
 
 class HomeView extends StatelessWidget {
   static const String routerName = 'home';
@@ -30,7 +31,7 @@ class HomeView extends StatelessWidget {
             ],
           ),
         ),
-        drawer: isMobile? const SmartTollsDrawer(): null,
+        drawer: isMobile? const SmartTollsMobileDrawer(): null,
         backgroundColor: AppStyle.ligthGrey,
         // body: SingleChildScrollView(
         //   child: Padding(

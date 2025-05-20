@@ -844,7 +844,7 @@ Future<StResponse<StPersonResponse>> getAllPersons() async {
   }
 }
 
-// get person by id
+// get person by id (profile)
 Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
   try {
     final response = await httpGet('$_baseUrl/persons/$personId', getHeaders());
@@ -868,6 +868,55 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
     
     try {
       final person = StPersonResponse.fromJson(responseData['data']);
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'OK',
+        data: person,
+        dataList: [person],
+      );
+    } catch (e, stackTrace) {
+      debugPrint('Error parsing person data: $e');
+      debugPrint('Stack trace: $stackTrace');
+      return StResponse(
+        status: 500,
+        message: 'Error al procesar los datos de la persona',
+      );
+    }
+    
+  } catch (e, stackTrace) {
+    debugPrint('Error en getPersonById: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
+// get vehicles by personId
+Future<StResponse<StVehicleResponse>> getVehiclesByPersonId(int personId) async {
+  try {
+    final response = await httpGet('$_baseUrl/vehicles/person/$personId', getHeaders());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    // Verifica si hay datos y si tienen la estructura esperada
+    if (responseData['data'] == null || responseData['data'] is! Map) {
+      return StResponse(
+        status: responseData['status'] ?? 404,
+        message: responseData['message'] ?? 'Datos de persona no encontrados',
+      );
+    }
+    
+    try {
+      final person = StVehicleResponse.fromJson(responseData['data']);
       return StResponse(
         status: responseData['status'] ?? 200,
         message: responseData['message'] ?? 'OK',

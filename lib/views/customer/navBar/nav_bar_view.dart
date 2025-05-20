@@ -27,7 +27,7 @@ class NavBarView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomIcon(icon: Icon(Icons.home, color: AppStyle.primary), index: 0, label: 'Inicio', route: HomeView.routerName),
-            CustomIcon(icon: Icon(Icons.wallet_rounded, color: AppStyle.primary), index: 2, label: 'Billetera', route: WalletListView.routerName),
+            // CustomIcon(icon: Icon(Icons.wallet_rounded, color: AppStyle.primary), index: 2, label: 'Billetera', route: WalletListView.routerName),
             CustomIcon(icon: Icon(Icons.notifications, color: AppStyle.primary), index: 3, label: 'Notificaciones', route: NotificationView.routerName),
           ],
         ),

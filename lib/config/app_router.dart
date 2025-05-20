@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:smarttolls/providers/customer/vehicle_customer_provider.dart';
 
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/views/admin/persons/persons_admin_view.dart';
@@ -163,9 +164,9 @@ class AppRouter {
         navigatorKey: shellNavigatorKey,
         routes: <RouteBase>[
           GoRoute(
-            name: AddVehiclesView.routerName,
-            path: AddVehiclesView.routerPath,
-            builder: (context, state) => const AddVehiclesView(),
+              name: VehiclesCustomerView.routerName,
+              path: VehiclesCustomerView.routerPath,
+              builder: (context, state) => const VehiclesCustomerView(),
           ),
           GoRoute(
             name: HomeView.routerName,
@@ -253,8 +254,11 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => StaffPreviewProvider()),
     ChangeNotifierProvider(create: (_) => PersonProvider()),
     ChangeNotifierProvider(create: (_) => UserProvider()),
-    ChangeNotifierProvider(create: (_) => ProfileProvider(),
-),
+    ChangeNotifierProvider(create: (_) => ProfileProvider()),
+
+    // customers
+    ChangeNotifierProvider(create: (_) => VehicleCustomerProvider()),
+
 
 
   ];
