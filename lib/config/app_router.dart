@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:smarttolls/providers/customer/vehicle_customer_provider.dart';
-
 import 'package:smarttolls/providers/providers.dart';
-import 'package:smarttolls/views/admin/persons/persons_admin_view.dart';
 import 'package:smarttolls/views/views.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -163,11 +161,14 @@ class AppRouter {
         },
         navigatorKey: shellNavigatorKey,
         routes: <RouteBase>[
+
+          // funcionando
           GoRoute(
               name: VehiclesCustomerView.routerName,
               path: VehiclesCustomerView.routerPath,
               builder: (context, state) => const VehiclesCustomerView(),
           ),
+
           GoRoute(
             name: HomeView.routerName,
             path: HomeView.routerPath,
@@ -255,9 +256,10 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => PersonProvider()),
     ChangeNotifierProvider(create: (_) => UserProvider()),
     ChangeNotifierProvider(create: (_) => ProfileProvider()),
+    ChangeNotifierProvider(create: (_) => VehiclesCustomerProvider()),
 
     // customers
-    ChangeNotifierProvider(create: (_) => VehicleCustomerProvider()),
+    // ChangeNotifierProvider(create: (_) => VehicleCustomerProvider()),
 
 
 

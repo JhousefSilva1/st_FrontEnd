@@ -401,6 +401,51 @@ Future<StResponse<StVehicleResponse>> getAllVehicles() async {
 }
 
 
+/// Get vehicle by personId
+// En tu archivo api.dart
+Future<StResponse<StVehicleResponse>> getVehiclesByPersonId(int personId) async {
+  try {
+    final response = await httpGet('$_baseUrl/vehicles/person/$personId', getHeaders());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    if (responseData['data'] == null) {
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'No data available',
+      );
+    }
+    
+    // Manejar lista de vehículos
+    if (responseData['data'] is List) {
+      final vehicles = (responseData['data'] as List)
+          .map((item) => StVehicleResponse.fromJson(item))
+          .toList();
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'OK',
+        dataList: vehicles,
+      );
+    }
+    
+    return StResponse.createEmpty();
+  } catch (e, stackTrace) {
+    debugPrint('Error en getVehiclesByPersonId: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
 // COUNTRY AND CITY MS
 
 // create Country
@@ -893,54 +938,6 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
   }
 }
 
-// get vehicles by personId
-Future<StResponse<StVehicleResponse>> getVehiclesByPersonId(int personId) async {
-  try {
-    final response = await httpGet('$_baseUrl/vehicles/person/$personId', getHeaders());
-    
-    if (response.statusCode >= HttpStatus.badRequest) {
-      return StResponse(
-        status: response.statusCode,
-        message: 'Error del servidor: ${response.statusCode}',
-      );
-    }
-    
-    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
-    
-    // Verifica si hay datos y si tienen la estructura esperada
-    if (responseData['data'] == null || responseData['data'] is! Map) {
-      return StResponse(
-        status: responseData['status'] ?? 404,
-        message: responseData['message'] ?? 'Datos de persona no encontrados',
-      );
-    }
-    
-    try {
-      final person = StVehicleResponse.fromJson(responseData['data']);
-      return StResponse(
-        status: responseData['status'] ?? 200,
-        message: responseData['message'] ?? 'OK',
-        data: person,
-        dataList: [person],
-      );
-    } catch (e, stackTrace) {
-      debugPrint('Error parsing person data: $e');
-      debugPrint('Stack trace: $stackTrace');
-      return StResponse(
-        status: 500,
-        message: 'Error al procesar los datos de la persona',
-      );
-    }
-    
-  } catch (e, stackTrace) {
-    debugPrint('Error en getPersonById: $e');
-    debugPrint('Stack trace: $stackTrace');
-    return StResponse(
-      status: 500,
-      message: 'Error de conexión: ${e.toString()}',
-    );
-  }
-}
 
 
 // En tu archivo api.dart

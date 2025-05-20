@@ -3,12 +3,12 @@ import 'package:smarttolls/api/response/admin/st_vehicles_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
-class VehicleCustomerCard extends StatelessWidget{
-    final StVehicleResponse vehicle;
+class VehiclesCustomerCard extends StatelessWidget {
+  final StVehicleResponse vehicle;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
-  const VehicleCustomerCard ({
+  const VehiclesCustomerCard({
     super.key,
     required this.vehicle,
     this.onEdit,
@@ -16,68 +16,57 @@ class VehicleCustomerCard extends StatelessWidget{
   });
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical:8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Sección superior con avatar y nombre
           _buildTopSection(context),
-
-          // Divisor
           const Divider(height: 1, thickness: 1),
-
-          // Información con iconos
           Padding(
             padding: const EdgeInsets.all(16),
             child: _buildInfoSection(context),
           ),
-
-          // Sección de ubicación
           _buildLocationSection(),
         ],
-      
-        
-      )
+      ),
     );
   }
-  Widget _buildTopSection(BuildContext context){
+
+  Widget _buildTopSection(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child:  Row(
+      child: Row(
         children: [
           Container(
             width: 48,
             height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppStyle.primary.withOpacity(0.1), //avatar color
+              color: AppStyle.primary.withOpacity(0.1),
               border: Border.all(color: AppStyle.primary, width: 1.5),
             ),
             child: const Icon(
               Icons.car_repair,
               color: AppStyle.primary,
-              size: 24
+              size: 24,
             ),
           ),
-
           const SizedBox(width: 12),
-
-          // marca y modelo
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  ' ${vehicle.vehiclesModels.modelName}'.trim(),
+                  '${vehicle.vehiclesModels.modelName}'.trim(),
                   style: const TextStyle(
-                    fontSize:16.0,
-                    fontWeight: FontWeight.w700
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -86,7 +75,7 @@ class VehicleCustomerCard extends StatelessWidget{
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color:AppStyle.primary.withOpacity(0.1), //brand
+                    color: AppStyle.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -97,31 +86,32 @@ class VehicleCustomerCard extends StatelessWidget{
                       color: AppStyle.primary,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
-          // botones de acción
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.edit, color: AppStyle.primary),
-                onPressed: onEdit,
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete, color: AppStyle.red),
-                onPressed: onDelete,
-              ),
-            ],
-          ),
-
+          if (onEdit != null || onDelete != null)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (onEdit != null)
+                  IconButton(
+                    icon: const Icon(Icons.edit, color: AppStyle.primary),
+                    onPressed: onEdit,
+                  ),
+                if (onDelete != null)
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: AppStyle.red),
+                    onPressed: onDelete,
+                  ),
+              ],
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoSection(BuildContext context){
+  Widget _buildInfoSection(BuildContext context) {
     return Column(
       children: [
         _buildInfoItem(Icons.car_crash, S.of(context).licensePlate, vehicle.licensePlate ?? 'N/A'),
@@ -137,15 +127,11 @@ class VehicleCustomerCard extends StatelessWidget{
         _buildInfoItem(Icons.local_gas_station, S.of(context).fuelType, vehicle.fuelTypes.fuelTypeName ?? 'N/A'),
         const SizedBox(height: 8),
         _buildInfoItem(Icons.color_lens, S.of(context).color, vehicle.vehiclesColors.colorName ?? 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.card_membership_sharp, S.of(context).city, vehicle.city.cityName ?? 'N/A'),
-        const SizedBox(height: 8),
-
       ],
     );
   }
 
-    Widget _buildInfoItem(IconData icon, String label, String value) {
+  Widget _buildInfoItem(IconData icon, String label, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -177,11 +163,11 @@ class VehicleCustomerCard extends StatelessWidget{
     );
   }
 
-  Widget _buildLocationSection(){
-          return Container(
+  Widget _buildLocationSection() {
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppStyle.primary.withOpacity(0.03), // mapa color
+        color: AppStyle.primary.withOpacity(0.03),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(12),
           bottomRight: Radius.circular(12),
@@ -193,7 +179,7 @@ class VehicleCustomerCard extends StatelessWidget{
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              '${vehicle.city.cityName?? 'N/A'}, ${vehicle.country.countryName ?? 'N/A'}',
+              '${vehicle.city.cityName ?? 'N/A'}, ${vehicle.country.countryName ?? 'N/A'}',
               style: TextStyle(
                 fontSize: 13,
                 color: Colors.grey[700],
