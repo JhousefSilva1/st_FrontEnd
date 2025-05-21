@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:smarttolls/providers/Auth/sign_up_provider.dart';
 import 'package:smarttolls/providers/customer/vehicle_customer_provider.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/views/views.dart';
@@ -212,15 +213,11 @@ class AppRouter {
         path: SelectModeView.routerPath,
         builder: (context, state) => const SelectModeView(),
       ),
+
       GoRoute(
-        name: SignUpStepTwoView.routerName,
-        path: SignUpStepTwoView.routerPath,
-        builder: (context, state) => const SignUpStepTwoView(),
-      ),
-      GoRoute(
-        name: SignupView.routerName,
-        path: SignupView.routerPath,
-        builder: (context, state) => const SignupView(),
+        name: SignUpView.routerName,
+        path: SignUpView.routerPath,
+        builder: (context, state) => const SignUpView(),
       ),
       GoRoute(
         name: WelcomeView.routerName,

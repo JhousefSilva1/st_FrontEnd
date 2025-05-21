@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/api/request/admin/st_vehicles_request.dart';
+import 'package:smarttolls/api/request/customer/signup_request.dart';
 import 'package:smarttolls/config/enviroment.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/models/models.dart';
@@ -970,6 +971,41 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
     return StResponse(
       status: 500,
       message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
+// signup
+Future<StResponse<StPersonResponse>> signup(StSignUpRequest personRequest) async {
+  try {
+    final response = await httpPost('$_baseUrl/persons/create', getHeaders(), jsonEncode(personRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StPersonResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StPersonResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear la persona',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StPersonResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final personData = StPersonResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StPersonResponse>(
+      data: personData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StPersonResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación de la persona',
+      error: e.toString(),
     );
   }
 }

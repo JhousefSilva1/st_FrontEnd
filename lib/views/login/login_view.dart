@@ -148,7 +148,7 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           GestureDetector(
-            onTap: () => context.go(SignupView.routerPath),
+            onTap: () => context.go(SignUpView.routerPath),
             child: RichText(
               text: TextSpan(
                 children: [

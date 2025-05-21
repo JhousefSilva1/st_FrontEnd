@@ -96,7 +96,7 @@ void goHome(BuildContext context) async {
   }
 
   void signup(BuildContext context) {
-    context.pushNamed(SignupView.routerName);
+    context.pushNamed(SignUpView.routerName);
   }
 
   bool validateForm() {

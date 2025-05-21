@@ -47,6 +47,213 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+  /// `passwordsDontMatch`
+  String get passwordsDontMatch {
+    return Intl.message(
+      'passwordsDontMatch',
+      name: 'passwordsDontMatch',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `passwordIsRequired`
+  String get passwordIsRequired {
+    return Intl.message(
+      'passwordIsRequired',
+      name: 'passwordIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterName`
+  String get pleaseEnterName {
+    return Intl.message(
+      'pleaseEnterName',
+      name: 'pleaseEnterName',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterSurname`
+  String get pleaseEnterSurname {
+    return Intl.message(
+      'pleaseEnterSurname',
+      name: 'pleaseEnterSurname',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterEmail`
+  String get pleaseEnterEmail {
+    return Intl.message(
+      'pleaseEnterEmail',
+      name: 'pleaseEnterEmail',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `surname`
+  String get surname {
+    return Intl.message(
+      'surname',
+      name: 'surname',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `whatsappNumber`
+  String get whatsappNumber {
+    return Intl.message(
+      'whatsappNumber',
+      name: 'whatsappNumber',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterWhatsAppNumber`
+  String get pleaseEnterWhatsappNumber {
+    return Intl.message(
+      'pleaseEnterWhatsAppNumber',
+      name: 'pleaseEnterWhatsAppNumber',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterAddress`
+  String get pleaseEnterAddress {
+    return Intl.message(
+      'pleaseEnterAddress',
+      name: 'pleaseEnterAddress',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterValidEmail`
+  String get pleaseEnterValidEmail {
+    return Intl.message(
+      'pleaseEnterValidEmail',
+      name: 'pleaseEnterValidEmail',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseSelectBirthdate`
+  String get pleaseSelectBirthdate {
+    return Intl.message(
+      'pleaseSelectBirthdate',
+      name: 'pleaseSelectBirthdate',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `registrationSuccessful`
+  String get registrationSuccessful {
+    return Intl.message(
+      'registrationSuccessful',
+      name: 'registrationSuccessful',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterPassword`
+  String get pleaseEnterPassword {
+    return Intl.message(
+      'pleaseEnterPassword',
+      name: 'pleaseEnterPassword',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `passwordTooShort`
+  String get passwordTooShort {
+    return Intl.message(
+      'passwordTooShort',
+      name: 'passwordTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseConfirmPassword`
+  String get pleaseConfirmPassword {
+    return Intl.message(
+      'pleaseConfirmPassword',
+      name: 'pleaseConfirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseSelectGender`
+  String get pleaseSelectGender {
+    return Intl.message(
+      'pleaseSelectGender',
+      name: 'pleaseSelectGender',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseSelectCountry`
+  String get pleaseSelectCountry {
+    return Intl.message(
+      'pleaseSelectCountry',
+      name: 'pleaseSelectCountry',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseSelectCity`
+  String get pleaseSelectCity {
+    return Intl.message(
+      'pleaseSelectCity',
+      name: 'pleaseSelectCity',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterDni`
+  String get pleaseEnterDni {
+    return Intl.message(
+      'pleaseEnterDni',
+      name: 'pleaseEnterDni',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterAge`
+  String get pleaseEnterAge {
+    return Intl.message(
+      'pleaseEnterAge',
+      name: 'pleaseEnterAge',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseEnterValidAge`
+  String get pleaseEnterValidAge {
+    return Intl.message(
+      'pleaseEnterValidAge',
+      name: 'pleaseEnterValidAge',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseSelectPersonType`
+  String get pleaseSelectPersonType {
+    return Intl.message(
+      'pleaseSelectPersonType',
+      name: 'pleaseSelectPersonType',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `pleaseSelectCountryFirst`
+  String get pleaseSelectCountryFirst {
+    return Intl.message(
+      'pleaseSelectCountryFirst',
+      name: 'pleaseSelectCountryFirst',
+      desc: '',
+      args: [],
+    );
+  }
   /// `licensePlate`
   String get licensePlate {
     return Intl.message(
