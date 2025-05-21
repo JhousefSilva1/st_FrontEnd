@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:smarttolls/api/api.dart';
+import 'package:smarttolls/api/request/admin/st_vehicles_request.dart';
 import 'package:smarttolls/config/enviroment.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/models/models.dart';
@@ -442,6 +443,41 @@ Future<StResponse<StVehicleResponse>> getVehiclesByPersonId(int personId) async 
     return StResponse(
       status: 500,
       message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
+// create vehicle by personId
+Future<StResponse<StVehicleResponse>> addVehicle(StVehiclesRequest vehicleRequest) async {
+  try {
+    final response = await httpPost('$_baseUrl/vehicles/create', getHeaders(), jsonEncode(vehicleRequest.toJson()));
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StVehicleResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StVehicleResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al crear el vehículo',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StVehicleResponse>.createEmpty();
+      }
+    }
+    final responseJson = json.decode(response.body);
+    final vehicleData = StVehicleResponse.create().fromMap(responseJson['data']);
+    return StResponse<StVehicleResponse>(
+      data: vehicleData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StVehicleResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la creación del vehículo',
+      error: e.toString(),
     );
   }
 }

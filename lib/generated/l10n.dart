@@ -255,6 +255,10 @@ class S {
   String get noUserData {
     return Intl.message('noUserData',name: 'noUserData',desc: '',args: []);
   }
+  /// `addVehicle`
+  String get addVehicle {
+    return Intl.message('addVehicle',name: 'addVehicle',desc: '',args: [],);
+  }
   /// `personalInfo`
   String get personalInfo {
     return Intl.message(

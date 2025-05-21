@@ -11,6 +11,8 @@ class StVehiclesRequest {
   final int idVehiclesBrand;
   final int idCity;
   final int idCountry;
+  final int idPerson;
+
 
   StVehiclesRequest({
     required this.licensePlate,
@@ -25,6 +27,8 @@ class StVehiclesRequest {
     required this.idVehiclesBrand,
     required this.idCity,
     required this.idCountry,
+    required this.idPerson,
+
   });
 
   Map<String, dynamic> toJson() {
@@ -41,6 +45,8 @@ class StVehiclesRequest {
       'idVehiclesBrand': idVehiclesBrand,
       'idCity': idCity,
       'idCountry': idCountry,
+      'idPerson': idPerson,
+
     };
   }
 
@@ -59,6 +65,7 @@ Vehicle Request:
   Vehicle Brand ID: $idVehiclesBrand
   City ID: $idCity
   Country ID: $idCountry
+  Person ID: $idPerson
 ''');
   }
 }
