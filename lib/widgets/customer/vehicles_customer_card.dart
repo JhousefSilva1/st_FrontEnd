@@ -5,14 +5,12 @@ import 'package:smarttolls/style/app_style.dart';
 
 class VehiclesCustomerCard extends StatelessWidget {
   final StVehicleResponse vehicle;
-  final VoidCallback? onEdit;
-  final VoidCallback? onDelete;
+
 
   const VehiclesCustomerCard({
     super.key,
     required this.vehicle,
-    this.onEdit,
-    this.onDelete,
+
   });
 
   @override
@@ -90,22 +88,6 @@ class VehiclesCustomerCard extends StatelessWidget {
               ],
             ),
           ),
-          if (onEdit != null || onDelete != null)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (onEdit != null)
-                  IconButton(
-                    icon: const Icon(Icons.edit, color: AppStyle.primary),
-                    onPressed: onEdit,
-                  ),
-                if (onDelete != null)
-                  IconButton(
-                    icon: const Icon(Icons.delete, color: AppStyle.red),
-                    onPressed: onDelete,
-                  ),
-              ],
-            ),
         ],
       ),
     );

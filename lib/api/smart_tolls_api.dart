@@ -1054,6 +1054,29 @@ Future<StResponse<StPersonResponse>> getCurrentUserData() async {
     }
     return http.Response("{}", HttpStatus.conflict);
   }
+  // put
+  Future<http.Response> httpPut(String baseUrl, dynamic header, String jsonRequest) async {
+    try {
+      var httpResponse = await http.put(
+        Uri.parse(baseUrl),
+        headers: header,
+        body: jsonRequest,
+        encoding: Encoding.getByName("utf-8")
+      ).timeout(const Duration(seconds: 120));
+      if (httpResponse.statusCode != HttpStatus.ok) {
+        final error = StResponse.fromJson(httpResponse.body);
+        if (error.status == authorizationForbidden || error.status == authorizationUnauthorized) {
+          // httpResponse = await reloginMethodPut(baseUrl, header, httpResponse, jsonRequest);
+        }
+      }
+      return httpResponse;
+    } catch (e) {
+      if (e.toString().contains('errno = 7') || e.toString().contains('Software caused connection abort')) {
+        return http.Response("{}", HttpStatus.networkConnectTimeoutError);
+      }
+    }
+    return http.Response("{}", HttpStatus.conflict);
+  }
 
   Future<http.Response> httpPost(String baseUrl, dynamic header, String jsonRequest) async {
     try {
