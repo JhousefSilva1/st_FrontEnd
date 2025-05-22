@@ -74,31 +74,27 @@ class VehiclesCustomerCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${vehicle.vehiclesModels.modelName}'.trim(),
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+        _buildInfoItem(Icons.car_crash, S.of(context).brand, vehicle.vehiclesModels.brand.brandName ?? 'N/A'),
+
                 const SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: AppStyle.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    vehicle.vehiclesType.vehiclesTypesName ?? 'N/A',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppStyle.primary,
-                    ),
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                //   decoration: BoxDecoration(
+                //     color: AppStyle.primary.withOpacity(0.1),
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+        
+                // ),
+                _buildInfoItem(Icons.car_crash, S.of(context).model, vehicle.vehiclesModels.modelName ?? 'N/A'),
+                const SizedBox(height: 4),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                //   decoration: BoxDecoration(
+                //     color: AppStyle.primary.withOpacity(0.1),
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+        
+                // ),
               ],
             ),
           ),

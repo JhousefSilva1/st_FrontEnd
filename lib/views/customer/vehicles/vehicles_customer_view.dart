@@ -94,9 +94,9 @@ class _VehiclesCustomerListState extends State<VehiclesCustomerList> {
 
   void _loadVehicles() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final userProvider = Provider.of<UserProvider>(context, listen: false);
       final provider = Provider.of<VehiclesCustomerProvider>(context, listen: false);
       
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
       provider.loadCustomerVehicles(userProvider.personId ?? 0).then((_) {
         final errorMsg = provider.errorMessage;
         if (errorMsg != null && errorMsg.isNotEmpty) {
@@ -321,7 +321,6 @@ void showAddVehicleDialog(BuildContext context){
                         selectedFuelTypeName = fuelTypesProvider.fuelType
                           .firstWhere((c) => c.idFuelType.toString() == value)
                           .fuelTypeName;
-
                           if (value == null) {
                             vehicleColorsProviders.loadVehiclesColors();
                           }
@@ -570,7 +569,7 @@ void showAddVehicleDialog(BuildContext context){
       ),
     ),
     negativeText: S.of(context).cancel,
- positiveOnPressed: () async {
+    positiveOnPressed: () async {
       if (vehiclePlateController.text.isNotEmpty && selectedFuelTypeId != null) {
         // Obtener el personId del UserProvider aquí
         final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -604,188 +603,151 @@ void showAddVehicleDialog(BuildContext context){
 }
 
 void showEditVehicleDialog(BuildContext context, StVehicleResponse vehicle) {
-  // Controllers inicializados con los valores actuales del vehículo
-  final provider = Provider.of<VehiclesCustomerProvider>(context, listen: false);
+  // Controllers inicializados con los valores del vehículo
   final vehiclePlateController = TextEditingController(text: vehicle.licensePlate);
   final vehicleChassisNumberController = TextEditingController(text: vehicle.chassisNumber);
   final vehicleEngineNumberController = TextEditingController(text: vehicle.engineNumber);
   final vehicleManufacturingYearController = TextEditingController(text: vehicle.manufacturingYear);
   final vehicleWeightController = TextEditingController(text: vehicle.weight?.toString() ?? '');
-  
+
   // Providers
+  final provider = Provider.of<VehiclesCustomerProvider>(context, listen: false);
   final fuelTypesProvider = Provider.of<FuelTypeProvider>(context, listen: false);
-  final vehicleColorsProviders = Provider.of<VehiclesColorsProvider>(context, listen: false);
-  final vehicleBrandsProviders = Provider.of<BrandProvider>(context, listen: false);
-  final vehicleModelsProviders = Provider.of<ModelProvider>(context, listen: false);
-  final vehicleTypesProviders = Provider.of<VehicleTypeProvider>(context, listen: false);
+  final vehicleColorsProvider = Provider.of<VehiclesColorsProvider>(context, listen: false);
+  final vehicleBrandsProvider = Provider.of<BrandProvider>(context, listen: false);
+  final vehicleModelsProvider = Provider.of<ModelProvider>(context, listen: false);
+  final vehicleTypesProvider = Provider.of<VehicleTypeProvider>(context, listen: false);
   final vehicleCityProvider = Provider.of<CityProvider>(context, listen: false);
   final vehicleCountryProvider = Provider.of<CountryProvider>(context, listen: false);
   final userProvider = Provider.of<UserProvider>(context, listen: false);
 
+  // Variables para almacenar los valores seleccionados
+  String? selectedFuelTypeId = vehicle.fuelTypes.idFuelType.toString();
+  String? selectedVehicleColorId = vehicle.vehiclesColors.idColor.toString();
+  String? selectedVehicleBrandId = vehicle.vehiclesModels.brand.idBrand.toString();
+  String? selectedVehicleModelId = vehicle.vehiclesModels.idModel.toString();
+  String? selectedVehiclesTypeId = vehicle.vehiclesType.idVehiclesType.toString();
+  String? selectedVehiclesCountryId = vehicle.country.idCountry.toString();
+  String? selectedVehiclesCityId = vehicle.city.idCity.toString();
+
+    String? selectedFuelTypeName;
+  String? selectedVehicleColorName;
+  String? selectedVehicleModelName;
+  String? selectedVehicleBrandName;
+  String? selectedVehiclesTypeName;
+  String? selectedVehiclesCityName;
+  String? selectedVehiclesCountryName;
+
   // Cargar datos necesarios
   WidgetsBinding.instance.addPostFrameCallback((_) {
     fuelTypesProvider.loadFuelTypes();
-    vehicleColorsProviders.loadVehiclesColors();
-    vehicleBrandsProviders.loadBrands();
-    vehicleModelsProviders.loadModelsByBrand(vehicle.vehiclesModels.brand.idBrand ?? 0);
-    vehicleTypesProviders.loadVehiclesType();
+    vehicleColorsProvider.loadVehiclesColors();
+    vehicleBrandsProvider.loadBrands();
+    vehicleModelsProvider.loadModelsByBrand(vehicle.vehiclesModels.brand.idBrand);
+    vehicleTypesProvider.loadVehiclesType();
     vehicleCountryProvider.loadCountries();
-    vehicleCityProvider.loadCitiesByCountry(vehicle.country.idCountry ?? 0);
+    vehicleCityProvider.loadCitiesByCountry(vehicle.country.idCountry);
   });
-
-  // Variables ID inicializadas con los valores actuales
-  String? selectedFuelTypeId = vehicle.fuelTypes.idFuelType?.toString();
-  String? selectedVehicleColorId = vehicle.vehiclesColors.idColor?.toString();
-  String? selectedVehicleModelId = vehicle.vehiclesModels.idModel?.toString();
-  String? selectedVehicleBrandId = vehicle.vehiclesModels.brand.idBrand?.toString();
-  String? selectedVehiclesTypeId = vehicle.vehiclesType.idVehiclesType?.toString();
-  String? selectedVehiclesCityId = vehicle.city.idCity?.toString();
-  String? selectedVehiclesCountryId = vehicle.country.idCountry?.toString();
 
   Utils.textFieldAlert(
     context: context,
-    content: SingleChildScrollView(
-      child: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-          return Column(
+    content: StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return SingleChildScrollView(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Los mismos campos que en showAddVehicleDialog, pero con valores iniciales
+              // Placa del vehículo
               CustomField(
                 controller: vehiclePlateController,
                 hintText: S.of(context).plate,
                 keyboardType: TextInputType.text,
                 prefixIcon: const Icon(Icons.car_crash, color: AppStyle.primary),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la matrícula del vehículo';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
+
+              // Número de chasis
               CustomField(
                 controller: vehicleChassisNumberController,
                 hintText: S.of(context).chassisNumber,
                 keyboardType: TextInputType.text,
-                prefixIcon: const Icon(Icons.car_crash, color: AppStyle.primary),
+                prefixIcon: const Icon(Icons.confirmation_number, color: AppStyle.primary),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el número de chasis';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
+
+              // Número de motor
               CustomField(
                 controller: vehicleEngineNumberController,
                 hintText: S.of(context).engineNumber,
                 keyboardType: TextInputType.text,
-                prefixIcon: const Icon(Icons.car_crash, color: AppStyle.primary),
+                prefixIcon: const Icon(Icons.engineering, color: AppStyle.primary),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el número de motor';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
+
+              // Año de fabricación
               CustomField(
                 controller: vehicleManufacturingYearController,
                 hintText: S.of(context).manufacturingYear,
                 keyboardType: TextInputType.number,
                 prefixIcon: const Icon(Icons.calendar_today, color: AppStyle.primary),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el año de fabricación';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
+
+              // Peso
               CustomField(
                 controller: vehicleWeightController,
                 hintText: S.of(context).weight,
                 keyboardType: TextInputType.number,
                 prefixIcon: const Icon(Icons.monitor_weight, color: AppStyle.primary),
-              ),
-              const SizedBox(height: 16),
-              // Los mismos Dropdowns que en showAddVehicleDialog, pero con valores iniciales
-              Consumer<FuelTypeProvider>(
-                builder: (context, fuelTypesProvider, _) {
-                  return DropdownButtonFormField<String>(
-                    value: selectedFuelTypeId,
-                    hint: Text(S.of(context).fuelType),
-                    items: fuelTypesProvider.fuelType.map((fuel) {
-                      return DropdownMenuItem<String>(
-                        value: fuel.idFuelType.toString(),
-                        child: Text(fuel.fuelTypeName ?? 'N/A'),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedFuelTypeId = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.local_gas_station, color: AppStyle.primary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: const BorderSide(color: AppStyle.primary, width: 1.0),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              // ... (otros Dropdowns similares)
-              // Solo como ejemplo, los demás dropdowns seguirían el mismo patrón
-              const SizedBox(height: 16),
-              Consumer<BrandProvider>(
-                builder: (context, brandsProvider, _) {
-                  return DropdownButtonFormField<String>(
-                    value: selectedVehicleBrandId,
-                    hint: Text(S.of(context).brand),
-                    items: brandsProvider.brands.map((brand) {
-                      return DropdownMenuItem<String>(
-                        value: brand.idBrand.toString(),
-                        child: Text(brand.brandName ?? 'N/A'),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedVehicleBrandId = value;
-                        if (value != null) {
-                          vehicleModelsProviders.loadModelsByBrand(int.parse(value));
-                        }
-                        selectedVehicleModelId = null;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.directions_car, color: AppStyle.primary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: const BorderSide(color: AppStyle.primary, width: 1.0),
-                      ),
-                    ),
-                  );
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el peso del vehículo';
+                  }
+                  return null;
                 },
               ),
               const SizedBox(height: 16),
-              Consumer<ModelProvider>(
-                builder: (context, modelProvider, _) {
-                  return DropdownButtonFormField<String>(
-                    value: selectedVehicleModelId,
-                    hint: Text(S.of(context).model),
-                    items: modelProvider.models.map((model) {
-                      return DropdownMenuItem<String>(
-                        value: model.idModel.toString(),
-                        child: Text(model.modelName ?? 'N/A'),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedVehicleModelId = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.directions_car, color: AppStyle.primary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: const BorderSide(color: AppStyle.primary, width: 1.0),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              // ... (resto de los dropdowns)
+
+              // Tipo de combustible
+
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     ),
     negativeText: S.of(context).cancel,
     positiveOnPressed: () async {
       if (vehiclePlateController.text.isNotEmpty && selectedFuelTypeId != null) {
+                final userProvider = Provider.of<UserProvider>(context, listen: false);
+
         final personId = userProvider.personId ?? 0;
         
         await provider.updateVehicle(
-          vehicle.idVehicle ?? 0, // ID del vehículo a actualizar
+          vehicle.idVehicle ??  0,
           vehiclePlateController.text,
           vehicleChassisNumberController.text,
           vehicleEngineNumberController.text,
@@ -800,6 +762,7 @@ void showEditVehicleDialog(BuildContext context, StVehicleResponse vehicle) {
           int.parse(selectedVehiclesCountryId!),
           personId,
         );
+        
         Navigator.of(context, rootNavigator: true).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
