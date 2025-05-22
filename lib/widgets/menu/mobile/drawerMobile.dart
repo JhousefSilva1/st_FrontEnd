@@ -45,7 +45,7 @@ class SmartTollsMobileDrawer extends StatelessWidget{
             DrawerListTile(icon: Icons.home, onTap: () => drawerProvider.goToHomeAdmin(context), title: S.of(context).home),
             DrawerListTile(icon: Icons.account_circle_rounded, onTap: () => drawerProvider.goToProfile(context), title: S.of(context).profile),
             DrawerListTile(icon: Icons.car_crash, onTap: () => drawerProvider.goToVehiclesCustomer(context), title: S.of(context).myVehicles),
-            // const Spacer(),
+            DrawerListTile(icon: Icons.wallet_outlined, onTap: (){}, title: S.of(context).wallet),
             DrawerListTile(icon: Icons.logout_rounded, onTap: () {}, title: S.of(context).logout),
           ],
         ),
