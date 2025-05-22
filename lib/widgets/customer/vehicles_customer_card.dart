@@ -3,6 +3,8 @@ import 'package:smarttolls/api/response/admin/st_vehicles_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
+import '../../views/customer/vehicles/vehicles_customer_view.dart';
+
 class VehiclesCustomerCard extends StatelessWidget {
   final StVehicleResponse vehicle;
 
@@ -31,6 +33,18 @@ class VehiclesCustomerCard extends StatelessWidget {
             child: _buildInfoSection(context),
           ),
           _buildLocationSection(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit, color: AppStyle.primary),
+                  onPressed: () => showEditVehicleDialog(context, vehicle),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

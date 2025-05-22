@@ -483,6 +483,43 @@ Future<StResponse<StVehicleResponse>> addVehicle(StVehiclesRequest vehicleReques
   }
 }
 
+// edit vehicle
+// En SmartTollsApi
+Future<StResponse<StVehicleResponse>> updateVehicle(int vehicleId, StVehiclesRequest vehicleRequest) async {
+  try {
+    final response = await httpPut('$_baseUrl/vehicles/update/$vehicleId', getHeaders(), jsonEncode(vehicleRequest.toJson()));
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StVehicleResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StVehicleResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al actualizar el vehículo',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StVehicleResponse>.createEmpty();
+      }
+    }
+    
+    final responseJson = json.decode(response.body);
+    final vehicleData = StVehicleResponse.create().fromMap(responseJson['data']);
+    return StResponse<StVehicleResponse>(
+      data: vehicleData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StVehicleResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la actualización del vehículo',
+      error: e.toString(),
+    );
+  }
+}
 // COUNTRY AND CITY MS
 
 // create Country

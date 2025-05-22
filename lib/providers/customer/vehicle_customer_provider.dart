@@ -96,6 +96,63 @@ class VehiclesCustomerProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // En VehiclesCustomerProvider
+Future<void> updateVehicle(
+  int vehicleId, // ID del vehículo a actualizar
+  String licensePlate,
+  String chassisNumber,
+  String engineNumber,
+  String manufacturingYear,
+  String weight,
+  int idFuelTypes,
+  int idVehiclesColors,
+  int idVehiclesModels,
+  int idVehiclesType,
+  int idVehiclesBrand,
+  int idCity,
+  int idCountry,
+  int personId, // Mantenemos el personId para recargar la lista después
+) async {
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+
+  try {
+    final request = StVehiclesRequest(
+      licensePlate: licensePlate,
+      chassisNumber: chassisNumber,
+      engineNumber: engineNumber,
+      manufacturingYear: manufacturingYear,
+      weight: double.parse(weight),
+      idFuelTypes: idFuelTypes,
+      idVehiclesColors: idVehiclesColors,
+      idVehiclesModels: idVehiclesModels,
+      idVehiclesType: idVehiclesType,
+      idVehiclesBrand: idVehiclesBrand,
+      idCity: idCity,
+      idCountry: idCountry,
+      idPerson: personId,
+    );
+    
+    final response = await SmartTollsApi().updateVehicle(vehicleId, request);
+    debugPrint('API Response: ${response.status} - ${response.message}');
+
+    if (response.isSuccess()) {
+      // Recargar la lista de vehículos después de actualizar
+      await loadCustomerVehicles(personId);
+    } else {
+      _errorMessage = response.message ?? 'Error al actualizar el vehículo';
+    }
+  } catch (e, stackTrace) {
+    debugPrint('Error en updateVehicle: $e');
+    debugPrint('Stack trace: $stackTrace');
+    _errorMessage = 'Error de conexión: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
   void retryLoading(int personId) {
     _errorMessage = null;
     notifyListeners();

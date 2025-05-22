@@ -993,7 +993,10 @@ class S {
       args: [],
     );
   }
-
+  /// `update`
+  String get update {
+    return Intl.message('update', name: 'update', desc: '', args: []);
+  }
   /// `Vehicle Type`
   String get vehicleType {
     return Intl.message(
