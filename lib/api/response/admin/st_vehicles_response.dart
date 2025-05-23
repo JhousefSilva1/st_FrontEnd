@@ -9,7 +9,7 @@ class StVehicleResponse implements StResponseService {
   String? engineNumber;
   String? manufacturingYear;
   double? weight;
-  double? wallet;
+
   int vehicleStatus;
   StFuelTypesResponse fuelTypes;
   StVehiclesColorsResponse vehiclesColors;
@@ -27,7 +27,7 @@ class StVehicleResponse implements StResponseService {
     this.engineNumber,
     this.manufacturingYear,
     this.weight,
-    this.wallet,
+
     required this.vehicleStatus,
     required this.fuelTypes,
     required this.vehiclesColors,
@@ -45,7 +45,7 @@ class StVehicleResponse implements StResponseService {
         engineNumber: '',
         manufacturingYear: '',
         weight: 0.0,
-        wallet: 0.0,
+
         vehicleStatus: 0,
         fuelTypes: StFuelTypesResponse.createEmpty(),
         vehiclesColors: StVehiclesColorsResponse.createEmpty(),
@@ -66,7 +66,7 @@ class StVehicleResponse implements StResponseService {
         engineNumber: json['engineNumber'] as String?,
         manufacturingYear: json['manufacturingYear'] as String?,
         weight: (json['weight'] as num?)?.toDouble(),
-        wallet: (json['wallet'] as num?)?.toDouble(),
+
         vehicleStatus: json['vehicleStatus'] as int? ?? 0,
         fuelTypes: json["fuelTypes"]!=null
             ? StFuelTypesResponse.fromJson(json["fuelTypes"] as Map<String, dynamic>)
@@ -99,7 +99,7 @@ class StVehicleResponse implements StResponseService {
       "engineNumber": engineNumber,
       "manufacturingYear": manufacturingYear,
       "weight": weight,
-      "wallet": wallet,
+
       "vehicleStatus": vehicleStatus,
       "fuelTypes": fuelTypes.toJson(),
       "vehiclesColors": vehiclesColors.toJson(),
@@ -124,7 +124,7 @@ class StVehicleResponse implements StResponseService {
         engineNumber: json['engineNumber'] as String?,
         manufacturingYear: json['manufacturingYear'] as String?,
         weight: (json['weight'] as num?)?.toDouble(),
-        wallet: (json['wallet'] as num?)?.toDouble(),
+
         vehicleStatus: json['vehicleStatus'] as int? ?? 0,
         fuelTypes: json["fuelTypes"]!=null
             ? StFuelTypesResponse.fromJson(json["fuelTypes"] as Map<String, dynamic>)

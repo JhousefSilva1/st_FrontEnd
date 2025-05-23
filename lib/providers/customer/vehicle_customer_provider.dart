@@ -68,6 +68,7 @@ class VehiclesCustomerProvider extends ChangeNotifier {
         engineNumber: engineNumber,
         manufacturingYear: manufacturingYear,
         weight: double.parse(weight),
+        
         idFuelTypes: idFuelTypes,
         idVehiclesColors: idVehiclesColors,
         idVehiclesModels: idVehiclesModels,

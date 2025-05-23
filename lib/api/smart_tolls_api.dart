@@ -11,6 +11,8 @@ import 'package:smarttolls/config/enviroment.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/models/models.dart';
 
+import 'response/customer/st_wallet_response.dart';
+
 class SmartTollsApi {
   static const int authorizationForbidden = 403;
   static const int authorizationUnauthorized = 401;
@@ -517,6 +519,43 @@ Future<StResponse<StVehicleResponse>> updateVehicle(int vehicleId, StVehiclesReq
       status: HttpStatus.internalServerError,
       message: 'Error durante la actualización del vehículo',
       error: e.toString(),
+    );
+  }
+}
+// wallet
+
+Future<StResponse<StWalletResponse>> getWalletByVehicleId(int vehicleId) async {
+  try {
+    final response = await httpGet('$_baseUrl/vehicles/$vehicleId/wallet', getHeaders());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    if (responseData['data'] == null) {
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'No wallet data available',
+      );
+    }
+    
+    final wallet = StWalletResponse.fromJson(responseData['data']);
+    return StResponse(
+      data: wallet,
+      status: responseData['status'] ?? 200,
+      message: responseData['message'] ?? 'OK',
+    );
+  } catch (e, stackTrace) {
+    debugPrint('Error in getWalletByVehicleId: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
     );
   }
 }

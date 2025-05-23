@@ -120,7 +120,6 @@ class VehiclesCustomerCard extends StatelessWidget {
         const SizedBox(height: 8),
         _buildInfoItem(Icons.color_lens, S.of(context).color, vehicle.vehiclesColors.colorName ?? 'N/A'),
         const SizedBox(height: 8),
-        _buildInfoItem(Icons.wallet, S.of(context).wallet, vehicle.wallet != null ? '${vehicle.wallet} BOB' : 'N/A'),
       ],
     );
   }
