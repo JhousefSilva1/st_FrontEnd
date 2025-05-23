@@ -23,19 +23,19 @@ class RechargeWalletView extends StatelessWidget {
           text: S.of(context).rechargeWallet,
         ),
         backgroundColor: AppStyle.ligthGrey,
-        drawer: isMobile? const SmartTollsDrawer(): null,
-        body: isMobile? const SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RechargeWalletMobileView()
-              ],
-            ),
-          ),
-        ): const RechargeWalletTabletView(),
+        drawer: isMobile ? const SmartTollsDrawer() : null,
+        body: isMobile
+            ? const SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [RechargeWalletMobileView()],
+                  ),
+                ),
+              )
+            : const RechargeWalletTabletView(),
       ),
     );
   }
@@ -47,9 +47,7 @@ class RechargeWalletMobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Column(
-      children: [
-        RechargeWalletBody()
-      ],
+      children: [RechargeWalletBody()],
     );
   }
 }
@@ -68,9 +66,7 @@ class RechargeWalletTabletView extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Column(
-                children: [
-                  RechargeWalletBody()
-                ],
+                children: [RechargeWalletBody()],
               ),
             ),
           ),
@@ -80,24 +76,39 @@ class RechargeWalletTabletView extends StatelessWidget {
   }
 }
 
-class RechargeWalletBody extends StatelessWidget {
+class RechargeWalletBody extends StatefulWidget {
   const RechargeWalletBody({super.key});
 
   @override
+  State<RechargeWalletBody> createState() => _RechargeWalletBodyState();
+}
+
+class _RechargeWalletBodyState extends State<RechargeWalletBody> {
+  final TextEditingController _manualAmountController = TextEditingController();
+
+  @override
+  void dispose() {
+    _manualAmountController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final WalletProvider walletProvider = Provider.of<WalletProvider>(context);
+    final walletProvider = Provider.of<WalletProvider>(context);
+    final selectedVehicle = walletProvider.selectedVehicle;
+    final wallet = walletProvider.selectedVehicleWallet;
+
     return Column(
       children: [
         const SizedBox(height: 16),
-        const Align(
-          alignment: Alignment.center,
-          child: CreditCardUi(
+        if (selectedVehicle != null && wallet != null)
+          CreditCardUi(
             autoHideBalance: false,
-            balance: 128.32434343,
-            cardHolderFullName: '5617-KNK',
-            cardNumber: '1234567812345678',
+            balance: wallet.balance ?? 0.0,
+            cardHolderFullName: selectedVehicle.licensePlate ?? 'N/A',
+            cardNumber: wallet.walletNumber ?? '0000000000000000',
             cardType: CardType.debit,
-            cvvNumber: '',
+            cvvNumber: wallet.walletCVS ?? '000',
             doesSupportNfc: true,
             enableFlipping: false,
             placeNfcIconAtTheEnd: true,
@@ -109,7 +120,6 @@ class RechargeWalletBody extends StatelessWidget {
             validThru: '',
             width: double.infinity,
           ),
-        ),
         const SizedBox(height: 16),
         Column(
           children: [
@@ -178,6 +188,7 @@ class RechargeWalletBody extends StatelessWidget {
               const SizedBox(height: 16),
             if (walletProvider.itemSelectOpt == 6)
               CustomField(
+                controller: _manualAmountController,
                 hintText: S.of(context).introduceAmount,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(6),
@@ -185,13 +196,53 @@ class RechargeWalletBody extends StatelessWidget {
                 ],
                 keyboardType: TextInputType.number,
               ),
-            const SizedBox(
-              height: 32,
-            ),
+            const SizedBox(height: 32),
             CustomButton(
-              onPressed: () => walletProvider.goToQr(context), 
+              onPressed: () {
+                // Determinar el monto seleccionado
+                double amount;
+                switch (walletProvider.itemSelectOpt) {
+                  case 1:
+                    amount = 5.0;
+                    break;
+                  case 2:
+                    amount = 10.0;
+                    break;
+                  case 3:
+                    amount = 20.0;
+                    break;
+                  case 4:
+                    amount = 30.0;
+                    break;
+                  case 5:
+                    amount = 50.0;
+                    break;
+                  case 6:
+                    // Validar monto manual
+                    final manualAmount = double.tryParse(
+                            _manualAmountController.text) ??
+                        0.0;
+                    if (manualAmount <= 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Ingrese un monto válido')),
+                      );
+                      return;
+                    }
+                    amount = manualAmount;
+                    break;
+                  default:
+                    amount = 0.0;
+                }
+
+                // Preparar la recarga con el vehículo y monto seleccionados
+                walletProvider.prepareRecharge(
+                    selectedVehicle!, amount);
+
+                // Navegar a la pantalla QR
+                walletProvider.goToQr(context);
+              },
               text: S.of(context).next,
-            )
+            ),
           ],
         ),
       ],

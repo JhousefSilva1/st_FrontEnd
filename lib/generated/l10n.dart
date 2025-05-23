@@ -1086,6 +1086,15 @@ class S {
   String get update {
     return Intl.message('update', name: 'update', desc: '', args: []);
   }
+  /// `scanQrToPay`
+  String get scanQrToPay {
+    return Intl.message(
+      'scanQrToPay',
+      name: 'scanQrToPay',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Vehicle Type`
   String get vehicleType {
     return Intl.message(
@@ -1096,13 +1105,30 @@ class S {
     );
   }
 
-
+  /// `noVehicleSelected`
+  String get noVehicleSelected {
+    return Intl.message('noVehicleSelected', name: 'noVehicleSelected', desc: '', args: []);
+  }
   /// `Wallet`
   String get wallet {
     return Intl.message('Wallet', name: 'wallet', desc: '', args: []);
   }
-
-
+  /// `pay`
+  String get pay {
+    return Intl.message('pay', name: 'pay', desc: '', args: []);
+  }
+  /// `Recharge`
+  String get recharge {
+    return Intl.message('Recharge', name: 'recharge', desc: '', args: []);
+  }
+  /// `success`
+  String get success {
+    return Intl.message('success', name: 'success', desc: '', args: []);
+  }
+  /// `comingSoon`
+  String get comingSoon {
+    return Intl.message('comingSoon', name: 'comingSoon', desc: '', args: []);
+  }
   /// `Weight`
   String get weight {
     return Intl.message('Weight', name: 'weight', desc: '', args: []);

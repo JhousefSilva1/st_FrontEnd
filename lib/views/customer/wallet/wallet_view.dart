@@ -6,6 +6,7 @@ import 'package:smarttolls/api/response/customer/st_wallet_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/widgets/menu/mobile/drawerMobile.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 import 'package:u_credit_card/u_credit_card.dart';
 
@@ -24,7 +25,7 @@ class WalletView extends StatelessWidget {
           text: S.of(context).wallet,
         ),
         backgroundColor: AppStyle.ligthGrey,
-        drawer: isMobile ? const SmartTollsDrawer() : null,
+        drawer: isMobile ? const SmartTollsMobileDrawer() : null,
         body: isMobile 
             ? const SingleChildScrollView(
                 child: Padding(
@@ -64,7 +65,7 @@ class WalletTabletView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Row(
       children: [
-        SmartTollsDrawer(),
+        SmartTollsMobileDrawer(),
         Expanded(
           flex: 2,
           child: SingleChildScrollView(

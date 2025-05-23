@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
@@ -20,19 +23,19 @@ class QrView extends StatelessWidget {
           text: S.of(context).payWithQr,
         ),
         backgroundColor: AppStyle.ligthGrey,
-        drawer: isMobile? const SmartTollsDrawer(): null,
-        body: isMobile? const SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                QrMobileView()
-              ],
-            ),
-          ),
-        ): const QrTabletView(),
+        drawer: isMobile ? const SmartTollsDrawer() : null,
+        body: isMobile
+            ? const SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [QrMobileView()],
+                  ),
+                ),
+              )
+            : const QrTabletView(),
       ),
     );
   }
@@ -44,9 +47,7 @@ class QrMobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Column(
-      children: [
-        QrBody()
-      ],
+      children: [QrBody()],
     );
   }
 }
@@ -65,9 +66,7 @@ class QrTabletView extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Column(
-                children: [
-                  QrBody()
-                ],
+                children: [QrBody()],
               ),
             ),
           ),
@@ -82,6 +81,19 @@ class QrBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final walletProvider = Provider.of<WalletProvider>(context);
+    final vehicle = walletProvider.vehicleToRecharge;
+    final amount = walletProvider.selectedAmount;
+
+    if (vehicle == null) {
+      return Center(
+        child: Text(
+          S.of(context).noVehicleSelected,
+          style: const TextStyle(color: Colors.red),
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -89,10 +101,7 @@ class QrBody extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: AppStyle.primary, 
-              width: 1.0
-            ),
+            border: Border.all(color: AppStyle.primary, width: 1.0),
             color: Colors.white,
           ),
           padding: const EdgeInsets.all(16),
@@ -101,7 +110,12 @@ class QrBody extends StatelessWidget {
             child: Column(
               children: [
                 QrImageView(
-                  data: 'This QR code has an embedded image as well',
+                  data: jsonEncode({
+                    'vehicleId': vehicle.idVehicle,
+                    'licensePlate': vehicle.licensePlate,
+                    'amount': amount,
+                    'timestamp': DateTime.now().toIso8601String(),
+                  }),
                   version: QrVersions.auto,
                   size: 250,
                   gapless: true,
@@ -111,27 +125,79 @@ class QrBody extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text('Bs. 20',
-                  style: TextStyle(
+                Text(
+                  'Bs. $amount',
+                  style: const TextStyle(
                     color: AppStyle.primary,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 16),
-                ExtraText(data: '5617-KNK', title: S.of(context).plate, flexFirst: 1, flexSecond: 1),
-                ExtraText(data: 'Suzuki', title: S.of(context).brand, flexFirst: 1, flexSecond: 1),
-                ExtraText(data: 'Dzire', title: S.of(context).model, flexFirst: 1, flexSecond: 1),
-                ExtraText(data: '2022', title: S.of(context).year, flexFirst: 1, flexSecond: 1),
+                ExtraText(
+                  data: vehicle.licensePlate ?? 'N/A',
+                  title: S.of(context).plate,
+                  flexFirst: 1,
+                  flexSecond: 1,
+                ),
+                ExtraText(
+                  data: vehicle.vehiclesModels?.brand.brandName ?? 'N/A',
+                  title: S.of(context).brand,
+                  flexFirst: 1,
+                  flexSecond: 1,
+                ),
+                ExtraText(
+                  data: vehicle.vehiclesModels?.modelName ?? 'N/A',
+                  title: S.of(context).model,
+                  flexFirst: 1,
+                  flexSecond: 1,
+                ),
+                ExtraText(
+                  data: vehicle.manufacturingYear ?? 'N/A',
+                  title: S.of(context).year,
+                  flexFirst: 1,
+                  flexSecond: 1,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        onPressed: () {
+                          // TODO: Implementar descarga de QR
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(S.of(context).comingSoon),
+                            ),
+                          );
+                        },
+                        text: S.of(context).download,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: CustomButton(
+                        onPressed: () async {
+                          await walletProvider.confirmRecharge(context);
+                        },
+                        text: S.of(context).pay,
+                        color: AppStyle.green,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
         ),
         const SizedBox(height: 16),
-        CustomButton(
-          onPressed: () {}, 
-          text: S.of(context).download
-        )
+        Text(
+          S.of(context).scanQrToPay,
+          style: const TextStyle(
+            color: AppStyle.grey,
+            fontSize: 14,
+          ),
+        ),
       ],
     );
   }

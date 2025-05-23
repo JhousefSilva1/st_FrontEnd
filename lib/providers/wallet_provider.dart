@@ -63,11 +63,76 @@ class WalletProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  
+
+  
+
   void selectVehicle(StVehicleResponse? vehicle) async {
     _selectedVehicle = vehicle;
     await _loadWalletForSelectedVehicle();
     notifyListeners();
   }
+   double _selectedAmount = 0.0;
+  double get selectedAmount => _selectedAmount;
+  
+  StVehicleResponse? _vehicleToRecharge;
+  StVehicleResponse? get vehicleToRecharge => _vehicleToRecharge;
+
+  // Método para preparar la recarga
+  void prepareRecharge(StVehicleResponse vehicle, double amount) {
+    _vehicleToRecharge = vehicle;
+    _selectedAmount = amount;
+    notifyListeners();
+  }
+
+  // Método para realizar la recarga
+ Future<void> confirmRecharge(BuildContext context) async {
+    if (_vehicleToRecharge == null || 
+        _vehicleToRecharge?.idVehicle == null || 
+        _selectedVehicleWallet?.idWallet == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No se ha seleccionado un vehículo válido')),
+      );
+      return;
+    }
+    
+    try {
+      final response = await SmartTollsApi().updateWalletBalance(
+        _selectedVehicleWallet!.idWallet!, // Usamos el ID de la wallet
+        _selectedAmount,
+      );
+      
+      if (response.isSuccess()) {
+        // Actualizar el saldo localmente
+        _selectedVehicleWallet = response.data;
+        await loadUserVehicles(); // Recargar los datos
+        
+        // Mostrar mensaje de éxito
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Recarga exitosa: Bs. $_selectedAmount')),
+        );
+        
+        // Navegar de regreso
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop(); // Cerrar QR view
+        }
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop(); // Cerrar recharge view
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response.message ?? 'Error en la recarga')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
+
+
 
   void retryLoading() {
     _errorMessage = null;

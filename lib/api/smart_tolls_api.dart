@@ -559,6 +559,50 @@ Future<StResponse<StWalletResponse>> getWalletByVehicleId(int vehicleId) async {
     );
   }
 }
+
+/// Update wallet balance
+Future<StResponse<StWalletResponse>> updateWalletBalance(
+  int walletId, 
+  double amount
+) async {
+  try {
+    final response = await httpPut(
+      '$_baseUrl/wallets/$walletId/balance',
+      getHeaders(),
+      jsonEncode({'amount': amount}), // Cambiado a 'amount' en lugar de 'balance'
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    if (responseData['data'] == null) {
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'No wallet data available',
+      );
+    }
+    
+    final wallet = StWalletResponse.fromJson(responseData['data']);
+    return StResponse(
+      data: wallet,
+      status: responseData['status'] ?? 200,
+      message: responseData['message'] ?? 'Balance actualizado exitosamente',
+    );
+  } catch (e, stackTrace) {
+    debugPrint('Error in updateWalletBalance: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
 // COUNTRY AND CITY MS
 
 // create Country
