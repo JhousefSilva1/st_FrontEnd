@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
+import 'package:smarttolls/api/request/operador/tolls/transaction_request.dart';
 import 'package:smarttolls/api/response/admin/st_vehicles_response.dart';
 import 'package:smarttolls/api/response/customer/st_wallet_response.dart';
-import 'package:smarttolls/models/st_response.dart';
+import 'package:smarttolls/api/response/admin/st_country_response.dart';
+import 'package:smarttolls/api/response/admin/st_city_response.dart';
 
 class TollsOperadorProvider extends ChangeNotifier {
   List<StTollsResponse> _tolls = [];
@@ -13,8 +15,17 @@ class TollsOperadorProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   String _licensePlateQuery = '';
-  final double _tollChargeAmount = 2.0; // Monto fijo del peaje
+  final double _tollChargeAmount = 2.0;
 
+  // Filtros de ubicación
+  int? _selectedCountryId;
+  int? _selectedCityId;
+  int? _selectedPlaceId;
+  List<StCountryResponse> _countries = [];
+  List<StCityResponse> _cities = [];
+  List<StPlaceResponse> _places = [];
+
+  // Getters
   List<StTollsResponse> get tolls => _tolls;
   StTollsResponse? get selectedToll => _selectedToll;
   List<StVehicleResponse> get foundVehicles => _foundVehicles;
@@ -24,6 +35,17 @@ class TollsOperadorProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   String get licensePlateQuery => _licensePlateQuery;
   double get tollChargeAmount => _tollChargeAmount;
+  int? get selectedCountryId => _selectedCountryId;
+  int? get selectedCityId => _selectedCityId;
+  int? get selectedPlaceId => _selectedPlaceId;
+  List<StCountryResponse> get countries => _countries;
+  List<StCityResponse> get cities => _cities;
+  List<StPlaceResponse> get places => _places;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   Future<void> loadAllTolls() async {
     _isLoading = true;
@@ -35,6 +57,12 @@ class TollsOperadorProvider extends ChangeNotifier {
       
       if (response.isSuccess()) {
         _tolls = response.dataList ?? [];
+        
+        // Filtrar por lugar si está seleccionado
+        if (_selectedPlaceId != null) {
+          _tolls = _tolls.where((toll) => toll.places.idPlaces == _selectedPlaceId).toList();
+        }
+        
         if (_tolls.isNotEmpty) {
           _selectedToll = _tolls.first;
         }
@@ -47,6 +75,69 @@ class TollsOperadorProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> loadCountries() async {
+    _isLoading = true;
+    notifyListeners();
+    
+    try {
+      final response = await SmartTollsApi().getAllCountries();
+      if (response.isSuccess()) {
+        _countries = response.dataList ?? [];
+      }
+    } catch (e) {
+      _errorMessage = 'Error al cargar países: ${e.toString()}';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
+  Future<void> loadCitiesByCountry(int countryId) async {
+    _isLoading = true;
+    notifyListeners();
+    
+    try {
+      final response = await SmartTollsApi().getCitiesByCountry(countryId);
+      if (response.isSuccess()) {
+        _cities = response.dataList ?? [];
+        _selectedCountryId = countryId;
+        _selectedCityId = null;
+        _selectedPlaceId = null;
+        _places = [];
+      }
+    } catch (e) {
+      _errorMessage = 'Error al cargar ciudades: ${e.toString()}';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
+  Future<void> loadPlacesByCity(int cityId) async {
+    _isLoading = true;
+    notifyListeners();
+    
+    try {
+      final response = await SmartTollsApi().getPlacesByCity(cityId);
+      if (response.isSuccess()) {
+        _places = response.dataList ?? [];
+        _selectedCityId = cityId;
+        _selectedPlaceId = null;
+      }
+    } catch (e) {
+      _errorMessage = 'Error al cargar lugares: ${e.toString()}';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
+  void selectPlace(int placeId) {
+    _selectedPlaceId = placeId;
+    notifyListeners();
+    loadAllTolls();
   }
 
   void setLicensePlateQuery(String query) {
@@ -70,11 +161,9 @@ class TollsOperadorProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Primero buscamos todos los vehículos (esto podría optimizarse con un endpoint específico)
       final allVehiclesResponse = await SmartTollsApi().getAllVehicles();
       
       if (allVehiclesResponse.isSuccess()) {
-        // Filtramos por matrícula (case insensitive)
         _foundVehicles = (allVehiclesResponse.dataList ?? []).where((vehicle) {
           return vehicle.licensePlate?.toLowerCase().contains(_licensePlateQuery.toLowerCase()) ?? false;
         }).toList();
@@ -97,8 +186,6 @@ class TollsOperadorProvider extends ChangeNotifier {
     _selectedVehicle = vehicle;
     _errorMessage = null;
     notifyListeners();
-
-    // Cargamos la wallet del vehículo seleccionado
     await _loadVehicleWallet();
   }
 
@@ -124,55 +211,66 @@ class TollsOperadorProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> chargeTollFee(BuildContext context) async {
-    if (_selectedToll == null || _selectedVehicle == null || _vehicleWallet == null) {
-      _errorMessage = 'Seleccione un peaje y un vehículo válido';
-      notifyListeners();
-      return false;
-    }
-
-    if ((_vehicleWallet?.balance ?? 0) < _tollChargeAmount) {
-      _errorMessage = 'El vehículo no tiene saldo suficiente';
-      notifyListeners();
-      return false;
-    }
-
-    _isLoading = true;
+Future<bool> chargeTollFee(BuildContext context) async {
+  if (_selectedToll == null || _selectedVehicle == null || _vehicleWallet == null) {
+    _errorMessage = 'Seleccione un peaje y un vehículo válido';
     notifyListeners();
-
-    try {
-      final response = await SmartTollsApi().updateWalletBalance(
-        _vehicleWallet!.idWallet!,
-        -_tollChargeAmount, // Enviamos negativo para restar
-      );
-
-      if (response.isSuccess()) {
-        // Actualizamos el saldo localmente
-        _vehicleWallet = response.data;
-        
-        // Mostrar mensaje de éxito
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Cobro exitoso: Bs. $_tollChargeAmount')),
-        );
-
-        // Limpiar selección para nuevo cobro
-        _selectedVehicle = null;
-        _vehicleWallet = null;
-        _licensePlateQuery = '';
-        
-        return true;
-      } else {
-        _errorMessage = response.message ?? 'Error al realizar el cobro';
-        return false;
-      }
-    } catch (e) {
-      _errorMessage = 'Error: ${e.toString()}';
-      return false;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+    return false;
   }
+
+  if ((_vehicleWallet?.balance ?? 0) < _tollChargeAmount) {
+    _errorMessage = 'El vehículo no tiene saldo suficiente';
+    notifyListeners();
+    return false;
+  }
+
+  _isLoading = true;
+  notifyListeners();
+
+  try {
+    // 1. Actualizar saldo en la wallet
+    final walletResponse = await SmartTollsApi().updateWalletBalance(
+      _vehicleWallet!.idWallet!,
+      -_tollChargeAmount,
+    );
+
+    if (!walletResponse.isSuccess()) {
+      _errorMessage = walletResponse.message ?? 'Error al actualizar el saldo';
+      return false;
+    }
+
+    // 2. Registrar la transacción
+    final transactionRequest = TransactionRequest(
+      vehicleId: _selectedVehicle!.idVehicle!,
+      tollId: _selectedToll!.idTolls!,
+      walletId: _vehicleWallet!.idWallet!,
+    );
+
+    final transactionResponse = await SmartTollsApi().registerTollPass(transactionRequest);
+
+    if (transactionResponse.isSuccess()) {
+      // Actualizar datos locales
+      _vehicleWallet = walletResponse.data;
+      
+      // Limpiar selección
+      _selectedVehicle = null;
+      _vehicleWallet = null;
+      _licensePlateQuery = '';
+      _foundVehicles = [];
+      
+      return true;
+    } else {
+      _errorMessage = transactionResponse.message ?? 'Error al registrar la transacción';
+      return false;
+    }
+  } catch (e) {
+    _errorMessage = 'Error: ${e.toString()}';
+    return false;
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
 
   void retryLoading() {
     _errorMessage = null;

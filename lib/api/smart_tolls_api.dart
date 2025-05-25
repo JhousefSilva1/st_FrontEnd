@@ -7,11 +7,13 @@ import 'package:http/http.dart' as http;
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/api/request/admin/st_vehicles_request.dart';
 import 'package:smarttolls/api/request/customer/signup_request.dart';
+import 'package:smarttolls/api/request/operador/tolls/transaction_request.dart';
 import 'package:smarttolls/config/enviroment.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/models/models.dart';
 
 import 'response/customer/st_wallet_response.dart';
+import 'response/operador/tolls/transaction_response.dart';
 
 class SmartTollsApi {
   static const int authorizationForbidden = 403;
@@ -1087,6 +1089,41 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
     
   } catch (e, stackTrace) {
     debugPrint('Error en getPersonById: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
+
+// tools by operador
+
+// registerTollPass
+Future<StResponse<TransactionResponse>> registerTollPass(TransactionRequest request) async {
+  try {
+    final response = await httpPost(
+      '$_baseUrl/transactions/process',
+      getHeaders(),
+      jsonEncode(request.toJson()),
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    return StResponse(
+      status: responseData['status'] ?? 200,
+      message: responseData['message'] ?? 'Transacción exitosa',
+      data: TransactionResponse.fromJson(responseData['data']),
+    );
+  } catch (e, stackTrace) {
+    debugPrint('Error en registerTollPass: $e');
     debugPrint('Stack trace: $stackTrace');
     return StResponse(
       status: 500,

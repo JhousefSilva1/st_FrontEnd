@@ -82,9 +82,16 @@ class TollsOperadorMobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.findAncestorStateOfType<_TollsOperadorViewState>();
+    final provider = Provider.of<TollsOperadorProvider>(context, listen: false);
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.loadCountries();
+    });
 
     return Column(
       children: [
+        const LocationFilterSection(),
+        const SizedBox(height: 24),
         // Sección de la cámara
         Card(
           elevation: 2,
@@ -166,6 +173,11 @@ class TollsOperadorTabletView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.findAncestorStateOfType<_TollsOperadorViewState>();
+    final provider = Provider.of<TollsOperadorProvider>(context, listen: false);
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.loadCountries();
+    });
 
     return Row(
       children: [
@@ -182,64 +194,102 @@ class TollsOperadorTabletView extends StatelessWidget {
                     // Sección de cámara (70%)
                     Expanded(
                       flex: 7,
-                      child: Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Cámara para lectura de placa',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Divider(height: 24),
-                              if (state?._controller != null && state!._controller!.value.isInitialized)
-                                AspectRatio(
-                                  aspectRatio: 16/9,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: CameraPreview(state._controller!),
-                                  ),
-                                )
-                              else
-                                Container(
-                                  height: 200,
-                                  color: Colors.black,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
-                              const SizedBox(height: 16),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
+                        children: [
+                          // Mostrar IDs seleccionados// En la sección de controles (30%)
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ElevatedButton.icon(
-                                    icon: const Icon(Icons.camera_alt),
-                                    label: const Text('Tomar foto'),
-                                    onPressed: () {
-                                      // Lógica para tomar foto
-                                    },
-                                  ),
-                                  const SizedBox(width: 16),
-                                  ElevatedButton.icon(
-                                    icon: const Icon(Icons.qr_code_scanner),
-                                    label: const Text('Escanear QR'),
-                                    onPressed: () {
-                                      // Lógica para escanear QR
+                                  const Text('IDs para Transacción:', 
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 8),
+                                  Consumer<TollsOperadorProvider>(
+                                    builder: (context, provider, _) {
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          if (provider.selectedVehicle != null)
+                                            Text('Vehículo ID: ${provider.selectedVehicle?.idVehicle}'),
+                                          if (provider.selectedToll != null)
+                                            Text('Peaje ID: ${provider.selectedToll?.idTolls}'),
+                                          if (provider.vehicleWallet != null)
+                                            Text('Wallet ID: ${provider.vehicleWallet?.idWallet}'),
+                                          const SizedBox(height: 8),
+                                          Text('Monto a cobrar: Bs. ${provider.tollChargeAmount.toStringAsFixed(2)}',
+                                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                                        ],
+                                      );
                                     },
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 16),
+                          // Cámara
+                          Card(
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Cámara para lectura de placa',
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const Divider(height: 24),
+                                  if (state?._controller != null && state!._controller!.value.isInitialized)
+                                    AspectRatio(
+                                      aspectRatio: 16/9,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: CameraPreview(state._controller!),
+                                      ),
+                                    )
+                                  else
+                                    Container(
+                                      height: 200,
+                                      color: Colors.black,
+                                      child: const Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    ),
+                                  const SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        icon: const Icon(Icons.camera_alt),
+                                        label: const Text('Tomar foto'),
+                                        onPressed: () {
+                                          // Lógica para tomar foto
+                                        },
+                                      ),
+                                      const SizedBox(width: 16),
+                                      ElevatedButton.icon(
+                                        icon: const Icon(Icons.qr_code_scanner),
+                                        label: const Text('Escanear QR'),
+                                        onPressed: () {
+                                          // Lógica para escanear QR
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 24),
@@ -248,6 +298,8 @@ class TollsOperadorTabletView extends StatelessWidget {
                       flex: 3,
                       child: Column(
                         children: [
+                          const LocationFilterSection(),
+                          const SizedBox(height: 24),
                           const TollSelectionSection(),
                           const SizedBox(height: 24),
                           const VehicleSearchSection(),
@@ -265,6 +317,109 @@ class TollsOperadorTabletView extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class LocationFilterSection extends StatelessWidget {
+  const LocationFilterSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<TollsOperadorProvider>(context);
+
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Filtrar por ubicación',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Divider(height: 24),
+            
+            // Dropdown de Países
+            DropdownButtonFormField<int>(
+              value: provider.selectedCountryId,
+              hint: Text('Seleccione país'),
+              items: provider.countries.map((country) {
+                return DropdownMenuItem<int>(
+                  value: country.idCountry,
+                  child: Text(country.countryName ?? 'N/A'),
+                );
+              }).toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  provider.loadCitiesByCountry(value);
+                }
+              },
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.flag),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Dropdown de Ciudades
+            DropdownButtonFormField<int>(
+              value: provider.selectedCityId,
+              hint: Text('Seleccione ciudad'),
+              items: provider.cities.map((city) {
+                return DropdownMenuItem<int>(
+                  value: city.idCity,
+                  child: Text(city.cityName ?? 'N/A'),
+                );
+              }).toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  provider.loadPlacesByCity(value);
+                }
+              },
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.location_city),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Dropdown de Lugares
+            DropdownButtonFormField<int>(
+              value: provider.selectedPlaceId,
+              hint: Text('Seleccione lugar'),
+              items: provider.places.map((place) {
+                return DropdownMenuItem<int>(
+                  value: place.idPlaces,
+                  child: Text(place.placeName ?? 'N/A'),
+                );
+              }).toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  provider.selectPlace(value);
+                }
+              },
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.place),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -560,22 +715,72 @@ class ChargeButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
+          backgroundColor: AppStyle.primary, // Color primario de tu app
         ),
         onPressed: (provider.isLoading || (provider.vehicleWallet?.balance ?? 0) < provider.tollChargeAmount)
             ? null
-            : () async {
-                final success = await provider.chargeTollFee(context);
-                if (success) {
-                  // Lógica adicional si es necesario
-                }
-              },
+            : () => _processPayment(context, provider),
         child: provider.isLoading
-            ? const CircularProgressIndicator()
+            ? const CircularProgressIndicator(color: Colors.white)
             : Text(
-                S.of(context).charge.toUpperCase(),
-                style: const TextStyle(fontSize: 16),
+                'COBRAR Bs. ${provider.tollChargeAmount.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
       ),
     );
+  }
+
+  Future<void> _processPayment(BuildContext context, TollsOperadorProvider provider) async {
+    // Mostrar diálogo de confirmación
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar cobro'),
+        content: Text(
+          '¿Confirmar cobro de Bs. ${provider.tollChargeAmount.toStringAsFixed(2)} '
+          'al vehículo ${provider.selectedVehicle?.licensePlate}?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppStyle.primary,
+            ),
+            child: const Text('Confirmar', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    // Procesar el pago
+    final success = await provider.chargeTollFee(context);
+
+    if (success && context.mounted) {
+      // Mostrar mensaje de éxito
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Cobro exitoso: Bs. ${provider.tollChargeAmount.toStringAsFixed(2)}'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (!success && context.mounted) {
+      // Mostrar mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(provider.errorMessage ?? 'Error en el cobro'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
