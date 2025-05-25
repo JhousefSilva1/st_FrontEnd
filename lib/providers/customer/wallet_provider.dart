@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/api/response/admin/st_vehicles_response.dart';
 import 'package:smarttolls/api/response/customer/st_wallet_response.dart';
+import 'package:smarttolls/api/response/operador/tolls/transaction_response.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/views/views.dart';
 
@@ -12,6 +13,9 @@ class WalletProvider extends ChangeNotifier {
   
   List<StVehicleResponse> _vehicles = [];
   StVehicleResponse? _selectedVehicle;
+
+  List<TransactionResponse> _transactions = [];
+  List<TransactionResponse> get transactions => _transactions;
   StWalletResponse? _selectedVehicleWallet;
   bool _isLoading = false;
   String? _errorMessage;
@@ -44,6 +48,28 @@ class WalletProvider extends ChangeNotifier {
         }
       } else {
         _errorMessage = response.message ?? 'Error al cargar los vehículos';
+      }
+    } catch (e) {
+      _errorMessage = 'Error: ${e.toString()}';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // transactions
+  Future<void> loadTransactionsForVehicle(int vehicleId) async {
+    _isLoading = true;
+    _errorMessage = null;
+    // notifyListeners();
+
+    try {
+      final response = await SmartTollsApi().getTransactionsByVehicleId(vehicleId);
+      
+      if (response.isSuccess()) {
+        _transactions = response.dataList ?? [];
+      } else {
+        _errorMessage = response.message ?? 'Error al cargar transacciones';
       }
     } catch (e) {
       _errorMessage = 'Error: ${e.toString()}';

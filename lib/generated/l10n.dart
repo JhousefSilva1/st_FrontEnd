@@ -650,7 +650,10 @@ class S {
     return Intl.message('Country', name: 'country', desc: '', args: []);
   }
 
-
+/// `noTransactionsFound`
+  String get noTransactionsFound {
+    return Intl.message('noTransactionsFound', name: 'noTransactionsFound', desc: '', args: []);
+  } 
 
 
   /// `Create a new account in Smart Tolls`

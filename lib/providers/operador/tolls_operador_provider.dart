@@ -15,7 +15,7 @@ class TollsOperadorProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   String _licensePlateQuery = '';
-  final double _tollChargeAmount = 2.0;
+  final double _tollChargeAmount = 5.0;
 
   // Filtros de ubicación
   int? _selectedCountryId;

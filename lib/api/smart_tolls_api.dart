@@ -1098,6 +1098,45 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
 }
 
 // tools by operador
+// get transacations by vehicleId
+Future<StResponse<TransactionResponse>> getTransactionsByVehicleId(int vehicleId) async {
+    try {
+      final response = await httpGet('$_baseUrl/transactions/vehicle/$vehicleId', getHeaders());
+      
+      if (response.statusCode >= HttpStatus.badRequest) {
+        return StResponse(
+          status: response.statusCode,
+          message: 'Error del servidor: ${response.statusCode}',
+        );
+      }
+      
+      final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+      
+      if (responseData['data'] == null) {
+        return StResponse(
+          status: responseData['status'] ?? 200,
+          message: responseData['message'] ?? 'No transaction data available',
+        );
+      }
+      
+      final transactions = (responseData['data'] as List)
+          .map((item) => TransactionResponse.fromJson(item))
+          .toList();
+          
+      return StResponse(
+        dataList: transactions,
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'OK',
+      );
+    } catch (e, stackTrace) {
+      debugPrint('Error in getTransactionsByVehicleId: $e');
+      debugPrint('Stack trace: $stackTrace');
+      return StResponse(
+        status: 500,
+        message: 'Error de conexión: ${e.toString()}',
+      );
+    }
+  }
 
 // registerTollPass
 Future<StResponse<TransactionResponse>> registerTollPass(TransactionRequest request) async {

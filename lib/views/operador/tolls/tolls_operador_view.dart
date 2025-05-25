@@ -196,38 +196,7 @@ class TollsOperadorTabletView extends StatelessWidget {
                       flex: 7,
                       child: Column(
                         children: [
-                          // Mostrar IDs seleccionados// En la sección de controles (30%)
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('IDs para Transacción:', 
-                                    style: TextStyle(fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 8),
-                                  Consumer<TollsOperadorProvider>(
-                                    builder: (context, provider, _) {
-                                      return Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          if (provider.selectedVehicle != null)
-                                            Text('Vehículo ID: ${provider.selectedVehicle?.idVehicle}'),
-                                          if (provider.selectedToll != null)
-                                            Text('Peaje ID: ${provider.selectedToll?.idTolls}'),
-                                          if (provider.vehicleWallet != null)
-                                            Text('Wallet ID: ${provider.vehicleWallet?.idWallet}'),
-                                          const SizedBox(height: 8),
-                                          Text('Monto a cobrar: Bs. ${provider.tollChargeAmount.toStringAsFixed(2)}',
-                                            style: const TextStyle(fontWeight: FontWeight.bold)),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+
                           const SizedBox(height: 16),
                           // Cámara
                           Card(
@@ -284,6 +253,38 @@ class TollsOperadorTabletView extends StatelessWidget {
                                         },
                                       ),
                                     ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                                                    // Mostrar IDs seleccionados// En la sección de controles (30%)
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('IDs para Transacción:', 
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 8),
+                                  Consumer<TollsOperadorProvider>(
+                                    builder: (context, provider, _) {
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          if (provider.selectedVehicle != null)
+                                            Text('Vehículo ID: ${provider.selectedVehicle?.idVehicle}'),
+                                          if (provider.selectedToll != null)
+                                            Text('Peaje ID: ${provider.selectedToll?.idTolls}'),
+                                          if (provider.vehicleWallet != null)
+                                            Text('Wallet ID: ${provider.vehicleWallet?.idWallet}'),
+                                          const SizedBox(height: 8),
+                                          Text('Monto a cobrar: Bs. ${provider.tollChargeAmount.toStringAsFixed(2)}',
+                                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                                        ],
+                                      );
+                                    },
                                   ),
                                 ],
                               ),

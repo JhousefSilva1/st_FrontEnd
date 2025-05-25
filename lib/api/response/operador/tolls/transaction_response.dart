@@ -6,6 +6,7 @@ class TransactionResponse implements StResponseService {
   final int? transactionId;
   final int? vehicleId;
   final int? tollId;
+  final String tollName;
   final double? amount;
   final DateTime? transactionDate;
 
@@ -13,6 +14,7 @@ class TransactionResponse implements StResponseService {
     this.transactionId,
     this.vehicleId,
     this.tollId,
+    this.tollName = '',
     this.amount,
     this.transactionDate,
   });
@@ -21,6 +23,7 @@ class TransactionResponse implements StResponseService {
         transactionId: 0,
         vehicleId: 0,
         tollId: 0,
+        tollName: '',
         amount: 0.0,
         transactionDate: DateTime.now(),
       );
@@ -32,6 +35,7 @@ class TransactionResponse implements StResponseService {
         transactionId: json["transactionId"],
         vehicleId: json["vehicleId"],
         tollId: json["tollId"],
+        tollName: json["tollName"] ?? '',
         amount: json["amount"]?.toDouble(),
         transactionDate: DateTime.parse(json["transactionDate"]),
       );
@@ -40,6 +44,7 @@ class TransactionResponse implements StResponseService {
         "transactionId": transactionId,
         "vehicleId": vehicleId,
         "tollId": tollId,
+        "tollName": tollName,
         "amount": amount,
         "transactionDate": transactionDate?.toIso8601String(),
       };
@@ -52,6 +57,7 @@ class TransactionResponse implements StResponseService {
         transactionId: json["transactionId"],
         vehicleId: json["vehicleId"],
         tollId: json["tollId"],
+        tollName: json["tollName"] ?? '',
         amount: json["amount"]?.toDouble(),
         transactionDate: DateTime.parse(json["transactionDate"]),
       );

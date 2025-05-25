@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/api/response/customer/st_wallet_response.dart';
+import 'package:smarttolls/api/response/operador/tolls/transaction_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -96,14 +98,18 @@ class _WalletState extends State<Wallet> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<WalletProvider>(context, listen: false).loadUserVehicles();
+      final provider = Provider.of<WalletProvider>(context, listen: false);
+      provider.loadUserVehicles();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final walletProvider = Provider.of<WalletProvider>(context);
-    
+        // Cargar transacciones cuando cambia el vehículo seleccionado
+    if (walletProvider.selectedVehicle?.idVehicle != null) {
+      walletProvider.loadTransactionsForVehicle(walletProvider.selectedVehicle!.idVehicle!);
+    }
     return Column(
       children: [
         // Vehicle Dropdown
@@ -198,7 +204,8 @@ class _WalletState extends State<Wallet> {
         
         const SizedBox(height: 8),
         
-        _buildTransactionList(),
+              if (walletProvider.selectedVehicleWallet != null)
+        _buildTransactionList(context, walletProvider),
       ],
     );
   }
@@ -281,83 +288,140 @@ class _WalletState extends State<Wallet> {
     );
   }
 
-  Widget _buildTransactionList() {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: AppStyle.white, width: 1),
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            color: AppStyle.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 4,
-                spreadRadius: 1,
-              ),
-            ],
+Widget _buildTransactionList(BuildContext context, WalletProvider walletProvider) {
+    if (walletProvider.isLoading && walletProvider.transactions.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(16),
+        child: CircularProgressIndicator(color: AppStyle.primary),
+      );
+    }
+    
+    if (walletProvider.errorMessage != null && walletProvider.transactions.isEmpty) {
+      return Column(
+        children: [
+          Text(
+            walletProvider.errorMessage!,
+            style: const TextStyle(color: Colors.red),
           ),
-          child: Row(
-            children: [
-              const SizedBox(width: 8),
-              CircleAvatar(
-                backgroundColor: AppStyle.white,
-                radius: 24,
-                child: Image.asset('assets/car.jpg', height: 50, width: 50),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () => walletProvider.loadTransactionsForVehicle(
+              walletProvider.selectedVehicle!.idVehicle!),
+            child: Text(S.of(context).retry),
+          ),
+        ],
+      );
+    }
+    
+    final transactionsToShow = walletProvider.transactions.take(6).toList();
+    
+    if (transactionsToShow.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          S.of(context).noTransactionsFound,
+          style: const TextStyle(color: Colors.grey),
+        ),
+      );
+    }
+    
+    return Column(
+      children: [
+        ListView.separated(
+          itemCount: transactionsToShow.length,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            final transaction = transactionsToShow[index];
+            return _buildTransactionItem(context, transaction);
+          },
+        ),
+        if (walletProvider.transactions.length > 6)
+          TextButton(
+            onPressed: () => walletProvider.goToTransactionHistory(context),
+            child: Text(
+              S.of(context).seeAll,
+              style: const TextStyle(
+                color: AppStyle.primary,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
               ),
-              const SizedBox(width: 8),
-              const Expanded(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Urujsssara',
-                            style: TextStyle(
-                              color: AppStyle.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          'Bs. 2',
-                          style: TextStyle(
+            ),
+          ),
+      ],
+    );
+  }
+
+   Widget _buildTransactionItem(BuildContext context, TransactionResponse transaction) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: AppStyle.white, width: 1),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: AppStyle.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: AppStyle.lightBlack,
+              radius: 24,
+              child: const Icon(Icons.credit_card, color: AppStyle.primary),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Peaje #${transaction.tollId ?? 'N/A'}',
+                          style: const TextStyle(
                             color: AppStyle.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(width: 8),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '01/09/24 12:00',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppStyle.grey,
-                            ),
-                          ),
+
+                      ),
+                      Text(
+                        'Bs. ${transaction.amount?.toStringAsFixed(2) ?? '0.00'}',
+                        style: TextStyle(
+                          color: transaction.amount != null && transaction.amount! < 0 
+                              ? Colors.red 
+                              : Colors.green,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    transaction.transactionDate != null
+                        ? DateFormat('dd/MM/yy HH:mm').format(transaction.transactionDate!)
+                        : 'Fecha no disponible',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppStyle.grey,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
-      },
-      itemCount: 5,
-      physics: const NeverScrollableScrollPhysics(),
-      primary: true,
-      shrinkWrap: true,
-      separatorBuilder: (context, index) => const SizedBox(height: 12),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

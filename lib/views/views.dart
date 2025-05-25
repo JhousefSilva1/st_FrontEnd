@@ -36,7 +36,7 @@ export 'package:smarttolls/views/customer/wallet/qr_view.dart';
 export 'package:smarttolls/views/customer/wallet/recharge_wallet_view.dart';
 export 'package:smarttolls/views/customer/wallet/transaction_history_view.dart';
 export 'package:smarttolls/views/customer/wallet/wallet_list_view.dart';
-export 'package:smarttolls/views/customer/wallet/wallet_view.dart';
+// export 'package:smarttolls/views/customer/wallet/wallet_view.dart';
 // operador
 export 'package:smarttolls/views/operador/home/home_operador_view.dart';
 export 'package:smarttolls/views/operador/profile/profile_operador_view.dart';
