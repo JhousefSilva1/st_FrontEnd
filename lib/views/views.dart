@@ -1,3 +1,12 @@
+// General
+export 'package:smarttolls/views/auth/login/login_view.dart';
+export 'package:smarttolls/views/gen/selectMode/select_mode_view.dart';
+export 'package:smarttolls/views/auth/signup/signup_view.dart';
+export 'package:smarttolls/views/auth/signup/signup_step_two_view.dart';
+export 'package:smarttolls/views/gen/welcome/welcome_view.dart';
+export 'package:smarttolls/views/admin/staff/staff_preview_admin_view.dart';
+export 'package:smarttolls/views/admin/persons/persons_admin_view.dart';
+// Administrador
 export 'package:smarttolls/views/admin/brand/add_brand_admin_view.dart';
 export 'package:smarttolls/views/admin/brand/brands_admin_view.dart';
 export 'package:smarttolls/views/admin/employee/add_employee_admin_view.dart';
@@ -18,6 +27,7 @@ export 'package:smarttolls/views/admin/roadType/road_type_admin_view.dart';
 export 'package:smarttolls/views/admin/gender/gender_admin_view.dart';
 export 'package:smarttolls/views/admin/personType/person_type_admin_view.dart';
 export 'package:smarttolls/views/admin/profile/profile_admin_view.dart';
+// customer
 export 'package:smarttolls/views/customer/home/home_view.dart';
 export 'package:smarttolls/views/customer/navBar/nav_bar_view.dart';
 export 'package:smarttolls/views/customer/notification/notification_view.dart';
@@ -27,11 +37,8 @@ export 'package:smarttolls/views/customer/wallet/recharge_wallet_view.dart';
 export 'package:smarttolls/views/customer/wallet/transaction_history_view.dart';
 export 'package:smarttolls/views/customer/wallet/wallet_list_view.dart';
 export 'package:smarttolls/views/customer/wallet/wallet_view.dart';
-export 'package:smarttolls/views/login/login_view.dart';
-export 'package:smarttolls/views/selectMode/select_mode_view.dart';
-export 'package:smarttolls/views/signup/signup_view.dart';
-export 'package:smarttolls/views/signup/signup_step_two_view.dart';
-export 'package:smarttolls/views/welcome/welcome_view.dart';
-export 'package:smarttolls/views/admin/staff/staff_preview_admin_view.dart';
-export 'package:smarttolls/views/admin/persons/persons_admin_view.dart';
+// operador
+export 'package:smarttolls/views/operador/home/home_operador_view.dart';
+export 'package:smarttolls/views/operador/profile/profile_operador_view.dart';
+export 'package:smarttolls/views/operador/tolls/tolls_operador_view.dart';
 

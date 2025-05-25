@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
-import 'package:smarttolls/providers/wallet_provider.dart';
+import 'package:smarttolls/providers/customer/wallet_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 

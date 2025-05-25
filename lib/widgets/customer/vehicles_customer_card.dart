@@ -59,16 +59,33 @@ class VehiclesCustomerCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              shape: BoxShape.values.first,
+              borderRadius: BorderRadius.circular(50),
               color: AppStyle.primary.withOpacity(0.1),
               border: Border.all(color: AppStyle.primary, width: 1.5),
             ),
             child: const Icon(
-              Icons.car_repair,
+              Icons.car_repair_sharp,
+              
               color: AppStyle.primary,
               size: 24,
+              
+            ),
+            
+            // see vehicle type
+            
+          ),
+          Text(
+            vehicle.licensePlate?? 'N/A',
+            style: const TextStyle(
+              // encerrado en tag
+              color: AppStyle.primary,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
+          const SizedBox(width: 12),
+
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -77,24 +94,24 @@ class VehiclesCustomerCard extends StatelessWidget {
         _buildInfoItem(Icons.car_crash, S.of(context).brand, vehicle.vehiclesModels.brand.brandName ?? 'N/A'),
 
                 const SizedBox(height: 4),
-                // Container(
-                //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                //   decoration: BoxDecoration(
-                //     color: AppStyle.primary.withOpacity(0.1),
-                //     borderRadius: BorderRadius.circular(12),
-                //   ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppStyle.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
         
-                // ),
+                ),
                 _buildInfoItem(Icons.car_crash, S.of(context).model, vehicle.vehiclesModels.modelName ?? 'N/A'),
                 const SizedBox(height: 4),
-                // Container(
-                //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                //   decoration: BoxDecoration(
-                //     color: AppStyle.primary.withOpacity(0.1),
-                //     borderRadius: BorderRadius.circular(12),
-                //   ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppStyle.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
         
-                // ),
+                ),
               ],
             ),
           ),
@@ -106,7 +123,7 @@ class VehiclesCustomerCard extends StatelessWidget {
   Widget _buildInfoSection(BuildContext context) {
     return Column(
       children: [
-        _buildInfoItem(Icons.car_crash, S.of(context).licensePlate, vehicle.licensePlate ?? 'N/A'),
+        _buildInfoItem(Icons.car_crash, S.of(context).vehicleType, vehicle.vehiclesType.vehiclesTypesName ?? 'N/A'),
         const SizedBox(height: 8),
         _buildInfoItem(Icons.confirmation_number, S.of(context).chassisNumber, vehicle.chassisNumber ?? 'N/A'),
         const SizedBox(height: 8),

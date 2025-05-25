@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:smarttolls/providers/Auth/sign_up_provider.dart';
 import 'package:smarttolls/providers/customer/vehicle_customer_provider.dart';
+import 'package:smarttolls/providers/operador/tolls_operador_provider.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/views/views.dart';
 
@@ -223,7 +224,24 @@ class AppRouter {
         name: WelcomeView.routerName,
         path: WelcomeView.routerPath,
         builder: (context, state) => const WelcomeView(),
-      )
+      ),
+
+      // operador
+      GoRoute(
+        name: HomeOperadorView.routerName,
+        path: HomeOperadorView.routerPath,
+        builder: (context, state) => const HomeOperadorView(),
+      ),
+      GoRoute(
+        name: ProfileOperadorView.routerName,
+        path: ProfileOperadorView.routerPath,
+        builder: (context, state) => const ProfileOperadorView(),
+      ),
+      GoRoute(
+        name: TollsOperadorView.routerName,
+        path: TollsOperadorView.routerPath,
+        builder: (context, state) => const TollsOperadorView(),
+      ),
     ]
   );
 
@@ -254,6 +272,7 @@ class AppRouter {
     ChangeNotifierProvider(create: (_) => UserProvider()),
     ChangeNotifierProvider(create: (_) => ProfileProvider()),
     ChangeNotifierProvider(create: (_) => VehiclesCustomerProvider()),
+    ChangeNotifierProvider(create: (_) => TollsOperadorProvider()),
 
     // customers
     // ChangeNotifierProvider(create: (_) => VehicleCustomerProvider()),

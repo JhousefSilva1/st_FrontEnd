@@ -71,4 +71,15 @@ class DrawerProvider extends ChangeNotifier {
     context.pushNamed(WalletView.routerName);
   }
 
+  // operador
+  void goToHomeOperador(BuildContext context) {
+    context.pushNamed(HomeOperadorView.routerName);
+  }
+  void goToProfileOperador(BuildContext context) {
+    context.pushNamed(ProfileOperadorView.routerName);
+  }
+  void goToVehiclesOperador(BuildContext context) {
+    context.pushNamed(TollsOperadorView.routerName);
+  }
+
 }

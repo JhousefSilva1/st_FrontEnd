@@ -23,9 +23,11 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\jo
 manifest
 ADDED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\main\AndroidManifest.xml:1:1-44:12
 MERGED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\main\AndroidManifest.xml:1:1-44:12
-INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:1:1-7:12
-INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:1:1-7:12
-INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:1:1-8:12
+INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:1:1-8:12
+INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:1:1-8:12
+MERGED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-10:12
+MERGED from [:flutter_plugin_android_lifecycle] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_secure_storage] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_secure_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-10:12
 MERGED from [:path_provider_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.fragment:fragment:1.7.1] C:\Users\josep\.gradle\caches\transforms-3\74d747bf5a2df4cbc887642510ce7085\transformed\fragment-1.7.1\AndroidManifest.xml:2:1-7:12
@@ -79,10 +81,20 @@ uses-permission#android.permission.INTERNET
 ADDED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:6:5-66
 	android:name
 		ADDED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:6:22-64
+uses-permission#android.permission.CAMERA
+ADDED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:7:5-65
+MERGED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_android\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-65
+MERGED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_android\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-65
+	android:name
+		ADDED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml:7:22-62
 uses-sdk
 INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml
 INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml
+MERGED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_secure_storage] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_secure_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-8:53
 MERGED from [:flutter_secure_storage] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_secure_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-8:53
 MERGED from [:path_provider_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
@@ -147,6 +159,10 @@ MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] C:\Users\josep\.gradle\cac
 		INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from C:\ProyectoDeGrado\Front\st_FrontEnd\android\app\src\debug\AndroidManifest.xml
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_android\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-71
+	android:name
+		ADDED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_android\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-68
 uses-library#androidx.window.extensions
 ADDED from [androidx.window:window:1.2.0] C:\Users\josep\.gradle\caches\transforms-3\4ebb674aa41412bc7425383262a543b4\transformed\jetified-window-1.2.0\AndroidManifest.xml:23:9-25:40
 	android:required

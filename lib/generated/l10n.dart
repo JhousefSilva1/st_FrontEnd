@@ -8,11 +8,21 @@ import 'intl/messages_all.dart';
 
 
 
+
+
+
+
+
+
 class S {
   S();
 
 
+
+
   static S? _current;
+
+
 
 
   static S get current {
@@ -24,7 +34,11 @@ class S {
   }
 
 
+
+
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+
+
 
 
   static Future<S> load(Locale locale) {
@@ -39,9 +53,13 @@ class S {
       S._current = instance;
 
 
+
+
       return instance;
     });
   }
+
+
 
 
   static S of(BuildContext context) {
@@ -52,6 +70,8 @@ class S {
     );
     return instance!;
   }
+
+
 
 
   static S? maybeOf(BuildContext context) {
@@ -502,6 +522,8 @@ class S {
   }
 
 
+
+
   /// `Add Vehicle Type`
   String get addVehicleType {
     return Intl.message(
@@ -511,6 +533,8 @@ class S {
       args: [],
     );
   }
+
+
 
 
   /// `Administration`
@@ -524,10 +548,14 @@ class S {
   }
 
 
+
+
   /// `Smart Tolls`
   String get appName {
     return Intl.message('Smart Tolls', name: 'appName', desc: '', args: []);
   }
+
+
 
 
   /// `Back`
@@ -536,10 +564,14 @@ class S {
   }
 
 
+
+
   /// `Birthdate`
   String get birthdate {
     return Intl.message('Birthdate', name: 'birthdate', desc: '', args: []);
   }
+
+
 
 
   /// `Brand`
@@ -548,16 +580,22 @@ class S {
   }
 
 
+
+
   /// `Cancel`
   String get cancel {
     return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
   }
 
 
+
+
   /// `Chassis`
   String get chassis {
     return Intl.message('Chassis', name: 'chassis', desc: '', args: []);
   }
+
+
 
 
   /// `Circulation Square`
@@ -571,6 +609,8 @@ class S {
   }
 
 
+
+
   /// `Completed Transactions`
   String get completedTransactions {
     return Intl.message(
@@ -580,6 +620,8 @@ class S {
       args: [],
     );
   }
+
+
 
 
   /// `Confirm Password`
@@ -593,16 +635,22 @@ class S {
   }
 
 
+
+
   /// `Cost`
   String get cost {
     return Intl.message('Cost', name: 'cost', desc: '', args: []);
   }
 
 
+
+
   /// `Country`
   String get country {
     return Intl.message('Country', name: 'country', desc: '', args: []);
   }
+
+
 
 
   /// `Create a new account in Smart Tolls`
@@ -616,6 +664,8 @@ class S {
   }
 
 
+
+
   /// `Customer`
   String get customer {
     return Intl.message('Customer', name: 'customer', desc: '', args: []);
@@ -624,10 +674,16 @@ class S {
 
 
 
+
+
+
+
   /// `DNI`
   String get dni {
     return Intl.message('DNI', name: 'dni', desc: '', args: []);
   }
+
+
 
 
   /// `Don't have an account? `
@@ -643,10 +699,16 @@ class S {
 
 
 
+
+
+
+
   /// `Edit`
   String get edit {
     return Intl.message('Edit', name: 'edit', desc: '', args: []);
   }
+
+
 
 
   /// `Edit Vehicle`
@@ -660,10 +722,14 @@ class S {
   }
 
 
+
+
   /// `Email`
   String get email {
     return Intl.message('Email', name: 'email', desc: '', args: []);
   }
+
+
 
 
   /// `Email is required`
@@ -677,6 +743,8 @@ class S {
   }
 
 
+
+
   /// `Email is invalid`
   String get emailIsInvalid {
     return Intl.message(
@@ -688,10 +756,14 @@ class S {
   }
 
 
+
+
   /// `Operator`
   String get employee {
     return Intl.message('Operator', name: 'employee', desc: '', args: []);
   }
+
+
 
 
   /// `Engine Number`
@@ -705,6 +777,8 @@ class S {
   }
 
 
+
+
   /// `Final Section`
   String get finalSection {
     return Intl.message(
@@ -716,10 +790,14 @@ class S {
   }
 
 
+
+
   /// `Fuel`
   String get fuel {
     return Intl.message('Fuel', name: 'fuel', desc: '', args: []);
   }
+
+
 
 
   /// `Gender`
@@ -728,10 +806,14 @@ class S {
   }
 
 
+
+
   /// `Home`
   String get home {
     return Intl.message('Home', name: 'home', desc: '', args: []);
   }
+
+
 
 
   /// `Initial Section`
@@ -745,6 +827,8 @@ class S {
   }
 
 
+
+
   /// `Introduce amount`
   String get introduceAmount {
     return Intl.message(
@@ -756,7 +840,11 @@ class S {
   }
 
 
+
+
  
+
+
 
 
   /// `Last One Step`
@@ -770,10 +858,14 @@ class S {
   }
 
 
+
+
   /// `Line`
   String get line {
     return Intl.message('Line', name: 'line', desc: '', args: []);
   }
+
+
 
 
   /// `Lines`
@@ -782,16 +874,22 @@ class S {
   }
 
 
+
+
   /// `Locality`
   String get locality {
     return Intl.message('Locality', name: 'locality', desc: '', args: []);
   }
 
 
+
+
   /// `Login`
   String get login {
     return Intl.message('Login', name: 'login', desc: '', args: []);
   }
+
+
 
 
   /// `Login to your account`
@@ -805,10 +903,14 @@ class S {
   }
 
 
+
+
   /// `Logout`
   String get logout {
     return Intl.message('Logout', name: 'logout', desc: '', args: []);
   }
+
+
 
 
   /// `Model`
@@ -817,16 +919,22 @@ class S {
   }
 
 
+
+
   /// `Name`
   String get name {
     return Intl.message('Name', name: 'name', desc: '', args: []);
   }
 
 
+
+
   /// `Next`
   String get next {
     return Intl.message('Next', name: 'next', desc: '', args: []);
   }
+
+
 
 
   /// `Notification`
@@ -842,7 +950,13 @@ class S {
 
 
 
+
+
+
+
  
+
+
 
 
   /// `Password`
@@ -851,10 +965,14 @@ class S {
   }
 
 
+
+
   /// `Pay with QR`
   String get payWithQr {
     return Intl.message('Pay with QR', name: 'payWithQr', desc: '', args: []);
   }
+
+
 
 
   /// `Person Data`
@@ -863,10 +981,14 @@ class S {
   }
 
 
+
+
   /// `Phone`
   String get phone {
     return Intl.message('Phone', name: 'phone', desc: '', args: []);
   }
+
+
 
 
   /// `Plate`
@@ -875,10 +997,16 @@ class S {
   }
 
 
+
+
   /// `Profile`
   String get profile {
     return Intl.message('Profile', name: 'profile', desc: '', args: []);
   }
+
+
+
+
 
 
 
@@ -894,10 +1022,14 @@ class S {
   }
 
 
+
+
   /// `Register`
   String get register {
     return Intl.message('Register', name: 'register', desc: '', args: []);
   }
+
+
 
 
   /// `Register Cars`
@@ -911,10 +1043,14 @@ class S {
   }
 
 
+
+
   /// `Reports`
   String get reports {
     return Intl.message('Reports', name: 'reports', desc: '', args: []);
   }
+
+
 
 
   /// `Search`
@@ -923,10 +1059,14 @@ class S {
   }
 
 
+
+
   /// `See All`
   String get seeAll {
     return Intl.message('See All', name: 'seeAll', desc: '', args: []);
   }
+
+
 
 
   /// `Select User Type`
@@ -940,6 +1080,8 @@ class S {
   }
 
 
+
+
   /// `Please, select your user`
   String get selectYourUser {
     return Intl.message(
@@ -951,10 +1093,14 @@ class S {
   }
 
 
+
+
   /// `Start`
   String get start {
     return Intl.message('Start', name: 'start', desc: '', args: []);
   }
+
+
 
 
   /// `Staff`
@@ -963,10 +1109,14 @@ class S {
   }
 
 
+
+
   /// `Status`
   String get status {
     return Intl.message('Status', name: 'status', desc: '', args: []);
   }
+
+
 
 
   /// `Step 1`
@@ -975,16 +1125,22 @@ class S {
   }
 
 
+
+
   /// `Step 2`
   String get stepTwo {
     return Intl.message('Step 2', name: 'stepTwo', desc: '', args: []);
   }
 
 
+
+
   /// `Sign Up`
   String get signUp {
     return Intl.message('Sign Up', name: 'signUp', desc: '', args: []);
   }
+
+
 
 
   /// `Type of Document`
@@ -998,10 +1154,14 @@ class S {
   }
 
 
+
+
   /// `Type of Road`
   String get typeOfRoad {
     return Intl.message('Type of Road', name: 'typeOfRoad', desc: '', args: []);
   }
+
+
 
 
   /// `Type of Vehicle`
@@ -1015,10 +1175,14 @@ class S {
   }
 
 
+
+
   /// `Toll data`
   String get tollData {
     return Intl.message('Toll data', name: 'tollData', desc: '', args: []);
   }
+
+
 
 
   /// `Tolls`
@@ -1027,16 +1191,22 @@ class S {
   }
 
 
+
+
   /// `Tolls Used`
   String get tollsUsed {
     return Intl.message('Tolls Used', name: 'tollsUsed', desc: '', args: []);
   }
 
 
+
+
   /// `Total Paid`
   String get totalPaid {
     return Intl.message('Total Paid', name: 'totalPaid', desc: '', args: []);
   }
+
+
 
 
   /// `Transaction History`
@@ -1050,6 +1220,8 @@ class S {
   }
 
 
+
+
   /// `Vehicle data`
   String get vehicleData {
     return Intl.message(
@@ -1061,16 +1233,22 @@ class S {
   }
 
 
+
+
   /// `Vehicle`
   String get vehicle {
     return Intl.message('Vehicle', name: 'vehicle', desc: '', args: []);
   }
 
 
+
+
   /// `Vehicles`
   String get vehicles {
     return Intl.message('Vehicles', name: 'vehicles', desc: '', args: []);
   }
+
+
 
 
   /// `Vehicle Service`
@@ -1105,6 +1283,7 @@ class S {
     );
   }
 
+
   /// `noVehicleSelected`
   String get noVehicleSelected {
     return Intl.message('noVehicleSelected', name: 'noVehicleSelected', desc: '', args: []);
@@ -1135,10 +1314,17 @@ class S {
   }
 
 
+
+
   /// `Welcome!`
   String get welcome {
     return Intl.message('Welcome!', name: 'welcome', desc: '', args: []);
   }
+  /// `tollsOperator`
+  String get tollsOperator {
+    return Intl.message('tollsOperator', name: 'tollsOperator', desc: '', args: []);
+  }
+
 
 
   /// `Workstation`
@@ -1149,7 +1335,38 @@ class S {
   String get noVehiclesFound {
     return Intl.message('noVehiclesFound', name: 'noVehiclesFound', desc: '', args: []);
   }
-
+  /// `vehicleInfo`
+  String get vehicleInfo {
+    return Intl.message('vehicleInfo', name: 'vehicleInfo', desc: '', args: []);
+  }
+  /// `balance`
+  String get balance {
+    return Intl.message('balance', name: 'balance', desc: '', args: []);
+  }
+  /// `tollCharge`
+  String get tollCharge {
+    return Intl.message('tollCharge', name: 'tollCharge', desc: '', args: []);
+  }
+  /// `enterLicensePlate`
+  String get enterLicensePlate {
+    return Intl.message('enterLicensePlate', name: 'enterLicensePlate', desc: '', args: []);
+  }
+  /// `selectToll`
+  String get selectToll {
+    return Intl.message('selectToll', name: 'selectToll', desc: '', args: []);
+  }
+  /// `foundVehicles`
+  String get foundVehicles {
+    return Intl.message('foundVehicles', name: 'foundVehicles', desc: '', args: []);
+  }
+  /// `insufficientBalance`
+  String get insufficientBalance {
+    return Intl.message('insufficientBalance', name: 'insufficientBalance', desc: '', args: []);
+  }
+  /// `charge`
+  String get charge {
+    return Intl.message('charge', name: 'charge', desc: '', args: []);
+  }
   /// `Year`
   String get year {
     return Intl.message('Year', name: 'year', desc: '', args: []);
@@ -1157,13 +1374,19 @@ class S {
 }
 
 
+
+
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
+
+
 
 
   List<Locale> get supportedLocales {
     return const <Locale>[Locale.fromSubtags(languageCode: 'en')];
   }
+
+
 
 
   @override
@@ -1172,6 +1395,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   Future<S> load(Locale locale) => S.load(locale);
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
+
+
 
 
   bool _isSupported(Locale locale) {
@@ -1183,6 +1408,12 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
     return false;
   }
 }
+
+
+
+
+
+
 
 
 

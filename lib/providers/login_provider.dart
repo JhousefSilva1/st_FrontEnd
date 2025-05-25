@@ -6,6 +6,7 @@ import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/utils/utils.dart';
+import 'package:smarttolls/views/operador/home/home_operador_view.dart';
 import 'package:smarttolls/views/views.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
@@ -67,6 +68,8 @@ void goHome(BuildContext context) async {
             context.goNamed(HomeAdminView.routerName);
           } else if(role == 'ROLE_CLIENTE') {
             context.goNamed(HomeView.routerName);
+          } else if(role == 'ROLE_OPERADOR'){
+            context.goNamed(HomeOperadorView.routerName);
           }
         }
       } else if(response.isUnauthorized()){
