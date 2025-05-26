@@ -357,74 +357,81 @@ class _WalletState extends State<Wallet> {
     );
   }
 
-  Widget _buildTransactionItem(BuildContext context, TransactionResponse transaction) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: AppStyle.white, width: 1),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: AppStyle.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: AppStyle.ligthGrey,
-              radius: 24,
-              child: const Icon(Icons.credit_card, color: AppStyle.primary),
+Widget _buildTransactionItem(BuildContext context, TransactionResponse transaction) {
+  return FutureBuilder<String?>(
+    future: Provider.of<WalletProvider>(context).getTollName(transaction.tollId ?? 0),
+    builder: (context, snapshot) {
+      final tollName = snapshot.data ?? 'Peaje #${transaction.tollId ?? 'N/A'}';
+      
+      return Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: AppStyle.white, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: AppStyle.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              spreadRadius: 1,
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Peaje #${transaction.tollId ?? 'N/A'}',
-                          style: const TextStyle(
-                            color: AppStyle.black,
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: AppStyle.ligthGrey,
+                radius: 24,
+                child: const Icon(Icons.credit_card, color: AppStyle.primary),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            tollName, // Usamos el nombre del peaje aquí
+                            style: const TextStyle(
+                              color: AppStyle.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Bs. ${transaction.amount?.toStringAsFixed(2) ?? '0.00'}',
+                          style: TextStyle(
+                            color: transaction.amount != null && transaction.amount! < 0 
+                                ? Colors.red 
+                                : Colors.green,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      ),
-                      Text(
-                        'Bs. ${transaction.amount?.toStringAsFixed(2) ?? '0.00'}',
-                        style: TextStyle(
-                          color: transaction.amount != null && transaction.amount! < 0 
-                              ? Colors.red 
-                              : Colors.green,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    transaction.transactionDate != null
-                        ? DateFormat('dd/MM/yy HH:mm').format(transaction.transactionDate!)
-                        : 'Fecha no disponible',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppStyle.grey,
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      transaction.transactionDate != null
+                          ? DateFormat('dd/MM/yy HH:mm').format(transaction.transactionDate!)
+                          : 'Fecha no disponible',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppStyle.grey,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
+    },
+  );
+}
 }

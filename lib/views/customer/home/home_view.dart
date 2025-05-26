@@ -1,11 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/menu/desktop/drawer.dart';
 import 'package:smarttolls/widgets/menu/mobile/drawerMobile.dart';
+
+import '../../../utils/assets_images.dart';
 
 class HomeView extends StatelessWidget {
   static const String routerName = 'home';
@@ -18,67 +21,37 @@ class HomeView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Row(
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                backgroundColor: AppStyle.primary,
-                radius: 16,
-                child: Icon(Icons.verified_user, color: AppStyle.white, size: 20),
-              ),
-              SizedBox(width: 8),
-              Text('Jose Pozo', style: TextStyle(color: AppStyle.primary, fontSize: 16, fontWeight: FontWeight.bold)),
-            ],
+              children: [
+                const SizedBox(height: 8),
+                AssetsImages.logoAvatar(height: 50),
+                const SizedBox(height: 8),
+                Consumer<UserProvider>(
+                  builder: (context, userProvider, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${userProvider.name ?? ''} ',
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${userProvider.lastName ?? ''} ',
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+             
           ),
+          
         ),
+        
         drawer: isMobile? const SmartTollsMobileDrawer(): null,
         backgroundColor: AppStyle.ligthGrey,
-        // body: SingleChildScrollView(
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(16),
-        //     child: SizedBox(
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.center,
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           const SizedBox(height: 16),
-        //           Container(
-        //             decoration: BoxDecoration(
-        //               border: Border.all(color: AppStyle.white, width: 1),
-        //               borderRadius: const BorderRadius.all(Radius.circular(8)),
-        //               color: AppStyle.white,
-        //               boxShadow: [
-        //                 BoxShadow(
-        //                   color: Colors.black.withOpacity(0.1),
-        //                   blurRadius: 4,
-        //                   spreadRadius: 1
-        //                 ),
-        //               ]
-        //             ),
-        //             width: double.infinity,
-        //             child: Padding(
-        //               padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-        //               child: AspectRatio(
-        //                 aspectRatio: 1.70,
-        //                 child: Padding(
-        //                   padding: const EdgeInsets.only(
-        //                     right: 18,
-        //                     left: 12,
-        //                     top: 24,
-        //                     bottom: 12,
-        //                   ),
-        //                   child: LineChart(
-        //                     mainData(homeProvider),
-        //                   ),
-        //                 ),
-        //               ),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // ),
         body: isMobile? const SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -303,7 +276,7 @@ class Home extends StatelessWidget {
             Expanded(
               flex: 2,
               child: HomeCard(
-                data: '20',
+                data: '22',
                 icon: const Icon(Icons.wallet, color: AppStyle.primary, size: 30),
                 title: S.of(context).completedTransactions
               ),

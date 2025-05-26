@@ -170,6 +170,12 @@ class AppRouter {
               path: VehiclesCustomerView.routerPath,
               builder: (context, state) => const VehiclesCustomerView(),
           ),
+          // profile
+              GoRoute(
+              name: ProfileCustomerView .routerName,
+              path: ProfileCustomerView .routerPath,
+              builder: (context, state) => const ProfileCustomerView (),
+            ),
 
           GoRoute(
             name: HomeView.routerName,

@@ -29,6 +29,7 @@ export 'package:smarttolls/views/admin/personType/person_type_admin_view.dart';
 export 'package:smarttolls/views/admin/profile/profile_admin_view.dart';
 // customer
 export 'package:smarttolls/views/customer/home/home_view.dart';
+export 'package:smarttolls/views/customer/profile/profile_customer_view.dart';
 export 'package:smarttolls/views/customer/navBar/nav_bar_view.dart';
 export 'package:smarttolls/views/customer/notification/notification_view.dart';
 export 'package:smarttolls/views/customer/vehicles/vehicles_customer_view.dart';

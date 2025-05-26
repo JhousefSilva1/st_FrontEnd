@@ -3,6 +3,8 @@ import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/views/views.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
+import '../../../generated/l10n.dart';
+
 class NavBarView extends StatelessWidget {
   const NavBarView({super.key, required this.child});
   final Widget child;
@@ -23,12 +25,13 @@ class NavBarView extends StatelessWidget {
           ],
         ),
         height: 72,
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomIcon(icon: Icon(Icons.home, color: AppStyle.primary), index: 0, label: 'Inicio', route: HomeView.routerName),
-            // CustomIcon(icon: Icon(Icons.wallet_rounded, color: AppStyle.primary), index: 2, label: 'Billetera', route: WalletListView.routerName),
-            CustomIcon(icon: Icon(Icons.notifications, color: AppStyle.primary), index: 3, label: 'Notificaciones', route: NotificationView.routerName),
+            CustomIcon(icon: Icon(Icons.account_circle_rounded, color: AppStyle.primary), index: 1, label: S.of(context).profile, route: ProfileCustomerView.routerName),
+            CustomIcon(icon: Icon(Icons.car_crash_outlined, color: AppStyle.primary), index: 3, label: S.of(context).vehicle, route: VehiclesCustomerView.routerName),
+            CustomIcon(icon: Icon(Icons.wallet_outlined, color: AppStyle.primary), index: 4, label: S.of(context).wallet, route: WalletView.routerName),
           ],
         ),
       ),

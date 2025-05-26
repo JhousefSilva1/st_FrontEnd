@@ -156,6 +156,30 @@ class WalletProvider extends ChangeNotifier {
       );
     }
   }
+      final Map<int, String> _tollNamesCache = {};
+
+  Future<String?> getTollName(int tollId) async {
+    // Si ya tenemos el nombre en cache, lo retornamos
+    if (_tollNamesCache.containsKey(tollId)) {
+      return _tollNamesCache[tollId];
+    }
+    
+    try {
+      // Hacer la llamada al API para obtener información del peaje
+      final response = await SmartTollsApi().getTollById(tollId);
+      
+      if (response.isSuccess() && response.data != null) {
+        final tollName = response.data!.tollsName;
+        _tollNamesCache[tollId] = tollName ?? 'Peaje desconocido';
+        return _tollNamesCache[tollId];
+      }
+    } catch (e) {
+      debugPrint('Error al obtener nombre del peaje: $e');
+    }
+    
+    return 'Peaje #$tollId';
+  }
+
 
 
 

@@ -21,7 +21,7 @@ class PersonAdminView extends StatelessWidget{
       child: Scaffold(
         appBar: CustomAppBar(
           centerTitle: true,
-          text: S.of(context).personType,
+          text: S.of(context).managePersons,
         ),
         backgroundColor: AppStyle.white,
         drawer: isMobile ? const SmartTollsDrawer() : null,

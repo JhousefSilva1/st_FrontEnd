@@ -1096,7 +1096,42 @@ Future<StResponse<StPersonResponse>> getPersonById(int personId) async {
     );
   }
 }
-
+// get tolls by id
+Future<StResponse<StTollsResponse>> getTollById(int tollId) async {
+  try {
+    final response = await httpGet('$_baseUrl/toll/$tollId', getHeaders());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      return StResponse(
+        status: response.statusCode,
+        message: 'Error del servidor: ${response.statusCode}',
+      );
+    }
+    
+    final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    if (responseData['data'] == null) {
+      return StResponse(
+        status: responseData['status'] ?? 200,
+        message: responseData['message'] ?? 'No toll data available',
+      );
+    }
+    
+    final toll = StTollsResponse.fromJson(responseData['data']);
+    return StResponse(
+      data: toll,
+      status: responseData['status'] ?? 200,
+      message: responseData['message'] ?? 'OK',
+    );
+  } catch (e, stackTrace) {
+    debugPrint('Error in getTollById: $e');
+    debugPrint('Stack trace: $stackTrace');
+    return StResponse(
+      status: 500,
+      message: 'Error de conexión: ${e.toString()}',
+    );
+  }
+}
 // tools by operador
 // get transacations by vehicleId
 Future<StResponse<TransactionResponse>> getTransactionsByVehicleId(int vehicleId) async {

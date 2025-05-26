@@ -1222,7 +1222,15 @@ class S {
     );
   }
 
-
+  /// `managePersons`
+  String get managePersons {
+    return Intl.message(
+      'People Management',
+      name: 'People Management',
+      desc: '',
+      args: [],
+    );
+  }
 
 
   /// `Vehicle data`
