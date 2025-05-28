@@ -97,19 +97,20 @@ class BrandsCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: () {
-                      // Editar
-                    },
-                    child: const Icon(Icons.edit, color: AppStyle.primary)
-                  ),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: () {
-                      // Eliminar
-                    },
-                    child: const Icon(Icons.delete, color: AppStyle.primary)
-                  ),
+                // En el BrandsCard, modificar los GestureDetector de los íconos
+                GestureDetector(
+                  onTap: () {
+                    showEditBrandDialog(context, brand);
+                  },
+                  child: const Icon(Icons.edit, color: AppStyle.yellow),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    showDeleteBrandDialog(context, brand);
+                  },
+                  child: const Icon(Icons.delete, color: AppStyle.red, size: 30),
+                ),
                 ],
               ),
             ),

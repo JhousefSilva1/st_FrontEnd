@@ -69,6 +69,7 @@ class S {
   String get circulationSquare => Intl.message('Circulation Square', name: 'circulationSquare');
   String get color => Intl.message('color', name: 'color');
   String get comingSoon => Intl.message('comingSoon', name: 'comingSoon');
+  String get confirmDeleteBrand => Intl.message('Are you sure you want to delete this brand?', name: 'confirmDeleteBrand');
   String get confirmDeleteColor => Intl.message('Are you sure you want to delete this color?', name: 'confirmDeleteColor');	
   String get confirmPassword => Intl.message('Confirm Password', name: 'confirmPassword');
   String get contactInfo => Intl.message('contactInfo', name: 'contactInfo');
@@ -78,6 +79,7 @@ class S {
   String get currentBalance => Intl.message('currentBalance', name: 'currentBalance');
   String get customer => Intl.message('Customer', name: 'customer');
   String get delete => Intl.message('Delete', name: 'delete');
+  String get deleteBrand => Intl.message('Delete Brand', name: 'deleteBrand');
   String get deleteColor => Intl.message('Delete Color', name: 'deleteColor');
   String get deletedSuccessfully => Intl.message('Deleted successfully', name: 'deletedSuccessfully');
   String get description => Intl.message('Description', name: 'description');
@@ -85,6 +87,7 @@ class S {
   String get dontHaveAnAccount => Intl.message('Don\'t have an account? ', name: 'dontHaveAnAccount');
   String get download => Intl.message('Download', name: 'download');
   String get edit => Intl.message('Edit', name: 'edit');
+  String get editBrand => Intl.message('Edit Brand', name: 'editBrand');
   String get editColors => Intl.message('Edit Colors', name: 'editColors');
   String get editVehicle => Intl.message('Edit Vehicle', name: 'editVehicle');
   String get email => Intl.message('Email', name: 'email');

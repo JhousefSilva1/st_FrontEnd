@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -236,5 +237,112 @@ void showAddBrandDialog(BuildContext context) {
     },
     positiveText: S.of(context).add,
     title: S.of(context).addBrand,
+  );
+}
+
+void showEditBrandDialog(BuildContext context, StBrandResponse brand) {
+  final brandNameController = TextEditingController(text: brand.brandName);
+  final brandDescriptionController = TextEditingController(text: brand.brandDescription);
+  final brandCountryController = TextEditingController(text: brand.brandManufacturingCountry);
+  final provider = Provider.of<BrandProvider>(context, listen: false);
+
+  Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: brandNameController,
+          hintText: S.of(context).brand,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.drive_eta),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el nombre de la marca';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        CustomField(
+          controller: brandDescriptionController,
+          hintText: S.of(context).description,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.info),
+        ),
+        const SizedBox(height: 10),
+        CustomField(
+          controller: brandCountryController,
+          hintText: S.of(context).country,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.public),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el país de origen';
+            }
+            return null;
+          },
+        ),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (brandNameController.text.isNotEmpty && brandCountryController.text.isNotEmpty) {
+        await provider.updateBrand(
+          brand.idBrand,
+          brandNameController.text,
+          brandDescriptionController.text,
+          brandCountryController.text,
+        );
+        Navigator.of(context, rootNavigator: true).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Nombre y país son campos requeridos')),
+        );
+      }
+    },
+    positiveText: S.of(context).update,
+    title: S.of(context).editBrand,
+  );
+}
+
+void showDeleteBrandDialog(BuildContext context, StBrandResponse brand) {
+  final provider = Provider.of<BrandProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(S.of(context).deleteBrand),
+        content: Text('${S.of(context).confirmDeleteBrand} ${brand.brandName}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(S.of(context).cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              
+              try {
+                await provider.deleteBrand(brand.idBrand);
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(content: Text('${brand.brandName} ${S.of(context).deletedSuccessfully}')),
+                );
+              } catch (e) {
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(content: Text('Error al eliminar: ${e.toString()}')),
+                );
+              }
+            },
+            child: Text(
+              S.of(context).delete,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

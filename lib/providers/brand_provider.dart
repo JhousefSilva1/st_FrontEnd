@@ -71,6 +71,63 @@ class BrandProvider extends ChangeNotifier {
     notifyListeners();
   }
   }
+
+  // En BrandProvider class
+
+// Método para actualizar una marca
+Future<void> updateBrand(
+  int brandId, 
+  String brandName, 
+  String brandDescription,
+  String brandCountry
+) async {
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+
+  try {
+    final request = StBrandRequest(
+      brandName: brandName,
+      brandDescription: brandDescription,
+      brandManufacturingCountry: brandCountry,
+    );
+    
+    final response = await SmartTollsApi().updateBrand(brandId, request);
+    
+    if (response.isSuccess()) {
+      await loadBrands(); // Recargar la lista de marcas
+    } else {
+      _errorMessage = response.message ?? 'Error al actualizar la marca';
+    }
+  } catch (e) {
+    _errorMessage = 'Error al actualizar la marca: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
+// Método para eliminar una marca
+Future<void> deleteBrand(int brandId) async {
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+
+  try {
+    final response = await SmartTollsApi().deleteBrand(brandId);
+    
+    if (response.isSuccess()) {
+      await loadBrands(); // Recargar la lista de marcas
+    } else {
+      _errorMessage = response.message ?? 'Error al eliminar la marca';
+    }
+  } catch (e) {
+    _errorMessage = 'Error al eliminar la marca: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
   // Método para recargar datos
   void retryLoading() {
     _errorMessage = null;

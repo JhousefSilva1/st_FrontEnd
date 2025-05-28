@@ -108,6 +108,88 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
         );
       }
     }
+    // En SmartTollsApi class
+
+// Método para actualizar una marca
+Future<StResponse<StBrandResponse>> updateBrand(int brandId, StBrandRequest brandRequest) async {
+  try {
+    final response = await httpPut(
+      '$_baseUrl/brands/update/$brandId', 
+      getHeaders(), 
+      jsonEncode(brandRequest.toJson())
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StBrandResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StBrandResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al actualizar la marca',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StBrandResponse>.createEmpty();
+      }
+    }
+    
+    final responseJson = json.decode(response.body);
+    final brandData = StBrandResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StBrandResponse>(
+      data: brandData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StBrandResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la actualización de la marca',
+      error: e.toString(),
+    );
+  }
+}
+
+// Método para eliminar una marca
+Future<StResponse<StBrandResponse>> deleteBrand(int brandId) async {
+  try {
+    final response = await httpDelete(
+      '$_baseUrl/brands/delete/$brandId',
+      getHeaders(),
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StBrandResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StBrandResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al eliminar la marca',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StBrandResponse>.createEmpty();
+      }
+    }
+    
+    final responseJson = json.decode(response.body);
+    final brandData = StBrandResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StBrandResponse>(
+      data: brandData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StBrandResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la eliminación de la marca',
+      error: e.toString(),
+    );
+  }
+}
     // getAllBrands
       Future<StResponse<StBrandResponse>> getAllBrands() async{
         try {
