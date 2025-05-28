@@ -72,6 +72,7 @@ class S {
   String get confirmDeleteBrand => Intl.message('Are you sure you want to delete this brand?', name: 'confirmDeleteBrand');
   String get confirmDeleteColor => Intl.message('Are you sure you want to delete this color?', name: 'confirmDeleteColor');	
   String get confirmDeleteFuelType => Intl.message('Are you sure you want to delete this fuel type?', name: 'confirmDeleteFuelType');
+  String get confirmDeleteRoadType => Intl.message('Are you sure you want to delete this road type?', name: 'confirmDeleteRoadType');
   String get confirmPassword => Intl.message('Confirm Password', name: 'confirmPassword');
   String get contactInfo => Intl.message('contactInfo', name: 'contactInfo');
   String get cost => Intl.message('Cost', name: 'cost');
@@ -83,6 +84,7 @@ class S {
   String get deleteBrand => Intl.message('Delete Brand', name: 'deleteBrand');
   String get deleteColor => Intl.message('Delete Color', name: 'deleteColor');
   String get deleteFuelType => Intl.message('Delete Fuel Type', name: 'deleteFuelType');
+  String get deleteRoadType => Intl.message('Delete Road Type', name: 'deleteRoadType');
   String get deleteVehicleType => Intl.message('Delete Vehicle Type', name: 'deleteVehicleType');
   String get deleteVehicleTypeConfirmation  => Intl.message('Are you sure you want to delete the vehicle type');
   String get deletedSuccessfully => Intl.message('Deleted successfully', name: 'deletedSuccessfully');
@@ -94,6 +96,7 @@ class S {
   String get editBrand => Intl.message('Edit Brand', name: 'editBrand');
   String get editColors => Intl.message('Edit Colors', name: 'editColors');
   String get editFuelType => Intl.message('Edit Fuel Type', name: 'editFuelType');
+  String get editRoadType => Intl.message('Edit Road Type', name: 'editRoadType');
   String get editVehicle => Intl.message('Edit Vehicle', name: 'editVehicle');
   String get editVehicleType => Intl.message('Edit Vehicle Type', name: 'editVehicleType');
   String get email => Intl.message('Email', name: 'email');

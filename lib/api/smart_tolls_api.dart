@@ -1223,7 +1223,90 @@ Future<StResponse<StPlaceResponse>> getPlacesByCity(int idCity) async {
       return StResponse.createEmpty();
     }
   }
+// edit Road type
 
+Future<StResponse<StRoadTypeResponse>> updateRoadType(
+  int roadTypeId, 
+  StRoadTypeRequest roadTypeRequest
+) async {
+  try {
+    final response = await httpPut(
+      '$_baseUrl/roadType/$roadTypeId', 
+      getHeaders(), 
+      jsonEncode(roadTypeRequest.toJson())
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StRoadTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StRoadTypeResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al actualizar el tipo de carretera',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StRoadTypeResponse>.createEmpty();
+      }
+    }
+    
+    final responseJson = json.decode(response.body);
+    final roadTypeData = StRoadTypeResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StRoadTypeResponse>(
+      data: roadTypeData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StRoadTypeResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la actualización del tipo de carretera',
+      error: e.toString(),
+    );
+  }
+}
+
+// delete road type
+Future<StResponse<StRoadTypeResponse>> deleteRoadType(int roadTypeId) async {
+  try {
+    final response = await httpDelete(
+      '$_baseUrl/roadType/$roadTypeId',
+      getHeaders(),
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StRoadTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StRoadTypeResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al eliminar el tipo de carretera',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StRoadTypeResponse>.createEmpty();
+      }
+    }
+    
+    final responseJson = json.decode(response.body);
+    final roadTypeData = StRoadTypeResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StRoadTypeResponse>(
+      data: roadTypeData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StRoadTypeResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la eliminación del tipo de carretera',
+      error: e.toString(),
+    );
+  }
+}
 
 // PERSONS MS 
 

@@ -76,6 +76,50 @@ class RoadTypesProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+  // editar tipo de camino
+  Future<void> updateRoadType(int idRoadType, String roadTypeName) async{
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try{
+      final request = StRoadTypeRequest(
+        roadType: roadTypeName,
+      );
+      final response = await SmartTollsApi().updateRoadType(idRoadType, request);
+      if(response.isSuccess()){
+        await loadRoadTypes(); 
+      }else{
+        _errorMessage = response.message ?? 'Error al actualizar el tipo de camino';
+      }
+    }catch(e){
+      _errorMessage = 'Error de conexión: ${e.toString()}';
+    }finally{
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // eliminar tipo de camino
+  Future<void> deleteRoadType(int idRoadType) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await SmartTollsApi().deleteRoadType(idRoadType);
+      if (response.isSuccess()) {
+        await loadRoadTypes(); // Recargar la lista de tipos de caminos
+      } else {
+        _errorMessage = response.message ?? 'Error al eliminar el tipo de camino';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al eliminar el tipo de camino: ${e.toString()}';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   void retryLoading(){
     _isLoading = true;

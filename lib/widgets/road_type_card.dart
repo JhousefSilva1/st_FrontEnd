@@ -3,6 +3,8 @@ import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
+import '../views/views.dart';
+
 class RoadTypeCard extends StatelessWidget{
   final StRoadTypeResponse roadTypeName;
 
@@ -67,18 +69,18 @@ class RoadTypeCard extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: (){
-                      // editar tipo de camino
+                    onTap: () {
+                      showEditRoadTypeDialog(context, roadTypeName);
                     },
-                    child: const Icon(Icons.edit, color: AppStyle.red, size: 30),
+                    child: const Icon(Icons.edit, color: Colors.blue, size: 30),
                   ),
                   const SizedBox(width: 16),
                   GestureDetector(
-                    onTap: (){
-                      // eliminar tipo de camino
+                    onTap: () {
+                      showDeleteRoadTypeDialog(context, roadTypeName);
                     },
-                    child: const Icon(Icons.delete, color: AppStyle.red, size: 30),
-                  ),
+                    child: const Icon(Icons.delete, color: Colors.red, size: 30),
+                  ),  
                 ],
               )
             )

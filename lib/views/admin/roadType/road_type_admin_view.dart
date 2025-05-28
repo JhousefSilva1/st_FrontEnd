@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/road_types_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -217,5 +218,75 @@ void showAddRoadTypeDialog(BuildContext context){
     },
     positiveText: S.of(context).add,
     title: S.of(context).addRoadType,
+  );
+}
+
+void showEditRoadTypeDialog(BuildContext context, StRoadTypeResponse roadType) {
+  final roadTypesController = TextEditingController(text: roadType.roadType);
+  final provider = Provider.of<RoadTypesProvider>(context, listen: false);
+
+  Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: roadTypesController,
+          hintText: S.of(context).editRoadType,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.car_rental),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese tipo de camino';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (roadTypesController.text.isNotEmpty) {
+        await provider.updateRoadType(
+          roadType.idRoadType!,
+          roadTypesController.text,
+        );
+        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Nombre y país son campos requeridos')),
+        );
+      }
+    },
+    positiveText: S.of(context).edit,
+    title: S.of(context).editRoadType,
+  );
+}
+
+void showDeleteRoadTypeDialog(BuildContext context, StRoadTypeResponse roadType) {
+  final provider = Provider.of<RoadTypesProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(S.of(context).deleteRoadType),
+        content: Text('${S.of(context).confirmDeleteRoadType} ${roadType.roadType}'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(S.of(context).cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              await provider.deleteRoadType(roadType.idRoadType!);
+              Navigator.of(context).pop();
+            },
+            child: Text(S.of(context).delete),
+          ),
+        ],
+      );
+    },
   );
 }
