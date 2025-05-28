@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 
+import '../views/views.dart';
+
 
 class FuelTypeCard extends StatelessWidget {
   final StFuelTypesResponse fuelTypesName;
@@ -64,18 +66,20 @@ class FuelTypeCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      // editar
-                    },child: const Icon(Icons.edit, color: Colors.blue, size: 30),
-                  ),
-                  const SizedBox(width: 16),
-                  GestureDetector(
-                    onTap: () {
-                      // eliminar
-                    },
-                    child: const Icon(Icons.delete, color: Colors.red, size: 30),
-                  ),
+                // En el FuelTypeCard, modificar los GestureDetector de los íconos
+                GestureDetector(
+                  onTap: () {
+                    showEditFuelTypeDialog(context, fuelTypesName);
+                  },
+                  child: const Icon(Icons.edit, color: Colors.blue, size: 30),
+                ),
+                const SizedBox(width: 16),
+                GestureDetector(
+                  onTap: () {
+                    showDeleteFuelTypeDialog(context, fuelTypesName);
+                  },
+                  child: const Icon(Icons.delete, color: Colors.red, size: 30),
+                ),
                 ],
               )
             )

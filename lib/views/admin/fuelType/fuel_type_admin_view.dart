@@ -5,6 +5,7 @@ import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
+import '../../../api/api.dart';
 import '../../../generated/l10n.dart';
 class FuelTypeAdminView extends StatelessWidget{
   static const String routerName = 'fuelTypeAdmin';
@@ -197,5 +198,87 @@ void showAddFuelTypesDialog(BuildContext context){
     },
     positiveText: S.of(context).add,
     title: S.of(context).addFuelType,
+  );
+}
+void showEditFuelTypeDialog(BuildContext context, StFuelTypesResponse fuelType) {
+  final fuelTypeFuelController = TextEditingController(text: fuelType.fuelTypeName);
+  final provider = Provider.of<FuelTypeProvider>(context, listen: false);
+
+  Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: fuelTypeFuelController,
+          hintText: S.of(context).fuelType,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.gas_meter),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el tipo de combustible';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (fuelTypeFuelController.text.isNotEmpty) {
+        await provider.updateFuelType(
+          fuelType.idFuelType,
+          fuelTypeFuelController.text,
+        );
+        Navigator.of(context, rootNavigator: true).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('El tipo de combustible no puede estar vacío')),
+        );
+      }
+    },
+    positiveText: S.of(context).update,
+    title: S.of(context).editFuelType,
+  );
+}
+void showDeleteFuelTypeDialog(BuildContext context, StFuelTypesResponse fuelType) {
+  final provider = Provider.of<FuelTypeProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(S.of(context).deleteFuelType),
+        content: Text('${S.of(context).confirmDeleteFuelType} ${fuelType.fuelTypeName}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(S.of(context).cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              
+              try {
+                await provider.deleteFuelType(fuelType.idFuelType);
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(content: Text('${fuelType.fuelTypeName} ${S.of(context).deletedSuccessfully}')),
+                );
+              } catch (e) {
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(content: Text('Error al eliminar: ${e.toString()}')),
+                );
+              }
+            },
+            child: Text(
+              S.of(context).delete,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

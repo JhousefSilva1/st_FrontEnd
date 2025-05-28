@@ -81,6 +81,59 @@ class FuelTypeProvider extends ChangeNotifier{
     }
   }
 
+  
+
+// Método para actualizar un tipo de combustible
+Future<void> updateFuelType(
+  int fuelTypeId, 
+  String fuelTypeName
+) async {
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+
+  try {
+    final request = StFuelTypesRequest(
+      fuelTypeFuel: fuelTypeName,
+    );
+    
+    final response = await SmartTollsApi().updateFuelType(fuelTypeId, request);
+    
+    if (response.isSuccess()) {
+      await loadFuelTypes(); // Recargar la lista de tipos de combustible
+    } else {
+      _errorMessage = response.message ?? 'Error al actualizar el tipo de combustible';
+    }
+  } catch (e) {
+    _errorMessage = 'Error al actualizar el tipo de combustible: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
+// Método para eliminar un tipo de combustible
+Future<void> deleteFuelType(int fuelTypeId) async {
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+
+  try {
+    final response = await SmartTollsApi().deleteFuelType(fuelTypeId);
+    
+    if (response.isSuccess()) {
+      await loadFuelTypes(); // Recargar la lista de tipos de combustible
+    } else {
+      _errorMessage = response.message ?? 'Error al eliminar el tipo de combustible';
+    }
+  } catch (e) {
+    _errorMessage = 'Error al eliminar el tipo de combustible: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
   // metodo para recargar datos
     void retryLoading(){
     _errorMessage = null;
