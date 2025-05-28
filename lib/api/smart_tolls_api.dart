@@ -125,6 +125,7 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
           return StResponse.createEmpty();
         }
       }
+      
 // - MODELS
       // create model by brandId
       Future<StResponse<StVehiclesModelsResponse>> createModelByBrand(StVehiclesModelsRequest modelsRequest) async {
@@ -247,7 +248,111 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
               return StResponse.createEmpty();
             }
           }
-// - VEHICLE TYPES
+          // EDIT COLORS
+          // En SmartTollsApi class
+      Future<StResponse<StVehiclesColorsResponse>> updateColor(int colorId, StColorRequest colorRequest) async {
+        try {
+          final response = await httpPut(
+            '$_baseUrl/colors/update/$colorId', 
+            getHeaders(), 
+            jsonEncode(colorRequest.toJson())
+          );
+          
+          if (response.statusCode >= HttpStatus.badRequest) {
+            if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+              return StResponse<StVehiclesColorsResponse>(status: HttpStatus.networkConnectTimeoutError);
+            }
+            try {
+              final errorJson = json.decode(response.body);
+              return StResponse<StVehiclesColorsResponse>(
+                status: response.statusCode,
+                message: errorJson['message'] ?? 'Error al actualizar el color',
+                error: errorJson['error'] ?? '',
+              );
+            } catch (e) {
+              return StResponse<StVehiclesColorsResponse>.createEmpty();
+            }
+          }
+          
+          final responseJson = json.decode(response.body);
+          final colorData = StVehiclesColorsResponse.createEmpty().fromMap(responseJson['data']);
+          return StResponse<StVehiclesColorsResponse>(
+            data: colorData,
+            status: response.statusCode,
+            message: responseJson['message'],
+          );
+        } catch (e) {
+          return StResponse<StVehiclesColorsResponse>(
+            status: HttpStatus.internalServerError,
+            message: 'Error durante la actualización del color',
+            error: e.toString(),
+          );
+        }
+      }
+      // delete colors
+      // En SmartTollsApi class
+Future<StResponse<StVehiclesColorsResponse>> deleteColor(int colorId) async {
+  try {
+    final response = await httpDelete(
+      '$_baseUrl/colors/delete/$colorId',
+      getHeaders(),
+    );
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StVehiclesColorsResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StVehiclesColorsResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al eliminar el color',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StVehiclesColorsResponse>.createEmpty();
+      }
+    }
+    
+    final responseJson = json.decode(response.body);
+    final colorData = StVehiclesColorsResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StVehiclesColorsResponse>(
+      data: colorData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StVehiclesColorsResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la eliminación del color',
+      error: e.toString(),
+    );
+  }
+}
+
+// Agregar el método httpDelete si no existe
+Future<http.Response> httpDelete(String baseUrl, dynamic header) async {
+  try {
+    var httpResponse = await http.delete(
+      Uri.parse(baseUrl),
+      headers: header,
+    ).timeout(const Duration(seconds: 120));
+    
+    if (httpResponse.statusCode != HttpStatus.ok) {
+      final error = StResponse.fromJson(httpResponse.body);
+      if (error.status == authorizationForbidden || error.status == authorizationUnauthorized) {
+        // httpResponse = await reloginMethodDelete(baseUrl, header, httpResponse);
+      }
+    }
+    return httpResponse;
+  } catch (e) {
+    if (e.toString().contains('errno = 7') || e.toString().contains('Software caused connection abort')) {
+      return http.Response("{}", HttpStatus.networkConnectTimeoutError);
+    }
+  }
+  return http.Response("{}", HttpStatus.conflict);
+}
+      // - VEHICLE TYPES
   
         // create vehicle type
           Future<StResponse<StVehiclesTypeResponse>> createVehicleType(StVehiclesTypeRequest vehicleTypeRequest) async {

@@ -3,1428 +3,220 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'intl/messages_all.dart';
 
-
-
-
-
-
-
-
-
-
-
-
 class S {
   S();
-
-
-
-
   static S? _current;
 
-
-
-
   static S get current {
-    assert(
-      _current != null,
-      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
-    );
+    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-
-
-
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
-
-
-
   static Future<S> load(Locale locale) {
-    final name =
-        (locale.countryCode?.isEmpty ?? false)
-            ? locale.languageCode
-            : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
-
-
-
-
       return instance;
     });
   }
 
-
-
-
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(
-      instance != null,
-      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
-    );
+    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
-
-
-
-  static S? maybeOf(BuildContext context) {
-    return Localizations.of<S>(context, S);
-  }
-  /// `passwordsDontMatch`
-  String get passwordsDontMatch {
-    return Intl.message(
-      'passwordsDontMatch',
-      name: 'passwordsDontMatch',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `passwordIsRequired`
-  String get passwordIsRequired {
-    return Intl.message(
-      'passwordIsRequired',
-      name: 'passwordIsRequired',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterName`
-  String get pleaseEnterName {
-    return Intl.message(
-      'pleaseEnterName',
-      name: 'pleaseEnterName',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterSurname`
-  String get pleaseEnterSurname {
-    return Intl.message(
-      'pleaseEnterSurname',
-      name: 'pleaseEnterSurname',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterEmail`
-  String get pleaseEnterEmail {
-    return Intl.message(
-      'pleaseEnterEmail',
-      name: 'pleaseEnterEmail',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `surname`
-  String get surname {
-    return Intl.message(
-      'surname',
-      name: 'surname',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `whatsappNumber`
-  String get whatsappNumber {
-    return Intl.message(
-      'whatsappNumber',
-      name: 'whatsappNumber',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterWhatsAppNumber`
-  String get pleaseEnterWhatsappNumber {
-    return Intl.message(
-      'pleaseEnterWhatsAppNumber',
-      name: 'pleaseEnterWhatsAppNumber',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterAddress`
-  String get pleaseEnterAddress {
-    return Intl.message(
-      'pleaseEnterAddress',
-      name: 'pleaseEnterAddress',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterValidEmail`
-  String get pleaseEnterValidEmail {
-    return Intl.message(
-      'pleaseEnterValidEmail',
-      name: 'pleaseEnterValidEmail',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseSelectBirthdate`
-  String get pleaseSelectBirthdate {
-    return Intl.message(
-      'pleaseSelectBirthdate',
-      name: 'pleaseSelectBirthdate',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `registrationSuccessful`
-  String get registrationSuccessful {
-    return Intl.message(
-      'registrationSuccessful',
-      name: 'registrationSuccessful',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterPassword`
-  String get pleaseEnterPassword {
-    return Intl.message(
-      'pleaseEnterPassword',
-      name: 'pleaseEnterPassword',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `passwordTooShort`
-  String get passwordTooShort {
-    return Intl.message(
-      'passwordTooShort',
-      name: 'passwordTooShort',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseConfirmPassword`
-  String get pleaseConfirmPassword {
-    return Intl.message(
-      'pleaseConfirmPassword',
-      name: 'pleaseConfirmPassword',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseSelectGender`
-  String get pleaseSelectGender {
-    return Intl.message(
-      'pleaseSelectGender',
-      name: 'pleaseSelectGender',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseSelectCountry`
-  String get pleaseSelectCountry {
-    return Intl.message(
-      'pleaseSelectCountry',
-      name: 'pleaseSelectCountry',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseSelectCity`
-  String get pleaseSelectCity {
-    return Intl.message(
-      'pleaseSelectCity',
-      name: 'pleaseSelectCity',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterDni`
-  String get pleaseEnterDni {
-    return Intl.message(
-      'pleaseEnterDni',
-      name: 'pleaseEnterDni',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterAge`
-  String get pleaseEnterAge {
-    return Intl.message(
-      'pleaseEnterAge',
-      name: 'pleaseEnterAge',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseEnterValidAge`
-  String get pleaseEnterValidAge {
-    return Intl.message(
-      'pleaseEnterValidAge',
-      name: 'pleaseEnterValidAge',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseSelectPersonType`
-  String get pleaseSelectPersonType {
-    return Intl.message(
-      'pleaseSelectPersonType',
-      name: 'pleaseSelectPersonType',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `pleaseSelectCountryFirst`
-  String get pleaseSelectCountryFirst {
-    return Intl.message(
-      'pleaseSelectCountryFirst',
-      name: 'pleaseSelectCountryFirst',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `licensePlate`
-  String get licensePlate {
-    return Intl.message(
-      'licensePlate',
-      name: 'licensePlate',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `MyVehicles`
-  String get myVehicles {
-    return Intl.message(
-      'MyVehicles',
-      name: 'myVehicles',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `chassisNumber`
-  String get chassisNumber {
-    return Intl.message(
-      'chassisNumber',
-      name: 'chassisNumber',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `manufacturingYear`
-  String get manufacturingYear {
-    return Intl.message(
-      'manufacturingYear',
-      name: 'manufacturingYear',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Person Name`
-  String get personName {
-    return Intl.message(
-      'Person Name',
-      name: 'personName',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Person Surname`
-  String get personSurname {
-    return Intl.message(
-      'Person Surname',
-      name: 'personSurname',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Born Date`
-  String get bornDate {
-    return Intl.message(
-      'Born Date',
-      name: 'bornDate',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `WhatsApp`
-  String get whatsApp {
-    return Intl.message(
-      'WhatsApp',
-      name: 'whatsapp',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Address`
-  String get address {
-    return Intl.message(
-      'Address',
-      name: 'address',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Age`
-  String get age {
-    return Intl.message(
-      'Age',
-      name: 'age',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Account Number`
-  String get accountNumber {
-    return Intl.message(
-      'Account Number',
-      name: 'accountNumber',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Add`
-  String get add {
-    return Intl.message('Add', name: 'add', desc: '', args: []);
-  }
-  /// `Add Brand`
-  String get addBrand {
-    return Intl.message('Add Brand', name: 'addBrand', desc: '', args: []);
-  }
-  /// `Add Employee`
-  String get addEmployee {
-    return Intl.message(
-      'Add Employee',
-      name: 'addEmployee',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `place`
-  String get place {
-    return Intl.message('place', name: 'place', desc: '', args: []);
-  }
-  /// `add place`
-  String get addPlace {
-    return Intl.message('place', name: 'addPlace', desc: '', args: []);
-  }
-  /// `add city`
-  String get addCity {
-    return Intl.message('city', name: 'addCity', desc: '', args: []);
-  }
-  /// `road type`
-  String get roadType {
-    return Intl.message('road type', name: 'roadType', desc: '', args: []);
-  }
-  /// `add road type`
-  String get addRoadType {
-    return Intl.message('road type', name: 'addRoadType', desc: '', args: []);
-  }
-  /// `city`
-  String get city {
-    return Intl.message('city', name: 'city', desc: '', args: []);
-  }
-  /// `Add color`
-  String get addColor {
-    return Intl.message('color', name: 'addColor', desc: '', args: []);
-  }
-  /// `Fuel Type`
-  String get fuelType {
-    return Intl.message('Fuel Type', name: 'addFuelType', desc: '', args: []);
-  }
-  /// `Add Fuel Type`
-  String get addFuelType {
-    return Intl.message('Add Fuel Type', name: 'addFuelType', desc: '', args: []);
-  }
-  /// `Add Gender`
-  String get addGender {
-    return Intl.message('Add Gender', name: 'addGender', desc: '', args: []);
-  }
-  /// `personType`
-  String get personType {
-    return Intl.message('personType', name: 'personType', desc: '', args: []);
-  }
-  /// `Add Person Type`
-  String get addPersonType {
-    return Intl.message('Add Person Type', name: 'addPersonType', desc: '', args: []);
-  }
-  /// `color`
-  String get color {
-    return Intl.message('color', name: 'color', desc: '', args: []);
-  }
-  /// `add Country`
-  String get addCountry {
-    return Intl.message('add Country', name: 'addCountry', desc: '', args: []);
-  }
-  /// `retry`
-  String get retry {
-    return Intl.message('retry', name: 'retry', desc: '', args: []);
-  }
-  /// `Description`
-  String get description {
-    return Intl.message('Description', name: 'description', desc: '', args: []);
-  }
-  /// `Add Line`
-  String get addLine {
-    return Intl.message('Add Line', name: 'addLine', desc: '', args: []);
-  }
-  /// `Toll Name`
-  String get tollName {
-    return Intl.message('Toll Name', name: 'tollName', desc: '', args: []);
-  }
-  /// `Origin`
-  String get origin {
-    return Intl.message('Origin', name: 'origin', desc: '', args: []);
-  }
-  /// `Download`
-  String get download {
-    return Intl.message('Download', name: 'download', desc: '', args: []);
-  }
-  /// `Add Model`
-  String get addModel {
-    return Intl.message('Add Model', name: 'addModel', desc: '', args: []);
-  }
-  /// `Add Toll`
-  String get addToll {
-    return Intl.message('Add Toll', name: 'addToll', desc: '', args: []);
-  }
-  /// `noUserData`
-  String get noUserData {
-    return Intl.message('noUserData',name: 'noUserData',desc: '',args: []);
-  }
-  /// `addVehicle`
-  String get addVehicle {
-    return Intl.message('addVehicle',name: 'addVehicle',desc: '',args: [],);
-  }
-  /// `personalInfo`
-  String get personalInfo {
-    return Intl.message(
-      'personalInfo',name: 'personalInfo',desc: '',args: [],);
-  }
-  /// `contactInfo`
-  String get contactInfo {
-    return Intl.message(
-      'contactInfo',name: 'contactInfo',desc: '',args: [],);
-  }
-  /// `location`
-  String get location {
-    return Intl.message(
-      'location',name: 'location',desc: '',args: [],);
-  }
-  /// `Add New Vehicle`
-  String get addVehicles {
-    return Intl.message(
-      'Add New Vehicle',
-      name: 'addVehicles',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Add Vehicle Type`
-  String get addVehicleType {
-    return Intl.message(
-      'Add Vehicle Type',
-      name: 'addVehicleType',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Administration`
-  String get administration {
-    return Intl.message(
-      'Administration',
-      name: 'administration',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Smart Tolls`
-  String get appName {
-    return Intl.message('Smart Tolls', name: 'appName', desc: '', args: []);
-  }
-
-
-
-
-  /// `Back`
-  String get back {
-    return Intl.message('Back', name: 'back', desc: '', args: []);
-  }
-
-
-
-
-  /// `Birthdate`
-  String get birthdate {
-    return Intl.message('Birthdate', name: 'birthdate', desc: '', args: []);
-  }
-
-
-
-
-  /// `Brand`
-  String get brand {
-    return Intl.message('Brand', name: 'brand', desc: '', args: []);
-  }
-
-
-
-
-  /// `Cancel`
-  String get cancel {
-    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
-  }
-
-
-
-
-  /// `Chassis`
-  String get chassis {
-    return Intl.message('Chassis', name: 'chassis', desc: '', args: []);
-  }
-
-
-
-
-  /// `Circulation Square`
-  String get circulationSquare {
-    return Intl.message(
-      'Circulation Square',
-      name: 'circulationSquare',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Completed Transactions`
-  String get completedTransactions {
-    return Intl.message(
-      'Completed Transactions',
-      name: 'completedTransactions',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Confirm Password`
-  String get confirmPassword {
-    return Intl.message(
-      'Confirm Password',
-      name: 'confirmPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Cost`
-  String get cost {
-    return Intl.message('Cost', name: 'cost', desc: '', args: []);
-  }
-
-
-
-
-  /// `Country`
-  String get country {
-    return Intl.message('Country', name: 'country', desc: '', args: []);
-  }
-
-/// `noTransactionsFound`
-  String get noTransactionsFound {
-    return Intl.message('noTransactionsFound', name: 'noTransactionsFound', desc: '', args: []);
-  } 
-
-
-  /// `Create a new account in Smart Tolls`
-  String get createAccount {
-    return Intl.message(
-      'Create a new account in Smart Tolls',
-      name: 'createAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Customer`
-  String get customer {
-    return Intl.message('Customer', name: 'customer', desc: '', args: []);
-  }
-
-
-
-
-
-
-
-
-  /// `DNI`
-  String get dni {
-    return Intl.message('DNI', name: 'dni', desc: '', args: []);
-  }
-
-
-
-
-  /// `Don't have an account? `
-  String get dontHaveAnAccount {
-    return Intl.message(
-      'Don\'t have an account? ',
-      name: 'dontHaveAnAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-
-
-
-
-  /// `Edit`
-  String get edit {
-    return Intl.message('Edit', name: 'edit', desc: '', args: []);
-  }
-
-
-
-
-  /// `Edit Vehicle`
-  String get editVehicle {
-    return Intl.message(
-      'Edit Vehicle',
-      name: 'editVehicle',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Email`
-  String get email {
-    return Intl.message('Email', name: 'email', desc: '', args: []);
-  }
-
-
-
-
-  /// `Email is required`
-  String get emailIsRequired {
-    return Intl.message(
-      'Email is required',
-      name: 'emailIsRequired',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Email is invalid`
-  String get emailIsInvalid {
-    return Intl.message(
-      'Email is invalid',
-      name: 'emailIsInvalid',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Operator`
-  String get employee {
-    return Intl.message('Operator', name: 'employee', desc: '', args: []);
-  }
-
-
-
-
-  /// `Engine Number`
-  String get engineNumber {
-    return Intl.message(
-      'Engine Number',
-      name: 'engineNumber',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Final Section`
-  String get finalSection {
-    return Intl.message(
-      'Final Section',
-      name: 'finalSection',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Fuel`
-  String get fuel {
-    return Intl.message('Fuel', name: 'fuel', desc: '', args: []);
-  }
-
-
-
-
-  /// `Gender`
-  String get gender {
-    return Intl.message('Gender', name: 'gender', desc: '', args: []);
-  }
-
-
-
-
-  /// `Home`
-  String get home {
-    return Intl.message('Home', name: 'home', desc: '', args: []);
-  }
-
-
-
-
-  /// `Initial Section`
-  String get initialSection {
-    return Intl.message(
-      'Initial Section',
-      name: 'initialSection',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Introduce amount`
-  String get introduceAmount {
-    return Intl.message(
-      'Introduce amount',
-      name: 'introduceAmount',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
- 
-
-
-
-
-  /// `Last One Step`
-  String get lastOneStep {
-    return Intl.message(
-      'Last One Step',
-      name: 'lastOneStep',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Line`
-  String get line {
-    return Intl.message('Line', name: 'line', desc: '', args: []);
-  }
-
-
-
-
-  /// `Lines`
-  String get lines {
-    return Intl.message('Lines', name: 'lines', desc: '', args: []);
-  }
-
-
-
-
-  /// `Locality`
-  String get locality {
-    return Intl.message('Locality', name: 'locality', desc: '', args: []);
-  }
-
-
-
-
-  /// `Login`
-  String get login {
-    return Intl.message('Login', name: 'login', desc: '', args: []);
-  }
-
-
-
-
-  /// `Login to your account`
-  String get loginToYourAccount {
-    return Intl.message(
-      'Login to your account',
-      name: 'loginToYourAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Logout`
-  String get logout {
-    return Intl.message('Logout', name: 'logout', desc: '', args: []);
-  }
-
-
-
-
-  /// `Model`
-  String get model {
-    return Intl.message('Model', name: 'model', desc: '', args: []);
-  }
-
-
-
-
-  /// `Name`
-  String get name {
-    return Intl.message('Name', name: 'name', desc: '', args: []);
-  }
-
-
-
-
-  /// `Next`
-  String get next {
-    return Intl.message('Next', name: 'next', desc: '', args: []);
-  }
-
-
-
-
-  /// `Notification`
-  String get notification {
-    return Intl.message(
-      'Notification',
-      name: 'notification',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-
-
-
-
- 
-
-
-
-
-  /// `Password`
-  String get password {
-    return Intl.message('Password', name: 'password', desc: '', args: []);
-  }
-
-
-
-
-  /// `Pay with QR`
-  String get payWithQr {
-    return Intl.message('Pay with QR', name: 'payWithQr', desc: '', args: []);
-  }
-
-
-
-
-  /// `Person Data`
-  String get personData {
-    return Intl.message('Person Data', name: 'personData', desc: '', args: []);
-  }
-
-
-
-
-  /// `Phone`
-  String get phone {
-    return Intl.message('Phone', name: 'phone', desc: '', args: []);
-  }
-
-
-
-
-  /// `Plate`
-  String get plate {
-    return Intl.message('Plate', name: 'plate', desc: '', args: []);
-  }
-
-
-
-
-  /// `Profile`
-  String get profile {
-    return Intl.message('Profile', name: 'profile', desc: '', args: []);
-  }
-
-
-
-
-
-
-
-
-  /// `Recharge Wallet`
-  String get rechargeWallet {
-    return Intl.message(
-      'Recharge Wallet',
-      name: 'rechargeWallet',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Register`
-  String get register {
-    return Intl.message('Register', name: 'register', desc: '', args: []);
-  }
-
-
-
-
-  /// `Register Cars`
-  String get registerCars {
-    return Intl.message(
-      'Register Cars',
-      name: 'registerCars',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Reports`
-  String get reports {
-    return Intl.message('Reports', name: 'reports', desc: '', args: []);
-  }
-
-
-
-
-  /// `Search`
-  String get search {
-    return Intl.message('Search', name: 'search', desc: '', args: []);
-  }
-
-
-
-
-  /// `See All`
-  String get seeAll {
-    return Intl.message('See All', name: 'seeAll', desc: '', args: []);
-  }
-
-
-
-
-  /// `Select User Type`
-  String get selectUserType {
-    return Intl.message(
-      'Select User Type',
-      name: 'selectUserType',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Please, select your user`
-  String get selectYourUser {
-    return Intl.message(
-      'Please, select your user',
-      name: 'selectYourUser',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Start`
-  String get start {
-    return Intl.message('Start', name: 'start', desc: '', args: []);
-  }
-
-
-
-
-  /// `Staff`
-  String get staff {
-    return Intl.message('Staff', name: 'staff', desc: '', args: []);
-  }
-
-
-
-
-  /// `Status`
-  String get status {
-    return Intl.message('Status', name: 'status', desc: '', args: []);
-  }
-
-
-
-
-  /// `Step 1`
-  String get stepOne {
-    return Intl.message('Step 1', name: 'stepOne', desc: '', args: []);
-  }
-
-
-
-
-  /// `Step 2`
-  String get stepTwo {
-    return Intl.message('Step 2', name: 'stepTwo', desc: '', args: []);
-  }
-
-
-
-
-  /// `Sign Up`
-  String get signUp {
-    return Intl.message('Sign Up', name: 'signUp', desc: '', args: []);
-  }
-
-
-
-
-  /// `Type of Document`
-  String get typeOfDocument {
-    return Intl.message(
-      'Type of Document',
-      name: 'typeOfDocument',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Type of Road`
-  String get typeOfRoad {
-    return Intl.message('Type of Road', name: 'typeOfRoad', desc: '', args: []);
-  }
-
-
-
-
-  /// `Type of Vehicle`
-  String get typeOfVehicle {
-    return Intl.message(
-      'Type of Vehicle',
-      name: 'typeOfVehicle',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Toll data`
-  String get tollData {
-    return Intl.message('Toll data', name: 'tollData', desc: '', args: []);
-  }
-
-
-
-
-  /// `Tolls`
-  String get tolls {
-    return Intl.message('Tolls', name: 'tolls', desc: '', args: []);
-  }
-
-
-
-
-  /// `Tolls Used`
-  String get tollsUsed {
-    return Intl.message('Tolls Used', name: 'tollsUsed', desc: '', args: []);
-  }
-
-
-
-
-  /// `Total Paid`
-  String get totalPaid {
-    return Intl.message('Total Paid', name: 'totalPaid', desc: '', args: []);
-  }
-
-
-
-
-  /// `Transaction History`
-  String get transactionHistory {
-    return Intl.message(
-      'Transaction History',
-      name: 'transactionHistory',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `managePersons`
-  String get managePersons {
-    return Intl.message(
-      'People Management',
-      name: 'People Management',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-  /// `Vehicle data`
-  String get vehicleData {
-    return Intl.message(
-      'Vehicle data',
-      name: 'vehicleData',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-
-
-  /// `Vehicle`
-  String get vehicle {
-    return Intl.message('Vehicle', name: 'vehicle', desc: '', args: []);
-  }
-
-
-
-
-  /// `Vehicles`
-  String get vehicles {
-    return Intl.message('Vehicles', name: 'vehicles', desc: '', args: []);
-  }
-
-
-
-
-  /// `Vehicle Service`
-  String get vehicleService {
-    return Intl.message(
-      'Vehicle Service',
-      name: 'vehicleService',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `update`
-  String get update {
-    return Intl.message('update', name: 'update', desc: '', args: []);
-  }
-  /// `scanQrToPay`
-  String get scanQrToPay {
-    return Intl.message(
-      'scanQrToPay',
-      name: 'scanQrToPay',
-      desc: '',
-      args: [],
-    );
-  }
-  /// `Vehicle Type`
-  String get vehicleType {
-    return Intl.message(
-      'Vehicle Type',
-      name: 'vehicleType',
-      desc: '',
-      args: [],
-    );
-  }
-
-
-  /// `noVehicleSelected`
-  String get noVehicleSelected {
-    return Intl.message('noVehicleSelected', name: 'noVehicleSelected', desc: '', args: []);
-  }
-  /// `Wallet`
-  String get wallet {
-    return Intl.message('Wallet', name: 'wallet', desc: '', args: []);
-  }
-  /// `pay`
-  String get pay {
-    return Intl.message('pay', name: 'pay', desc: '', args: []);
-  }
-  /// `Recharge`
-  String get recharge {
-    return Intl.message('Recharge', name: 'recharge', desc: '', args: []);
-  }
-  /// `success`
-  String get success {
-    return Intl.message('success', name: 'success', desc: '', args: []);
-  }
-  /// `comingSoon`
-  String get comingSoon {
-    return Intl.message('comingSoon', name: 'comingSoon', desc: '', args: []);
-  }
-  /// `Weight`
-  String get weight {
-    return Intl.message('Weight', name: 'weight', desc: '', args: []);
-  }
-
-
-
-
-  /// `Welcome!`
-  String get welcome {
-    return Intl.message('Welcome!', name: 'welcome', desc: '', args: []);
-  }
-  /// `tollsOperator`
-  String get tollsOperator {
-    return Intl.message('tollsOperator', name: 'tollsOperator', desc: '', args: []);
-  }
-
-
-
-  /// `Workstation`
-  String get workstation {
-    return Intl.message('Workstation', name: 'workstation', desc: '', args: []);
-  }
-/// `noVehiclesFound`
-  String get noVehiclesFound {
-    return Intl.message('noVehiclesFound', name: 'noVehiclesFound', desc: '', args: []);
-  }
-  /// `vehicleInfo`
-  String get vehicleInfo {
-    return Intl.message('vehicleInfo', name: 'vehicleInfo', desc: '', args: []);
-  }
-  /// `balance`
-  String get balance {
-    return Intl.message('balance', name: 'balance', desc: '', args: []);
-  }
-  /// `tollCharge`
-  String get tollCharge {
-    return Intl.message('tollCharge', name: 'tollCharge', desc: '', args: []);
-  }
-  /// `enterLicensePlate`
-  String get enterLicensePlate {
-    return Intl.message('enterLicensePlate', name: 'enterLicensePlate', desc: '', args: []);
-  }
-  /// `selectToll`
-  String get selectToll {
-    return Intl.message('selectToll', name: 'selectToll', desc: '', args: []);
-  }
-  /// `foundVehicles`
-  String get foundVehicles {
-    return Intl.message('foundVehicles', name: 'foundVehicles', desc: '', args: []);
-  }
-  /// `insufficientBalance`
-  String get insufficientBalance {
-    return Intl.message('insufficientBalance', name: 'insufficientBalance', desc: '', args: []);
-  }
-  /// `charge`
-  String get charge {
-    return Intl.message('charge', name: 'charge', desc: '', args: []);
-  }
-  /// `Year`
-  String get year {
-    return Intl.message('Year', name: 'year', desc: '', args: []);
-  }
+  static S? maybeOf(BuildContext context) => Localizations.of<S>(context, S);
+
+  // Strings organized alphabetically
+  String get accountNumber => Intl.message('Account Number', name: 'accountNumber');
+  String get add => Intl.message('Add', name: 'add');
+  String get addBrand => Intl.message('Add Brand', name: 'addBrand');
+  String get addCity => Intl.message('city', name: 'addCity');
+  String get addColor => Intl.message('color', name: 'addColor');
+  String get addCountry => Intl.message('add Country', name: 'addCountry');
+  String get addEmployee => Intl.message('Add Employee', name: 'addEmployee');
+  String get addFuelType => Intl.message('Add Fuel Type', name: 'addFuelType');
+  String get addGender => Intl.message('Add Gender', name: 'addGender');
+  String get addLine => Intl.message('Add Line', name: 'addLine');
+  String get addModel => Intl.message('Add Model', name: 'addModel');
+  String get addPersonType => Intl.message('Add Person Type', name: 'addPersonType');
+  String get addPlace => Intl.message('place', name: 'addPlace');
+  String get addRoadType => Intl.message('road type', name: 'addRoadType');
+  String get addToll => Intl.message('Add Toll', name: 'addToll');
+  String get addVehicle => Intl.message('addVehicle', name: 'addVehicle');
+  String get addVehicleType => Intl.message('Add Vehicle Type', name: 'addVehicleType');
+  String get addVehicles => Intl.message('Add New Vehicle', name: 'addVehicles');
+  String get address => Intl.message('Address', name: 'address');
+  String get administration => Intl.message('Administration', name: 'administration');
+  String get age => Intl.message('Age', name: 'age');
+  String get appName => Intl.message('Smart Tolls', name: 'appName');
+  String get back => Intl.message('Back', name: 'back');
+  String get balance => Intl.message('balance', name: 'balance');
+  String get birthdate => Intl.message('Birthdate', name: 'birthdate');
+  String get bornDate => Intl.message('Born Date', name: 'bornDate');
+  String get brand => Intl.message('Brand', name: 'brand');
+  String get cancel => Intl.message('Cancel', name: 'cancel');
+  String get charge => Intl.message('charge', name: 'charge');
+  String get chassis => Intl.message('Chassis', name: 'chassis');
+  String get chassisNumber => Intl.message('chassisNumber', name: 'chassisNumber');
+  String get city => Intl.message('city', name: 'city');
+  String get circulationSquare => Intl.message('Circulation Square', name: 'circulationSquare');
+  String get color => Intl.message('color', name: 'color');
+  String get comingSoon => Intl.message('comingSoon', name: 'comingSoon');
+  String get confirmDeleteColor => Intl.message('Are you sure you want to delete this color?', name: 'confirmDeleteColor');	
+  String get confirmPassword => Intl.message('Confirm Password', name: 'confirmPassword');
+  String get contactInfo => Intl.message('contactInfo', name: 'contactInfo');
+  String get cost => Intl.message('Cost', name: 'cost');
+  String get country => Intl.message('Country', name: 'country');
+  String get createAccount => Intl.message('Create a new account in Smart Tolls', name: 'createAccount');
+  String get currentBalance => Intl.message('currentBalance', name: 'currentBalance');
+  String get customer => Intl.message('Customer', name: 'customer');
+  String get delete => Intl.message('Delete', name: 'delete');
+  String get deleteColor => Intl.message('Delete Color', name: 'deleteColor');
+  String get deletedSuccessfully => Intl.message('Deleted successfully', name: 'deletedSuccessfully');
+  String get description => Intl.message('Description', name: 'description');
+  String get dni => Intl.message('DNI', name: 'dni');
+  String get dontHaveAnAccount => Intl.message('Don\'t have an account? ', name: 'dontHaveAnAccount');
+  String get download => Intl.message('Download', name: 'download');
+  String get edit => Intl.message('Edit', name: 'edit');
+  String get editColors => Intl.message('Edit Colors', name: 'editColors');
+  String get editVehicle => Intl.message('Edit Vehicle', name: 'editVehicle');
+  String get email => Intl.message('Email', name: 'email');
+  String get emailIsInvalid => Intl.message('Email is invalid', name: 'emailIsInvalid');
+  String get emailIsRequired => Intl.message('Email is required', name: 'emailIsRequired');
+  String get employee => Intl.message('Operator', name: 'employee');
+  String get engineNumber => Intl.message('Engine Number', name: 'engineNumber');
+  String get enterLicensePlate => Intl.message('enterLicensePlate', name: 'enterLicensePlate');
+  String get finalSection => Intl.message('Final Section', name: 'finalSection');
+  String get foundVehicles => Intl.message('foundVehicles', name: 'foundVehicles');
+  String get frequentTolls => Intl.message('frequentTolls', name: 'frequentTolls');
+  String get fuel => Intl.message('Fuel', name: 'fuel');
+  String get fuelType => Intl.message('Fuel Type', name: 'addFuelType');
+  String get gender => Intl.message('Gender', name: 'gender');
+  String get home => Intl.message('Home', name: 'home');
+  String get initialSection => Intl.message('Initial Section', name: 'initialSection');
+  String get insufficientBalance => Intl.message('insufficientBalance', name: 'insufficientBalance');
+  String get introduceAmount => Intl.message('Introduce amount', name: 'introduceAmount');
+  String get last30Days => Intl.message('last30Days', name: 'last30Days');
+  String get lastOneStep => Intl.message('Last One Step', name: 'lastOneStep');
+  String get licensePlate => Intl.message('licensePlate', name: 'licensePlate');
+  String get line => Intl.message('Line', name: 'line');
+  String get lines => Intl.message('Lines', name: 'lines');
+  String get locality => Intl.message('Locality', name: 'locality');
+  String get location => Intl.message('location', name: 'location');
+  String get login => Intl.message('Login', name: 'login');
+  String get loginToYourAccount => Intl.message('Login to your account', name: 'loginToYourAccount');
+  String get logout => Intl.message('Logout', name: 'logout');
+  String get managePersons => Intl.message('People Management', name: 'People Management');
+  String get manufacturingYear => Intl.message('manufacturingYear', name: 'manufacturingYear');
+  String get model => Intl.message('Model', name: 'model');
+  String get mostUsed => Intl.message('mostUsed', name: 'mostUsed');
+  String get myVehicles => Intl.message('MyVehicles', name: 'myVehicles');
+  String get name => Intl.message('Name', name: 'name');
+  String get next => Intl.message('Next', name: 'next');
+  String get noTransactionsFound => Intl.message('noTransactionsFound', name: 'noTransactionsFound');
+  String get noUserData => Intl.message('noUserData', name: 'noUserData');
+  String get noVehicleSelected => Intl.message('noVehicleSelected', name: 'noVehicleSelected');
+  String get noVehiclesFound => Intl.message('noVehiclesFound', name: 'noVehiclesFound');
+  String get notification => Intl.message('Notification', name: 'notification');
+  String get origin => Intl.message('Origin', name: 'origin');
+  String get password => Intl.message('Password', name: 'password');
+  String get passwordIsRequired => Intl.message('passwordIsRequired', name: 'passwordIsRequired');
+  String get passwordTooShort => Intl.message('passwordTooShort', name: 'passwordTooShort');
+  String get passwordsDontMatch => Intl.message('passwordsDontMatch', name: 'passwordsDontMatch');
+  String get pay => Intl.message('pay', name: 'pay');
+  String get payWithQr => Intl.message('Pay with QR', name: 'payWithQr');
+  String get personData => Intl.message('Person Data', name: 'personData');
+  String get personName => Intl.message('Person Name', name: 'personName');
+  String get personSurname => Intl.message('Person Surname', name: 'personSurname');
+  String get personType => Intl.message('personType', name: 'personType');
+  String get personalInfo => Intl.message('personalInfo', name: 'personalInfo');
+  String get phone => Intl.message('Phone', name: 'phone');
+  String get place => Intl.message('place', name: 'place');
+  String get plate => Intl.message('Plate', name: 'plate');
+  String get pleaseConfirmPassword => Intl.message('pleaseConfirmPassword', name: 'pleaseConfirmPassword');
+  String get pleaseEnterAddress => Intl.message('pleaseEnterAddress', name: 'pleaseEnterAddress');
+  String get pleaseEnterAge => Intl.message('pleaseEnterAge', name: 'pleaseEnterAge');
+  String get pleaseEnterDni => Intl.message('pleaseEnterDni', name: 'pleaseEnterDni');
+  String get pleaseEnterEmail => Intl.message('pleaseEnterEmail', name: 'pleaseEnterEmail');
+  String get pleaseEnterName => Intl.message('pleaseEnterName', name: 'pleaseEnterName');
+  String get pleaseEnterPassword => Intl.message('pleaseEnterPassword', name: 'pleaseEnterPassword');
+  String get pleaseEnterSurname => Intl.message('pleaseEnterSurname', name: 'pleaseEnterSurname');
+  String get pleaseEnterValidAge => Intl.message('pleaseEnterValidAge', name: 'pleaseEnterValidAge');
+  String get pleaseEnterValidEmail => Intl.message('pleaseEnterValidEmail', name: 'pleaseEnterValidEmail');
+  String get pleaseEnterWhatsappNumber => Intl.message('pleaseEnterWhatsAppNumber', name: 'pleaseEnterWhatsAppNumber');
+  String get pleaseSelectBirthdate => Intl.message('pleaseSelectBirthdate', name: 'pleaseSelectBirthdate');
+  String get pleaseSelectCity => Intl.message('pleaseSelectCity', name: 'pleaseSelectCity');
+  String get pleaseSelectCountry => Intl.message('pleaseSelectCountry', name: 'pleaseSelectCountry');
+  String get pleaseSelectCountryFirst => Intl.message('pleaseSelectCountryFirst', name: 'pleaseSelectCountryFirst');
+  String get pleaseSelectGender => Intl.message('pleaseSelectGender', name: 'pleaseSelectGender');
+  String get pleaseSelectPersonType => Intl.message('pleaseSelectPersonType', name: 'pleaseSelectPersonType');
+  String get profile => Intl.message('Profile', name: 'profile');
+  String get recentActivity => Intl.message('recentActivity', name: 'recentActivity');
+  String get recentTransactions => Intl.message('recentTransactions', name: 'recentTransactions');
+  String get recharge => Intl.message('Recharge', name: 'recharge');
+  String get rechargeWallet => Intl.message('Recharge Wallet', name: 'rechargeWallet');
+  String get registeredVehicles => Intl.message('registeredVehicles', name: 'registeredVehicles');
+  String get register => Intl.message('Register', name: 'register');
+  String get registerCars => Intl.message('Register Cars', name: 'registerCars');
+  String get registrationSuccessful => Intl.message('registrationSuccessful', name: 'registrationSuccessful');
+  String get reports => Intl.message('Reports', name: 'reports');
+  String get retry => Intl.message('retry', name: 'retry');
+  String get roadType => Intl.message('road type', name: 'roadType');
+  String get scanQrToPay => Intl.message('scanQrToPay', name: 'scanQrToPay');
+  String get search => Intl.message('Search', name: 'search');
+  String get seeAll => Intl.message('See All', name: 'seeAll');
+  String get selectToll => Intl.message('selectToll', name: 'selectToll');
+  String get selectUserType => Intl.message('Select User Type', name: 'selectUserType');
+  String get selectYourUser => Intl.message('Please, select your user', name: 'selectYourUser');
+  String get signUp => Intl.message('Sign Up', name: 'signUp');
+  String get start => Intl.message('Start', name: 'start');
+  String get staff => Intl.message('Staff', name: 'staff');
+  String get status => Intl.message('Status', name: 'status');
+  String get stepOne => Intl.message('Step 1', name: 'stepOne');
+  String get stepTwo => Intl.message('Step 2', name: 'stepTwo');
+  String get success => Intl.message('success', name: 'success');
+  String get surname => Intl.message('surname', name: 'surname');
+  String get tollCharge => Intl.message('tollCharge', name: 'tollCharge');
+  String get tollData => Intl.message('Toll data', name: 'tollData');
+  String get tollName => Intl.message('Toll Name', name: 'tollName');
+  String get tolls => Intl.message('Tolls', name: 'tolls');
+  String get tollsOperator => Intl.message('tollsOperator', name: 'tollsOperator');
+  String get tollsUsed => Intl.message('Tolls Used', name: 'tollsUsed');
+  String get totalPaid => Intl.message('Total Paid', name: 'totalPaid');
+  String get transactionHistory => Intl.message('Transaction History', name: 'transactionHistory');
+  String get typeOfDocument => Intl.message('Type of Document', name: 'typeOfDocument');
+  String get typeOfRoad => Intl.message('Type of Road', name: 'typeOfRoad');
+  String get typeOfVehicle => Intl.message('Type of Vehicle', name: 'typeOfVehicle');
+  String get update => Intl.message('update', name: 'update');
+  String get vehicle => Intl.message('Vehicle', name: 'vehicle');
+  String get vehicleData => Intl.message('Vehicle data', name: 'vehicleData');
+  String get vehicleInfo => Intl.message('vehicleInfo', name: 'vehicleInfo');
+  String get vehicleService => Intl.message('Vehicle Service', name: 'vehicleService');
+  String get vehicleType => Intl.message('Vehicle Type', name: 'vehicleType');
+  String get vehicles => Intl.message('Vehicles', name: 'vehicles');
+  String vehiclesCount(Object count) => Intl.message('vehiclesCount', name: 'vehiclesCount', args: [count]);
+  String get wallet => Intl.message('Wallet', name: 'wallet');
+  String get walletBalance => Intl.message('walletBalance', name: 'walletBalance');
+  String get welcome => Intl.message('Welcome!', name: 'welcome');
+  String get welcomeMessage => Intl.message('welcomeMessage', name: 'welcomeMessage');
+  String get whatsApp => Intl.message('WhatsApp', name: 'whatsapp');
+  String get whatsappNumber => Intl.message('whatsappNumber', name: 'whatsappNumber');
+  String get weight => Intl.message('Weight', name: 'weight');
+  String get workstation => Intl.message('Workstation', name: 'workstation');
+  String get year => Intl.message('Year', name: 'year');
 }
-
-
-
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
-
-
-
-
-  List<Locale> get supportedLocales {
-    return const <Locale>[Locale.fromSubtags(languageCode: 'en')];
-  }
-
-
-
-
-  @override
-  bool isSupported(Locale locale) => _isSupported(locale);
-  @override
-  Future<S> load(Locale locale) => S.load(locale);
-  @override
-  bool shouldReload(AppLocalizationDelegate old) => false;
-
-
-
-
-  bool _isSupported(Locale locale) {
-    for (var supportedLocale in supportedLocales) {
-      if (supportedLocale.languageCode == locale.languageCode) {
-        return true;
-      }
-    }
-    return false;
-  }
+  List<Locale> get supportedLocales => const [Locale('en')];
+  @override bool isSupported(Locale locale) => ['en'].contains(locale.languageCode);
+  @override Future<S> load(Locale locale) => S.load(locale);
+  @override bool shouldReload(AppLocalizationDelegate old) => false;
 }
-
-
-
-
-
-
-
-
-

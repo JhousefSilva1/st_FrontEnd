@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/response/admin/st_vehicles_colors_response.dart';
+import 'package:smarttolls/views/views.dart';
 
 import '../generated/l10n.dart';
 
@@ -66,16 +67,20 @@ class VehiclesColorsCard extends StatelessWidget {
                 children: [
 
                   GestureDetector(
-                    onTap: (){
-                      // editar
-                    },child: const Icon(Icons.edit, color: Colors.red, size: 30),
+                    // Editar Color
+                    onTap: () {
+                      showEditColorDialog(context, vehiclesColorsName);
+                    },
+                    child: const Icon(Icons.edit, color: Colors.yellow, size: 30),
                   ),
                   const SizedBox(width: 16),
-                  GestureDetector(
-                    onTap: (){
-                      // delete
-                    },child: const Icon(Icons.delete, color: Colors.red, size: 30),
-                  ),
+                    //Eliminar Color
+                    GestureDetector(
+                      onTap: () {
+                        showDeleteColorDialog(context, vehiclesColorsName);
+                      },
+                      child: const Icon(Icons.delete, color: Colors.red, size: 30),
+                    ),
                   const SizedBox(width: 16),
                 ],
               ),

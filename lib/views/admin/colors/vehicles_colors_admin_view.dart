@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/vehicles_colors_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -223,5 +224,99 @@ void showAddColorDialog(BuildContext context){
     },
     positiveText: S.of(context).add,
     title: S.of(context).addColor,
+  );
+}
+
+// editar
+void showEditColorDialog(BuildContext context, StVehiclesColorsResponse color) {
+  final colorNameController = TextEditingController(text: color.colorName);
+  final colorDescriptionController = TextEditingController(text: color.colorDescription);
+  final provider = Provider.of<VehiclesColorsProvider>(context, listen: false);
+
+  Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: colorNameController,
+          hintText: S.of(context).color,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.color_lens),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese el color';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        CustomField(
+          controller: colorDescriptionController,
+          hintText: S.of(context).description,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.info),
+        ),
+        const SizedBox(height: 10),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (colorNameController.text.isNotEmpty) {
+        await provider.updateColor(
+          color.idColor ?? 0, // Asumiendo que el modelo tiene un id
+          colorNameController.text,
+          colorDescriptionController.text,
+        );
+        Navigator.of(context, rootNavigator: true).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('El nombre del color es requerido')),
+        );
+      }
+    },
+    positiveText: S.of(context).update,
+    title: S.of(context).editColors,
+  );
+}
+
+void showDeleteColorDialog(BuildContext context, StVehiclesColorsResponse color) {
+  final provider = Provider.of<VehiclesColorsProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(S.of(context).deleteColor),
+        content: Text('${S.of(context).confirmDeleteColor} ${color.colorName}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(S.of(context).cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              
+              try {
+                await provider.deleteColor(color.idColor);
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(content: Text('${color.colorName} ${S.of(context).deletedSuccessfully}')),
+                );
+              } catch (e) {
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(content: Text('Error al eliminar: ${e.toString()}')),
+                );
+              }
+            },
+            child: Text(
+              S.of(context).delete,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

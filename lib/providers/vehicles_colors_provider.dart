@@ -80,6 +80,54 @@ class VehiclesColorsProvider extends ChangeNotifier{
   }
 
   }
+  // Editar Colors
+
+      Future<void> updateColor(int colorId, String colorName, String colorDescription) async {
+        _isLoading = true;
+        _errorMessage = null;
+        notifyListeners();
+
+        try {
+          final request = StColorRequest(
+            colorName: colorName,
+            colorDescription: colorDescription,
+          );
+          
+          final response = await SmartTollsApi().updateColor(colorId, request);
+          
+          if (response.isSuccess()) {
+            await loadVehiclesColors(); // Recargar la lista de colores
+          } else {
+            _errorMessage = response.message ?? 'Error al actualizar el color';
+          }
+        } catch (e) {
+          _errorMessage = 'Error al actualizar el color: ${e.toString()}';
+        } finally {
+          _isLoading = false;
+          notifyListeners();
+        }
+      }
+      // En VehiclesColorsProvider class
+    Future<void> deleteColor(int colorId) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await SmartTollsApi().deleteColor(colorId);
+    
+        if (response.isSuccess()) {
+          await loadVehiclesColors(); // Recargar la lista de colores
+        } else {
+        _errorMessage = response.message ?? 'Error al eliminar el color';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al eliminar el color: ${e.toString()}';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    } 
+  }
 
     // metodo para recargar colores de vehiculos
     void retryLoading(){

@@ -8,7 +8,7 @@ import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/menu/desktop/drawer.dart';
 import 'package:smarttolls/widgets/menu/mobile/drawerMobile.dart';
 
-import '../../../utils/assets_images.dart';
+import '../../../providers/customer/vehicle_customer_provider.dart';
 
 class HomeView extends StatelessWidget {
   static const String routerName = 'home';
@@ -23,172 +23,55 @@ class HomeView extends StatelessWidget {
         appBar: AppBar(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                AssetsImages.logoAvatar(height: 50),
-                const SizedBox(height: 8),
-                Consumer<UserProvider>(
-                  builder: (context, userProvider, child) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${userProvider.name ?? ''} ',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${userProvider.lastName ?? ''} ',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    );
-                  },
+            children: [
+              const SizedBox(height: 8),
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppStyle.primary.withOpacity(0.1),
+                  border: Border.all(color: AppStyle.primary, width: 2),
                 ),
-              ],
-             
+                child: const Icon(
+                  Icons.verified_user,
+                  size: 30,
+                  color: Colors.blueAccent,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Consumer<UserProvider>(
+                builder: (context, userProvider, child) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${userProvider.name ?? ''}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${userProvider.lastName ?? ''}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
           ),
-          
         ),
-        
-        drawer: isMobile? const SmartTollsMobileDrawer(): null,
+        drawer: isMobile ? const SmartTollsMobileDrawer() : null,
         backgroundColor: AppStyle.ligthGrey,
-        body: isMobile? const SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                HomeMobileView()
-              ],
-            ),
-          ),
-        ): const HomeTabletView(),
-      ),
-    );
-  }
-
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '1K';
-        break;
-      case 3:
-        text = '3k';
-        break;
-      case 5:
-        text = '5k';
-        break;
-      default:
-        return Container();
-    }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
-  }
-
-  LineChartData mainData(HomeProvider homeProvider) {
-    return LineChartData(
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: AppStyle.ligthGrey),
-      ),
-      gridData: FlGridData(
-        drawVerticalLine: false,
-        getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: AppStyle.grey,
-            strokeWidth: 1,
-          );
-        },
-        horizontalInterval: 1,
-        show: true,
-      ),
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: homeProvider.gradientColors,
-          ),
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: homeProvider.gradientColors.map((color) => color.withOpacity(0.3)).toList(),
-            ),
-          ),
-        ),
-      ],
-      maxX: 11,
-      maxY: 6,
-      minX: 0,
-      minY: 0,
-      titlesData: FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: 1,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-          ),
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        show: true,
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
+        body: isMobile
+            ? const SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [HomeMobileView()],
+                  ),
+                ),
+              )
+            : const HomeTabletView(),
       ),
     );
   }
@@ -201,7 +84,7 @@ class HomeMobileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        Home()
+        HomeDashboard()
       ],
     );
   }
@@ -222,7 +105,7 @@ class HomeTabletView extends StatelessWidget {
               padding: EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Home()
+                  HomeDashboard()
                 ],
               ),
             ),
@@ -233,11 +116,24 @@ class HomeTabletView extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomeDashboard extends StatelessWidget {
+  const HomeDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final walletProvider = Provider.of<WalletProvider>(context, listen: false);
+    final vehiclesProvider = Provider.of<VehiclesCustomerProvider>(context, listen: false);
+
+    // Cargar datos al iniciar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final personId = userProvider.personId;
+      if (personId != null) {
+        vehiclesProvider.loadCustomerVehicles(personId);
+        walletProvider.loadUserVehicles();
+      }
+    });
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -258,30 +154,51 @@ class Home extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-            child: Text(S.of(context).appName, style: const TextStyle(color: AppStyle.primary, fontSize: 30, fontWeight: FontWeight.w700), textAlign: TextAlign.center),
+            child: Text(
+              S.of(context).welcomeMessage,
+              
+              style: const TextStyle(
+                color: AppStyle.primary,
+                fontSize: 24,
+                fontWeight: FontWeight.w700
+              ),
+              textAlign: TextAlign.center
+            ),
           ),
         ),
         const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: HomeCard(
-                data: '2',
-                icon: const Icon(Icons.electric_car_rounded, color: AppStyle.primary, size: 30),
-                title: S.of(context).registerCars
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              flex: 2,
-              child: HomeCard(
-                data: '22',
-                icon: const Icon(Icons.wallet, color: AppStyle.primary, size: 30),
-                title: S.of(context).completedTransactions
-              ),
-            ),
-          ],
+        Consumer<VehiclesCustomerProvider>(
+          builder: (context, vehiclesProvider, child) {
+            final vehicleCount = vehiclesProvider.vehicles.length;
+            return Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: HomeCard(
+                    data: vehicleCount.toString(),
+                    icon: const Icon(Icons.directions_car, color: AppStyle.primary, size: 30),
+                    title: S.of(context).registeredVehicles,
+                    subtitle: S.of(context).vehiclesCount(vehicleCount),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Consumer<WalletProvider>(
+                  builder: (context, walletProvider, child) {
+                    final transactionCount = walletProvider.transactions.length;
+                    return Expanded(
+                      flex: 2,
+                      child: HomeCard(
+                        data: transactionCount.toString(),
+                        icon: const Icon(Icons.receipt, color: AppStyle.primary, size: 30),
+                        title: S.of(context).recentTransactions,
+                        subtitle: S.of(context).last30Days,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
         ),
         const SizedBox(height: 16),
         Row(
@@ -289,31 +206,100 @@ class Home extends StatelessWidget {
             Expanded(
               flex: 2,
               child: HomeCard(
-                data: '5',
-                icon: const Icon(Icons.business_outlined, color: AppStyle.primary, size: 30),
-                title: S.of(context).tollsUsed
+                data: '5', // TODO: Reemplazar con datos reales de peajes frecuentes
+                icon: const Icon(Icons.route, color: AppStyle.primary, size: 30),
+                title: S.of(context).frequentTolls,
+                subtitle: S.of(context).mostUsed,
               ),
             ),
             const SizedBox(width: 16),
-            Expanded(
-              flex: 2,
-              child: HomeCard(
-                data: 'Bs. 15',
-                icon: const Icon(Icons.paid_rounded, color: AppStyle.primary, size: 30),
-                title: S.of(context).totalPaid
-              ),
+            Consumer<WalletProvider>(
+              builder: (context, walletProvider, child) {
+                final balance = walletProvider.selectedVehicleWallet?.balance ?? 0;
+                return Expanded(
+                  flex: 2,
+                  child: HomeCard(
+                    data: 'Bs. ${balance.toStringAsFixed(2)}',
+                    icon: const Icon(Icons.account_balance_wallet, color: AppStyle.primary, size: 30),
+                    title: S.of(context).walletBalance,
+                    subtitle: S.of(context).currentBalance,
+                  ),
+                );
+              },
             ),
           ],
+        ),
+        const SizedBox(height: 24),
+        Consumer<WalletProvider>(
+          builder: (context, walletProvider, child) {
+            final transactions = walletProvider.transactions;
+            return Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S.of(context).recentActivity,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppStyle.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  if (transactions.isEmpty)
+                    const Text('No hay transacciones recientes')
+                  else
+                    SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        itemCount: transactions.length > 5 ? 5 : transactions.length,
+                        itemBuilder: (context, index) {
+                          final transaction = transactions[index];
+                          return ListTile(
+                            leading: const Icon(Icons.attach_money, color: AppStyle.primary),
+                            title: Text('Peaje ${transaction.tollName}'),
+                            subtitle: Text((transaction.transactionDate ?? 'Fecha no disponible').toString()),
+                            trailing: Text('-Bs. ${transaction.amount?.toStringAsFixed(2) ?? '0.00'}'),
+                          );
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
         ),
       ],
     );
   }
 }
+
 class HomeCard extends StatelessWidget {
-  const HomeCard({super.key, required this.data, required this.icon, required this.title});
+  const HomeCard({
+    super.key,
+    required this.data,
+    required this.icon,
+    required this.title,
+    this.subtitle = '',
+  });
+  
   final String data;
   final Widget icon;
   final String title;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -330,25 +316,42 @@ class HomeCard extends StatelessWidget {
           ),
         ]
       ),
-      width: MediaQuery.of(context).size.width * .44,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
+            icon,
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(data, style: const TextStyle(color: AppStyle.primary, fontSize: 26, fontWeight: FontWeight.w800), textAlign: TextAlign.center)
-                  )
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    data,
+                    style: const TextStyle(
+                      color: AppStyle.primary,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  if (subtitle.isNotEmpty)
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.grey[600],
+                      ),
+                    ),
                 ],
               ),
             ),
-            icon
           ],
         ),
       ),

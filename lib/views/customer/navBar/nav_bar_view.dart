@@ -32,6 +32,9 @@ class NavBarView extends StatelessWidget {
             CustomIcon(icon: Icon(Icons.account_circle_rounded, color: AppStyle.primary), index: 1, label: S.of(context).profile, route: ProfileCustomerView.routerName),
             CustomIcon(icon: Icon(Icons.car_crash_outlined, color: AppStyle.primary), index: 3, label: S.of(context).vehicle, route: VehiclesCustomerView.routerName),
             CustomIcon(icon: Icon(Icons.wallet_outlined, color: AppStyle.primary), index: 4, label: S.of(context).wallet, route: WalletView.routerName),
+            // logout button
+            CustomIcon(icon: Icon(Icons.logout, color: AppStyle.primary), index: 5, label: S.of(context).logout, route: WelcomeView.routerName),
+
           ],
         ),
       ),
