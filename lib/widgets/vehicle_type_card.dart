@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/views/views.dart';
 
 
 class VehicleTypeCard extends StatelessWidget {
@@ -69,18 +70,18 @@ class VehicleTypeCard extends StatelessWidget {
                 children: [
 
                   GestureDetector(
-                    onTap:(){
-                      // editar
-                    },
-                    child: const Icon(Icons.edit, color: AppStyle.primary, size: 30),
-                  ),
-                  const SizedBox(width: 16),
-                  GestureDetector(
-                    onTap: (){
-                      // eliminar
-                    },
-                    child: const Icon(Icons.delete, color: AppStyle.primary, size: 30),
-                  )
+                  onTap: () {
+                    showEditVehicleTypeDialog(context, vehiclesTypeName);
+                  },
+                  child: const Icon(Icons.edit, color: Colors.blue, size: 30),
+                ),
+                const SizedBox(width: 16),
+                GestureDetector(
+                  onTap: () {
+                    showDeleteVehicleTypeDialog(context, vehiclesTypeName);
+                  },
+                  child: const Icon(Icons.delete, color: Colors.red, size: 30),
+                ),
                 ],
               ),
             )

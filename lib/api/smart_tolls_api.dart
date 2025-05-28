@@ -487,6 +487,88 @@ Future<http.Response> httpDelete(String baseUrl, dynamic header) async {
                 return StResponse.createEmpty();
               }
             }
+            
+            // metodo para actualizar un tipo de vehículo
+    Future<StResponse<StVehiclesTypeResponse>> updateVehicleType(
+      int vehicleTypeId,
+      StVehiclesTypeRequest vehicleTypeRequest) async {
+        try{
+          final response = await httpPut(
+            '$_baseUrl/vehicleType/update/$vehicleTypeId', 
+            getHeaders(), 
+            jsonEncode(vehicleTypeRequest.toJson())
+          );
+          if(response.statusCode >=  HttpStatus.badRequest){
+            if(response.statusCode == HttpStatus.networkConnectTimeoutError) {
+              return StResponse<StVehiclesTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+            }
+            try{
+              final errorJson = json.decode(response.body);
+              return StResponse<StVehiclesTypeResponse>(
+                status: response.statusCode,
+                message: errorJson['message'] ?? 'Error al actualizar el tipo de vehículo',
+                error: errorJson['error'] ?? '',
+              );
+            }catch (e) {
+              return StResponse<StVehiclesTypeResponse>.createEmpty();
+            }
+          }
+         final responseJson = json.decode(response.body);
+          final vehicleTypeData = StVehiclesTypeResponse.createEmpty().fromMap(responseJson['data']);
+          return StResponse<StVehiclesTypeResponse>(
+            data: vehicleTypeData,
+            status: response.statusCode,
+            message: responseJson['message'],
+          ); 
+        }catch (e) {
+          return StResponse<StVehiclesTypeResponse>(
+            status: HttpStatus.internalServerError,
+            message: 'Error durante la actualización del tipo de vehículo',
+            error: e.toString(),
+          );
+        }
+      }
+
+      // delete vehicle type
+    Future<StResponse<StVehiclesTypeResponse>> deleteVehicleType(int vehicleTypeId) async {
+      try {
+        final response = await httpDelete(
+          '$_baseUrl/vehicleType/delete/$vehicleTypeId',
+          getHeaders(),
+        );
+        
+        if (response.statusCode >= HttpStatus.badRequest) {
+          if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+            return StResponse<StVehiclesTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+          }
+          try {
+            final errorJson = json.decode(response.body);
+            return StResponse<StVehiclesTypeResponse>(
+              status: response.statusCode,
+              message: errorJson['message'] ?? 'Error al eliminar el tipo de vehículo',
+              error: errorJson['error'] ?? '',
+            );
+          } catch (e) {
+            return StResponse<StVehiclesTypeResponse>.createEmpty();
+          }
+        }
+        
+        final responseJson = json.decode(response.body);
+        final vehicleTypeData = StVehiclesTypeResponse.createEmpty().fromMap(responseJson['data']);
+        return StResponse<StVehiclesTypeResponse>(
+          data: vehicleTypeData,
+          status: response.statusCode,
+          message: responseJson['message'],
+        );
+      } catch (e) {
+        return StResponse<StVehiclesTypeResponse>(
+          status: HttpStatus.internalServerError,
+          message: 'Error durante la eliminación del tipo de vehículo',
+          error: e.toString(),
+        );
+      }
+    }
+    
 // - FUEL TYPES
     // create fuel type
             Future<StResponse<StFuelTypesResponse>> createFuelType(StFuelTypesRequest fuelTypeRequest) async {

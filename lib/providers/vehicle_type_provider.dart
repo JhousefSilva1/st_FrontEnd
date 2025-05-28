@@ -76,6 +76,54 @@ class VehicleTypeProvider extends ChangeNotifier {
     }
   }
 
+  // metodo para actualizar un tipo de vehículo
+  Future<void> updateVehiclesType(int idVehiclesType, String vehiclesTypeName) async{
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try{
+      final request = StVehiclesTypeRequest(
+        
+        vehiclesTypes: vehiclesTypeName,
+      );
+      // llamar a la API
+      final response = await SmartTollsApi().updateVehicleType(idVehiclesType, request);
+      if (response.isSuccess()) {
+      await loadVehiclesType(); // Recargar la lista de marcas
+    } else {
+      _errorMessage = response.message ?? 'Error al actualizar el tipo de vehículo';
+    }
+    }catch(e){
+      _errorMessage = 'Error de conexión: ${e.toString()}';
+    }finally{
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // metodo para eliminar un tipo de vehículo
+  Future<void> deleteVehiclesType(int idVehiclesType) async{
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try{
+      // llamar a la API
+      final response = await SmartTollsApi().deleteVehicleType(idVehiclesType);
+      if (response.isSuccess()) {
+        await loadVehiclesType(); // Recargar la lista de marcas
+      } else {
+        _errorMessage = response.message ?? 'Error al eliminar el tipo de vehículo';
+      }
+    }catch(e){
+      _errorMessage = 'Error de conexión: ${e.toString()}';
+    }finally{
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
       void retryLoading(){
     _isLoading = true;
     _errorMessage = null;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -216,5 +217,75 @@ void showAddVehilceTypeDialog(BuildContext context){
     },
     positiveText: S.of(context).add,
     title: S.of(context).addVehicleType,
+  );
+}
+void showEditVehicleTypeDialog(BuildContext context, StVehiclesTypeResponse vehiclesType) {
+  final vehiclesTypesController = TextEditingController(text: vehiclesType.vehiclesTypesName);
+  final provider = Provider.of<VehicleTypeProvider>(context, listen: false);
+
+  Utils.textFieldAlert(
+    context: context,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomField(
+          controller: vehiclesTypesController,
+          hintText: S.of(context).vehicleType,
+          keyboardType: TextInputType.text,
+          prefixIcon: const Icon(Icons.car_rental),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor ingrese tipo de vehiculo';
+            }
+            return null;
+          },
+        ),
+        
+        const SizedBox(height: 10),
+      ],
+    ),
+    negativeText: S.of(context).cancel, 
+    positiveOnPressed: () async {
+      if (vehiclesTypesController.text.isNotEmpty) {
+        await provider.updateVehiclesType(
+          vehiclesType.idVehiclesType!,
+          vehiclesTypesController.text,
+        );
+        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('El nombre del tipo de vehículo no puede estar vacío')),
+        );
+      }
+    },
+    positiveText: S.of(context).edit,
+    title: S.of(context).editVehicleType,
+  );
+}
+
+void showDeleteVehicleTypeDialog(BuildContext context, StVehiclesTypeResponse vehiclesType) {
+  final provider = Provider.of<VehicleTypeProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(S.of(context).deleteVehicleType),
+        content: Text('${S.of(context).deleteVehicleTypeConfirmation} ${vehiclesType.vehiclesTypesName ?? ''}'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(S.of(context).cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              await provider.deleteVehiclesType(vehiclesType.idVehiclesType!);
+              Navigator.of(context).pop();
+            },
+            child: Text(S.of(context).delete),
+          ),
+        ],
+      );
+    },
   );
 }

@@ -84,10 +84,7 @@ class FuelTypeProvider extends ChangeNotifier{
   
 
 // Método para actualizar un tipo de combustible
-Future<void> updateFuelType(
-  int fuelTypeId, 
-  String fuelTypeName
-) async {
+Future<void> updateFuelType(int fuelTypeId, String fuelTypeName) async {
   _isLoading = true;
   _errorMessage = null;
   notifyListeners();

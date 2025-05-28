@@ -83,6 +83,8 @@ class S {
   String get deleteBrand => Intl.message('Delete Brand', name: 'deleteBrand');
   String get deleteColor => Intl.message('Delete Color', name: 'deleteColor');
   String get deleteFuelType => Intl.message('Delete Fuel Type', name: 'deleteFuelType');
+  String get deleteVehicleType => Intl.message('Delete Vehicle Type', name: 'deleteVehicleType');
+  String get deleteVehicleTypeConfirmation  => Intl.message('Are you sure you want to delete the vehicle type');
   String get deletedSuccessfully => Intl.message('Deleted successfully', name: 'deletedSuccessfully');
   String get description => Intl.message('Description', name: 'description');
   String get dni => Intl.message('DNI', name: 'dni');
@@ -93,6 +95,7 @@ class S {
   String get editColors => Intl.message('Edit Colors', name: 'editColors');
   String get editFuelType => Intl.message('Edit Fuel Type', name: 'editFuelType');
   String get editVehicle => Intl.message('Edit Vehicle', name: 'editVehicle');
+  String get editVehicleType => Intl.message('Edit Vehicle Type', name: 'editVehicleType');
   String get email => Intl.message('Email', name: 'email');
   String get emailIsInvalid => Intl.message('Email is invalid', name: 'emailIsInvalid');
   String get emailIsRequired => Intl.message('Email is required', name: 'emailIsRequired');
