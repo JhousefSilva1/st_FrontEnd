@@ -30,6 +30,7 @@ MERGED from [:camera_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\camera_
 MERGED from [:flutter_plugin_android_lifecycle] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_secure_storage] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_secure_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-10:12
 MERGED from [:path_provider_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:permission_handler_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\permission_handler_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.fragment:fragment:1.7.1] C:\Users\josep\.gradle\caches\transforms-3\74d747bf5a2df4cbc887642510ce7085\transformed\fragment-1.7.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.window:window:1.2.0] C:\Users\josep\.gradle\caches\transforms-3\4ebb674aa41412bc7425383262a543b4\transformed\jetified-window-1.2.0\AndroidManifest.xml:17:1-31:12
 MERGED from [androidx.window:window-java:1.2.0] C:\Users\josep\.gradle\caches\transforms-3\888143a07fdc2fd3bbd890278e61db87\transformed\jetified-window-java-1.2.0\AndroidManifest.xml:17:1-21:12
@@ -99,6 +100,8 @@ MERGED from [:flutter_secure_storage] C:\ProyectoDeGrado\Front\st_FrontEnd\build
 MERGED from [:flutter_secure_storage] C:\ProyectoDeGrado\Front\st_FrontEnd\build\flutter_secure_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-8:53
 MERGED from [:path_provider_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\permission_handler_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler_android] C:\ProyectoDeGrado\Front\st_FrontEnd\build\permission_handler_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [androidx.fragment:fragment:1.7.1] C:\Users\josep\.gradle\caches\transforms-3\74d747bf5a2df4cbc887642510ce7085\transformed\fragment-1.7.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.fragment:fragment:1.7.1] C:\Users\josep\.gradle\caches\transforms-3\74d747bf5a2df4cbc887642510ce7085\transformed\fragment-1.7.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.window:window:1.2.0] C:\Users\josep\.gradle\caches\transforms-3\4ebb674aa41412bc7425383262a543b4\transformed\jetified-window-1.2.0\AndroidManifest.xml:20:5-44
