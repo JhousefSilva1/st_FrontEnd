@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'intl/messages_all.dart';
 
+
 class S {
   S();
   static S? _current;
+
 
   static S get current {
     assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
+
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+
 
   static Future<S> load(Locale locale) {
     final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
@@ -25,13 +29,16 @@ class S {
     });
   }
 
+
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
     assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
+
   static S? maybeOf(BuildContext context) => Localizations.of<S>(context, S);
+
 
   // Strings organized alphabetically
   String get accountNumber => Intl.message('Account Number', name: 'accountNumber');
@@ -70,7 +77,7 @@ class S {
   String get color => Intl.message('color', name: 'color');
   String get comingSoon => Intl.message('comingSoon', name: 'comingSoon');
   String get confirmDeleteBrand => Intl.message('Are you sure you want to delete this brand?', name: 'confirmDeleteBrand');
-  String get confirmDeleteColor => Intl.message('Are you sure you want to delete this color?', name: 'confirmDeleteColor');	
+  String get confirmDeleteColor => Intl.message('Are you sure you want to delete this color?', name: 'confirmDeleteColor');
   String get confirmDeleteFuelType => Intl.message('Are you sure you want to delete this fuel type?', name: 'confirmDeleteFuelType');
   String get confirmDeleteRoadType => Intl.message('Are you sure you want to delete this road type?', name: 'confirmDeleteRoadType');
   String get confirmPassword => Intl.message('Confirm Password', name: 'confirmPassword');
@@ -225,6 +232,7 @@ class S {
   String get year => Intl.message('Year', name: 'year');
 }
 
+
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
   List<Locale> get supportedLocales => const [Locale('en')];
@@ -232,3 +240,4 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   @override Future<S> load(Locale locale) => S.load(locale);
   @override bool shouldReload(AppLocalizationDelegate old) => false;
 }
+

@@ -569,34 +569,52 @@ void showAddVehicleDialog(BuildContext context){
       ),
     ),
     negativeText: S.of(context).cancel,
-    positiveOnPressed: () async {
-      if (vehiclePlateController.text.isNotEmpty && selectedFuelTypeId != null) {
-        // Obtener el personId del UserProvider aquí
-        final userProvider = Provider.of<UserProvider>(context, listen: false);
-        final personId = userProvider.personId ?? 0;
-        
-        await provider.addVehicle(
-          vehiclePlateController.text,
-          vehicleChassisNumberController.text,
-          vehicleEngineNumberController.text,
-          vehicleManufacturingYearController.text,
-          vehicleWeightController.text,
-          int.parse(selectedFuelTypeId!),
-          int.parse(selectedVehicleColorId!),
-          int.parse(selectedVehicleModelId!),
-          int.parse(selectedVehicleBrandId!),
-          int.parse(selectedVehiclesTypeId!),
-          int.parse(selectedVehiclesCityId!),
-          int.parse(selectedVehiclesCountryId!),
-          personId, // Pasar el personId aquí
-        );
-        Navigator.of(context, rootNavigator: true).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Todos los campos son requeridos")),
-        );
-      }
-    },
+positiveOnPressed: () async {
+  if (vehiclePlateController.text.isNotEmpty &&
+      vehicleChassisNumberController.text.isNotEmpty &&
+      vehicleEngineNumberController.text.isNotEmpty &&
+      vehicleManufacturingYearController.text.isNotEmpty &&
+      vehicleWeightController.text.isNotEmpty &&
+      selectedFuelTypeId != null &&
+      selectedVehicleColorId != null &&
+      selectedVehicleModelId != null &&
+      selectedVehicleBrandId != null &&
+      selectedVehiclesTypeId != null &&
+      selectedVehiclesCityId != null &&
+      selectedVehiclesCountryId != null) {
+    
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final personId = userProvider.personId;
+    
+    if (personId == null || personId == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("No se pudo identificar al usuario")),
+      );
+      return;
+    }
+    
+    await provider.addVehicle(
+      vehiclePlateController.text,
+      vehicleChassisNumberController.text,
+      vehicleEngineNumberController.text,
+      vehicleManufacturingYearController.text,
+      vehicleWeightController.text,
+      int.parse(selectedFuelTypeId!),
+      int.parse(selectedVehicleColorId!),
+      int.parse(selectedVehicleModelId!),
+      int.parse(selectedVehiclesTypeId!),
+      int.parse(selectedVehicleBrandId!),
+      int.parse(selectedVehiclesCityId!),
+      int.parse(selectedVehiclesCountryId!),
+      personId,
+    );
+    Navigator.of(context, rootNavigator: true).pop();
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Todos los campos son requeridos")),
+    );
+  }
+},
     positiveText: S.of(context).add,
     title: S.of(context).addVehicle
   );

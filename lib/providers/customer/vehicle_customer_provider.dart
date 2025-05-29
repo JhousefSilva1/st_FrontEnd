@@ -42,42 +42,41 @@ class VehiclesCustomerProvider extends ChangeNotifier {
   }
 
   // agregar un nuevo vehiculo
- Future<void> addVehicle(
-    String licensePlate,
-    String chassisNumber,
-    String engineNumber,
-    String manufacturingYear,
-    String weight,
-    int idFuelTypes,
-    int idVehiclesColors,
-    int idVehiclesModels,
-    int idVehiclesType,
-    int idVehiclesBrand,
-    int idCity,
-    int idCountry,
-    int personId, // Ahora recibimos el personId como parámetro
-  ) async {
+Future<void> addVehicle(
+  String licensePlate,
+  String chassisNumber,
+  String engineNumber,
+  String manufacturingYear,
+  String weight,
+  int idFuelTypes,
+  int idVehiclesColors,
+  int idVehiclesModels,
+  int idVehiclesType,  // Este parámetro estaba después de idVehiclesBrand en tu código
+  int idVehiclesBrand,
+  int idCity,
+  int idCountry,
+  int personId,
+) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final request = StVehiclesRequest(
-        licensePlate: licensePlate,
-        chassisNumber: chassisNumber,
-        engineNumber: engineNumber,
-        manufacturingYear: manufacturingYear,
-        weight: double.parse(weight),
-        
-        idFuelTypes: idFuelTypes,
-        idVehiclesColors: idVehiclesColors,
-        idVehiclesModels: idVehiclesModels,
-        idVehiclesType: idVehiclesType,
-        idVehiclesBrand: idVehiclesBrand,
-        idCity: idCity,
-        idCountry: idCountry,
-        idPerson: personId, // Usamos el personId recibido
-      );
+ final request = StVehiclesRequest(
+    licensePlate: licensePlate,
+    chassisNumber: chassisNumber,
+    engineNumber: engineNumber,
+    manufacturingYear: manufacturingYear,
+    weight: double.parse(weight),
+    idFuelTypes: idFuelTypes,
+    idVehiclesColors: idVehiclesColors,
+    idVehiclesModels: idVehiclesModels,
+    idVehiclesType: idVehiclesType,  // Asegúrate que el orden coincida
+    idVehiclesBrand: idVehiclesBrand,
+    idCity: idCity,
+    idCountry: idCountry,
+    idPerson: personId,
+  );
       
       final response = await SmartTollsApi().addVehicle(request);
       debugPrint('API Response: ${response.status} - ${response.message}');
