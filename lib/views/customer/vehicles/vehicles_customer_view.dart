@@ -108,71 +108,92 @@ class _VehiclesCustomerListState extends State<VehiclesCustomerList> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final provider = Provider.of<VehiclesCustomerProvider>(context);
-    return Column(
-      children: [
-        if (provider.isLoading && provider.vehicles.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(
-              color: AppStyle.primary,
-              strokeWidth: 2,
-            ),
+@override
+Widget build(BuildContext context) {
+  final provider = Provider.of<VehiclesCustomerProvider>(context);
+  return Column(
+    children: [
+      if (provider.isLoading && provider.vehicles.isEmpty)
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(
+            color: AppStyle.primary,
+            strokeWidth: 2,
           ),
-        if (provider.errorMessage != null)
-          Column(
-            children: [
-              Text(
-                provider.errorMessage!,
-                style: const TextStyle(color: AppStyle.red),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  final userProvider = Provider.of<UserProvider>(context, listen: false);
-                  provider.retryLoading(userProvider.personId ?? 0);
-                },
-                child: Text(
-                  S.of(context).retry,
-                  style: const TextStyle(
-                    color: AppStyle.white,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                  ),
+        ),
+      
+      // Mostrar error solo si hay un mensaje Y la lista está vacía
+      if (provider.errorMessage != null && provider.vehicles.isEmpty)
+        Column(
+          children: [
+            Text(
+              provider.errorMessage!,
+              style: const TextStyle(color: AppStyle.red),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                final userProvider = Provider.of<UserProvider>(context, listen: false);
+                provider.retryLoading(userProvider.personId ?? 0);
+              },
+              child: Text(
+                S.of(context).retry,
+                style: const TextStyle(
+                  color: AppStyle.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      
+      // Mostrar estado vacío solo cuando no hay error y no hay vehículos
+      if (!provider.isLoading && provider.vehicles.isEmpty && provider.errorMessage == null)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 32),
+          child: Column(
+            children: [
+              Icon(Icons.directions_car, size: 50, color: AppStyle.primary.withOpacity(0.3)),
               const SizedBox(height: 16),
+              Text(
+                'No tienes vehículos registrados',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  color: AppStyle.primary.withOpacity(0.5),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Presiona el botón "+" para agregar tu primer vehículo',
+                style: TextStyle(
+                  fontSize: 14.0,
+                  color: AppStyle.primary.withOpacity(0.5),
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
-        if (!provider.isLoading && provider.vehicles.isEmpty && provider.errorMessage == null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32),
-            child: Text(
-              'No hay vehículos registrados',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w700,
-                color: AppStyle.primary.withOpacity(0.5),
-              ),
-            ),
-          ),
-        if (provider.vehicles.isNotEmpty)
-          ListView.separated(
-            itemCount: provider.vehicles.length,
-            itemBuilder: (context, index) {
-              final vehicle = provider.vehicles[index];
-              return VehiclesCustomerCard(vehicle: vehicle);
-            },
-            physics: const NeverScrollableScrollPhysics(),
-            primary: false,
-            shrinkWrap: true,
-            separatorBuilder: (context, index) => const SizedBox(height: 16),
-          ),
-      ],
-    );
-  }
+        ),
+      
+      // Mostrar lista solo si hay vehículos
+      if (provider.vehicles.isNotEmpty)
+        ListView.separated(
+          itemCount: provider.vehicles.length,
+          itemBuilder: (context, index) {
+            final vehicle = provider.vehicles[index];
+            return VehiclesCustomerCard(vehicle: vehicle);
+          },
+          physics: const NeverScrollableScrollPhysics(),
+          primary: false,
+          shrinkWrap: true,
+          separatorBuilder: (context, index) => const SizedBox(height: 16),
+        ),
+    ],
+  );
+}
 }
 
 void showAddVehicleDialog(BuildContext context){

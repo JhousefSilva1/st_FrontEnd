@@ -13,33 +13,43 @@ class VehiclesCustomerProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  Future<void> loadCustomerVehicles(int personId) async {
-    _isLoading = true;
-    _errorMessage = null;
+Future<void> loadCustomerVehicles(int personId) async {
+    if (personId <= 0) {
+    _errorMessage = 'No se pudo identificar al usuario';
+    _isLoading = false;
     notifyListeners();
-
-    try {
-      final response = await SmartTollsApi().getVehiclesByPersonId(personId);
-      debugPrint('API Response: ${response.status} - ${response.message}');
-
-      if (response.isSuccess()) {
-        if (response.dataList != null && response.dataList!.isNotEmpty) {
-          _vehicles = response.dataList!;
-        } else {
-          _errorMessage = 'No se encontraron vehículos registrados';
-        }
-      } else {
-        _errorMessage = response.message ?? 'Error al cargar los vehículos';
-      }
-    } catch (e, stackTrace) {
-      debugPrint('Error en loadCustomerVehicles: $e');
-      debugPrint('Stack trace: $stackTrace');
-      _errorMessage = 'Error de conexión: ${e.toString()}';
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+    return;
   }
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+
+  try {
+    final response = await SmartTollsApi().getVehiclesByPersonId(personId);
+    debugPrint('API Response: ${response.status} - ${response.message}');
+
+    if (response.isSuccess()) {
+      // Caso exitoso
+      _vehicles = response.dataList ?? []; // Asegurar lista vacía si es null
+      
+      // No es un error si la lista está vacía
+      if (_vehicles.isEmpty) {
+        _errorMessage = null; // Limpiar cualquier mensaje previo
+      }
+    } else {
+      // Solo establecer mensaje de error si realmente hay un error
+      _errorMessage = response.message ?? 'Error al cargar los vehículos';
+    }
+  } catch (e, stackTrace) {
+    debugPrint('Error en loadCustomerVehicles: $e');
+    debugPrint('Stack trace: $stackTrace');
+    _errorMessage = 'Error de conexión: ${e.toString()}';
+    _vehicles = []; // Limpiar la lista en caso de error
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
 
   // agregar un nuevo vehiculo
 Future<void> addVehicle(
@@ -153,6 +163,7 @@ Future<void> updateVehicle(
     notifyListeners();
   }
 }
+
   void retryLoading(int personId) {
     _errorMessage = null;
     notifyListeners();
