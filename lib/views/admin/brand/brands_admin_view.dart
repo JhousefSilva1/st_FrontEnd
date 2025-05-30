@@ -15,24 +15,29 @@ class BrandsAdminView extends StatelessWidget {
   const BrandsAdminView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              onPressed: () => showAddBrandDialog(context),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).brand,
-        ),
-        backgroundColor: AppStyle.white,
-        drawer: isMobile ? const SmartTollsDrawer() : null,
-        body: isMobile
+    return Scaffold(
+      backgroundColor: AppStyle.backgroundGrey,
+      appBar: AppBar(
+        title: Text(S.of(context).fuel,
+            style: TextStyle(
+                color: AppStyle.primary,
+                fontWeight: FontWeight.bold,
+                fontSize: isMobile ? 20 : 24)),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, color: AppStyle.primary, size: 28),
+            onPressed: () => showAddBrandDialog(context),
+          ),
+        ],
+        iconTheme: IconThemeData(color: AppStyle.primary),
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: isMobile
             ? const SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.all(16),
@@ -43,8 +48,32 @@ class BrandsAdminView extends StatelessWidget {
                   ),
                 ),
               )
-            : const BrandsAdminTabletView(),
-      ),
+          : Row(  // Cambiamos a Row para diseño en tablet/desktop
+              children: [
+                const Expanded(
+                  flex: 3,  // 3 partes para el contenido principal
+                  child: BrandsAdminTabletView(),
+                ),
+                Expanded(
+                  flex: 2,  // 2 partes para la imagen
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                    ),
+                    child: Center(
+                      child: Opacity(
+                        opacity: 0.3,
+                        child: Image.asset(
+                          'assets/brands.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
