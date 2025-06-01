@@ -4,12 +4,17 @@ class ModelProvider  extends ChangeNotifier{
   List<StVehiclesModelsResponse> _allModels = [];
   List<StVehiclesModelsResponse> _models = []; // Lista filtrada
   bool _isLoading = false;
+    bool _isAdding = false;
+  bool _isUpdating = false;
+  bool _isDeleting = false;
   String? _errorMessage = '';
   String? _selectedModel = '';
   String? _newModelName;
   int? _currentBrandId; // Añade esta variable para trackear la marca actual
+  String? _currentBrandName; // Añade esta variable para el nombre de la marca actual
 
 
+String? get currentBrandName => _currentBrandName;
   List<StVehiclesModelsResponse> get models => _models;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
@@ -30,38 +35,31 @@ class ModelProvider  extends ChangeNotifier{
   }
 
 Future<void> loadModelsByBrand(int brandId) async {
-   
-    _currentBrandId = brandId; // Actualiza la marca actual
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-    try {
-      // final request = StBrandResponse.createEmpty().idBrand = brandId;
-      final response = await SmartTollsApi().getModelsByBrand(brandId);
-
-      if(response.isSuccess() && response.dataList != null) {
-        _allModels = response.dataList!;
-        _models = List.from(_allModels);
-      } else {
-        _errorMessage = response.message ?? 'Error al cargar los modelos por marca';
-      }
-    } catch (e) {
-      _errorMessage = 'Error de conexión: ${e.toString()}';
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+  _currentBrandId = brandId;
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+  
+  try {
+    final modelsResponse = await SmartTollsApi().getModelsByBrand(brandId);
+    final brandResponse = await SmartTollsApi().getBrandById(brandId);
+    
+    if(modelsResponse.isSuccess() && modelsResponse.dataList != null) {
+      _allModels = modelsResponse.dataList!;
+      _models = List.from(_allModels);
+      _currentBrandName = brandResponse.isSuccess() 
+          ? brandResponse.data?.brandName 
+          : 'Marca desconocida';
+    } else {
+      _errorMessage = modelsResponse.message ?? 'Error al cargar los modelos';
     }
-
-
+  } catch (e) {
+    _errorMessage = 'Error de conexión: ${e.toString()}';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
   }
-  //   void clearModels() {
-  //   _currentBrandId = null;
-  //   _allModels = [];
-  //   _models = [];
-  //   notifyListeners();
-  // }
-// add models
-
+}
   Future<void>addModels(String modelName, int brnadId) async {
     _isLoading = true;
     _errorMessage = null;
@@ -93,6 +91,19 @@ Future<void> loadModelsByBrand(int brandId) async {
     if(_currentBrandId != null){
       _errorMessage = null;
       loadModelsByBrand(_currentBrandId!);
+    }
+  }
+
+  
+  Future<StBrandResponse?> _getBrandInfo(int brandId) async {
+    try {
+      final response = await SmartTollsApi().getBrandById(brandId);
+      if (response.isSuccess()) {
+        return response.data;
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
   }
 }

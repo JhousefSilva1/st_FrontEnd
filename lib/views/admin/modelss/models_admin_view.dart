@@ -1,12 +1,104 @@
  import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/utils/utils.dart';
-
-import '../../../generated/l10n.dart';
 import '../../../widgets/widgets.dart';
+
+/// Move showAddModelDialog above the ModelsAdminView class so it is in scope.
+void showAddModelDialog(BuildContext context, int brandId) {
+  final modelNameController = TextEditingController();
+  final provider = Provider.of<ModelProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.add_circle_outline, color: AppStyle.primary, size: 28),
+                const SizedBox(width: 12),
+                const Text(
+                  'Nuevo Modelo',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            TextField(
+              controller: modelNameController,
+              decoration: InputDecoration(
+                labelText: 'Nombre del modelo',
+                prefixIcon: Icon(Icons.car_repair, color: AppStyle.primary),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancelar'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppStyle.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  onPressed: () async {
+                    if (modelNameController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('El nombre del modelo es requerido'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+
+                    await provider.addModels(modelNameController.text, brandId);
+
+                    if (provider.errorMessage == null) {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Modelo agregado correctamente'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'Guardar',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 class ModelsAdminView extends StatelessWidget {
   static const String routerName = 'modelsAdmin';
@@ -17,39 +109,111 @@ class ModelsAdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
 
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              onPressed: () => showAddModelDialog(context, brandId),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).model,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          'Modelos de Vehículos',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: isMobile ? 20 : 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: AppStyle.white,
-        body: isMobile
-            ? SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      ModelAdminList(brandId: brandId), // Pasa el brandId aquí
-                    ],
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add, size: 28),
+            onPressed: () => showAddModelDialog(context, brandId),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh, size: 28),
+            onPressed: () {
+              final provider = Provider.of<ModelProvider>(context, listen: false);
+              provider.loadModelsByBrand(brandId);
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.grey.shade50,
+                  ],
+                ),
+              ),
+              child: ModelAdminList(brandId: brandId, brandName: 'Marca'),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(
+                    left: BorderSide(
+                      color: Colors.grey.shade200,
+                      width: 1,
+                    ),
                   ),
                 ),
-              )
-            : ModelsAdminTabletView(brandId: brandId), // Y aquí
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(40),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/brands.png',
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(height: 30),
+                        Text(
+                          'Administra los modelos de vehículos',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: AppStyle.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Agrega, edita o elimina los modelos disponibles para esta marca',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
-    );  
+    );
   }
 }
-
 class ModelsAdminTabletView extends StatelessWidget {
   final int brandId;
 
@@ -67,7 +231,7 @@ class ModelsAdminTabletView extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  ModelAdminList(brandId: brandId), // Pasa el brandId aquí
+                  ModelAdminList(brandId: brandId, brandName: 'Marca'), // Pasa el brandId y brandName aquí
                 ],
               )
             ),
@@ -80,7 +244,13 @@ class ModelsAdminTabletView extends StatelessWidget {
 
 class ModelAdminList extends StatefulWidget{
   final int brandId;
-  const ModelAdminList({super.key, required this.brandId});
+  final String brandName; // Agrega esta propiedad
+
+  const ModelAdminList({
+    super.key, 
+    required this.brandId,
+    required this.brandName, // Nueva propiedad
+  });
 
   @override
   State<ModelAdminList>createState() => _ModelAdminListState();
@@ -101,116 +271,522 @@ class _ModelAdminListState extends State<ModelAdminList> {
   }
 
   void _loadModels(){
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Aquí puedes llamar a tu función para cargar los modelos
-      // loadModels(widget.brandId);
-      final provider = Provider.of<ModelProvider>(context, listen: false);
-      provider.loadModelsByBrand(widget.brandId);
-    });
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final provider = Provider.of<ModelProvider>(context, listen: false);
+    provider.loadModelsByBrand(widget.brandId);
+  });
   }
 
-  @override
-  Widget build (BuildContext context){
-    final provider = context.watch<ModelProvider>();
-    return Column(
-      children: [
-        CustomField(
-          label: S.of(context).model,
-          hintText: S.of(context).model,
-          prefixIcon: const Icon(Icons.search, color: AppStyle.primary),  
-          onChanged: (value) {
-            provider.searchModels(value);
-          },
-        ),
-        const SizedBox(height: 16),
-        
-        
-        if(provider.isLoading && provider.models.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(color: AppStyle.primary),
-          ),
-          if(provider.errorMessage != null)
-          Column(
-            children: [
-              Text(
-                provider.errorMessage!,
-                style: const TextStyle(color: AppStyle.red, fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: provider.retryLoading,
-                child: Text(S.of(context).retry,
-                  style: const TextStyle(color: AppStyle.white, fontSize: 16),
+@override
+Widget build(BuildContext context) {
+  final provider = context.watch<ModelProvider>();
+  final isMobile = MediaQuery.of(context).size.width < 600;
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Encabezado
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.car_repair, color: AppStyle.primary, size: 32),
+                const SizedBox(width: 12),
+                Text(
+                  'Modelos Disponibles',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppStyle.primary,
+                  ),
                 ),
-              )
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Gestiona todos los modelos registrados para esta marca',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 24),
+
+      // Barra de búsqueda
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
-
-          if(!provider.isLoading && provider.models.isEmpty && provider.errorMessage == null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32),
-              child: Text('No hay modelos disponibles',
-                style: const TextStyle(
-                  color: AppStyle.primary,
-                  fontSize: 16
-                ),
-              ),  
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar modelo...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             ),
-            if(provider.models.isNotEmpty)
-              ListView.separated(
-                itemCount: provider.models.length,
-                itemBuilder: (context, index){
-                  final model = provider.models[index];
-                  return ModelsCard(model: model);
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                primary: false,
-                shrinkWrap: true,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
-              
-              )
-      ],
+            onChanged: provider.searchModels,
+          ),
+        ),
+      ),
+      const SizedBox(height: 24),
+
+      // Contenido principal
+      Expanded(
+        child: _buildContent(provider, isMobile),
+      ),
+    ],
+  );
+}
+
+Widget _buildContent(ModelProvider provider, bool isMobile) {
+  if (provider.isLoading && provider.models.isEmpty) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  if (provider.errorMessage != null) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(provider.errorMessage!),
+          ElevatedButton(
+            onPressed: provider.retryLoading,
+            child: const Text('Reintentar'),
+          ),
+        ],
+      ),
     );
   }
+
+  if (!provider.isLoading && provider.models.isEmpty && provider.errorMessage == null) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/no_models.png', width: isMobile ? 250 : 350),
+          const SizedBox(height: 20),
+          Text(
+            'No hay modelos registrados',
+            style: TextStyle(
+              fontSize: 18,
+              color: AppStyle.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  return ListView.builder(
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    itemCount: provider.models.length,
+    itemBuilder: (context, index) {
+      final model = provider.models[index];
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: ModelCard(
+          model: model,
+          brandName: provider.currentBrandName ?? 'Marca',
+          onEdit: () => showEditModelDialog(context, model),
+          onDelete: () => showDeleteModelDialog(context, model),
+        ),
+      );
+    },
+  );
+}
+
+  Widget _buildLoadingState(double maxHeight) {
+    return SizedBox(
+      height: maxHeight * 0.7,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation<Color>(AppStyle.primary),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Cargando modelos...',
+              style: TextStyle(
+                color: AppStyle.primary,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorState(ModelProvider provider, double maxHeight) {
+    return SizedBox(
+      height: maxHeight * 0.7,
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          decoration: BoxDecoration(
+            color: Colors.red.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.red.shade200),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline, color: Colors.red.shade600, size: 48),
+              const SizedBox(height: 16),
+              Text(
+                provider.errorMessage!,
+                style: TextStyle(
+                  color: Colors.red.shade800,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: provider.retryLoading,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppStyle.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'Reintentar',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(bool isMobile, double maxHeight) {
+    return SizedBox(
+      height: maxHeight * 0.7,
+      child: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade50,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/no_data.png', 
+                  width: isMobile ? 250 : 350,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'No hay modelos registrados',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: AppStyle.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Presiona el botón + para agregar un nuevo modelo',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+Widget _buildModelsList(List<StVehiclesModelsResponse> models) {
+  return ListView.separated(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: models.length,
+    itemBuilder: (context, index) {
+      final model = models[index];
+      return ModelCard(
+        model: model,
+        brandName: widget.brandName, // Usa el brandName correcto del widget
+        onEdit: () => showEditModelDialog(context, model),
+        onDelete: () => showDeleteModelDialog(context, model),
+      );
+    },
+    separatorBuilder: (context, index) => const SizedBox(height: 12),
+  );
 }
 
 void showAddModelDialog(BuildContext context, int brandId) {
   final modelNameController = TextEditingController();
-  final provider = Provider.of<ModelProvider>(context, listen: false);  
-  
-  Utils.textFieldAlert(
-      context: context,
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomField(
-          controller: modelNameController,
-          hintText: S.of(context).model,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.car_repair_outlined, color: AppStyle.primary),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor ingrese el modelo de la marca';
-            }
-            return null;
-          },
+  final provider = Provider.of<ModelProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.add_circle_outline, color: AppStyle.primary, size: 28),
+                const SizedBox(width: 12),
+                const Text(
+                  'Nuevo Modelo',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            TextField(
+              controller: modelNameController,
+              decoration: InputDecoration(
+                labelText: 'Nombre del modelo',
+                prefixIcon: Icon(Icons.car_repair, color: AppStyle.primary),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancelar'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppStyle.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  onPressed: () async {
+                    if (modelNameController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('El nombre del modelo es requerido'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+
+                    await provider.addModels(modelNameController.text, brandId);
+
+                    if (provider.errorMessage == null) {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Modelo agregado correctamente'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'Guardar',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-        const SizedBox(height: 10),
-      ],
+      ),
     ),
-    negativeText: S.of(context).cancel,
-    positiveOnPressed: () async {
-      if (modelNameController.text.isNotEmpty) {
-        await provider.addModels(modelNameController.text, brandId);
-        Navigator.of(context, rootNavigator: true).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('El nombre del modelo requerido')),
-        );
-      }
-    },
-    positiveText: S.of(context).add,
-    title: S.of(context).addModel,
   );
 }
+}
+void showEditModelDialog(BuildContext context, StVehiclesModelsResponse model) {
+  // Elimina el parámetro brandId si no es necesario
+  final modelNameController = TextEditingController(text: model.modelName);
+  final provider = Provider.of<ModelProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.edit, color: AppStyle.primary, size: 28),
+                const SizedBox(width: 12),
+                Text(
+                  'Editar ${model.modelName}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            TextField(
+              controller: modelNameController,
+              decoration: InputDecoration(
+                labelText: 'Nombre del modelo',
+                prefixIcon: Icon(Icons.car_repair, color: AppStyle.primary),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancelar'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppStyle.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  onPressed: () async {
+                    if (modelNameController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('El nombre del modelo es requerido'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+
+                    // Lógica para actualizar el modelo
+                    // await provider.updateModel(model.id!, modelNameController.text, brandId);
+
+                    if (provider.errorMessage == null) {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Modelo actualizado correctamente'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'Guardar',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+void showDeleteModelDialog(BuildContext context, StVehiclesModelsResponse model) {
+  final provider = Provider.of<ModelProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      title: Row(
+        children: [
+          Icon(Icons.warning, color: AppStyle.yellow),
+          const SizedBox(width: 12),
+          Text('Eliminar ${model.modelName}'),
+        ],
+      ),
+      content: const Text('¿Estás seguro que deseas eliminar este modelo? Esta acción no se puede deshacer.'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppStyle.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          onPressed: () async {
+            Navigator.pop(context);
+            
+            // Lógica para eliminar el modelo
+            // await provider.deleteModel(model.id!);
+            
+            if (provider.errorMessage == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${model.modelName} eliminado correctamente'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
+}
+

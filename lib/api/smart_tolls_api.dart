@@ -207,7 +207,23 @@ Future<StResponse<StBrandResponse>> deleteBrand(int brandId) async {
           return StResponse.createEmpty();
         }
       }
-      
+      // get brand by id
+      Future<StResponse<StBrandResponse>> getBrandById(int idBrand) async {
+        try {
+          final response = await httpGet('$_baseUrl/brands/$idBrand', getHeaders());
+          if (response.statusCode >= HttpStatus.badRequest) {
+            if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+              StResponse<StBrandResponse> responseData = StResponse(status: HttpStatus.networkConnectTimeoutError);
+              return responseData;
+            }
+            return StResponse.createEmpty();
+          }
+          StResponse<StBrandResponse> responseData = StResponse.fromJson(utf8.decode(response.bodyBytes));
+          return responseData;
+        } catch (e) {
+          return StResponse.createEmpty();
+        }
+      }
 // - MODELS
       // create model by brandId
       Future<StResponse<StVehiclesModelsResponse>> createModelByBrand(StVehiclesModelsRequest modelsRequest) async {

@@ -5,12 +5,13 @@ class BrandProvider extends ChangeNotifier {
   List<StBrandResponse> _brands = []; // Lista filtrada
   bool _isLoading = false;
   bool _isAdding = false;
-bool _isUpdating = false;
-bool _isDeleting = false;
+  bool _isUpdating = false;
+  bool _isDeleting = false;
 
 bool get isAdding => _isAdding;
 bool get isUpdating => _isUpdating;
 bool get isDeleting => _isDeleting;
+
 
   String? _errorMessage = '';
   String? _selectedBrand = '';
