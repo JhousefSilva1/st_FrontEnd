@@ -224,7 +224,7 @@ void showAddVehicleDialog(BuildContext context){
     vehicleColorsProviders.loadVehiclesColors();
     vehicleBrandsProviders.loadBrands();
     vehicleModelsProviders.loadModelsByBrand(0);
-    vehicleTypesProviders.loadVehiclesType();
+    vehicleTypesProviders.loadVehicleTypes();
     vehicleCountryProvider.loadCountries();
   });
   //varialebles Id
@@ -477,7 +477,7 @@ void showAddVehicleDialog(BuildContext context){
                   return DropdownButtonFormField<String>(
                     value: selectedVehiclesTypeId,
                     hint: Text(S.of(context).vehicleType),
-                    items: vehicleTypesProvider.vehiclesType.map((type){
+                    items: vehicleTypesProvider.vehicleTypes.map((type){
                      return DropdownMenuItem<String>( 
                       value: type.idVehiclesType.toString(),
                       child: Text(type.vehiclesTypesName ?? 'N/A'),
@@ -486,7 +486,7 @@ void showAddVehicleDialog(BuildContext context){
                     onChanged: (value) {
                       setState((){
                         selectedVehiclesTypeId = value;
-                        selectedVehiclesTypeName = vehicleTypesProvider.vehiclesType
+                        selectedVehiclesTypeName = vehicleTypesProvider.vehicleTypes
                           .firstWhere((c) => c.idVehiclesType.toString() == value)
                           .vehiclesTypesName;
 
@@ -683,7 +683,7 @@ void showEditVehicleDialog(BuildContext context, StVehicleResponse vehicle) {
     vehicleColorsProvider.loadVehiclesColors();
     vehicleBrandsProvider.loadBrands();
     vehicleModelsProvider.loadModelsByBrand(vehicle.vehiclesModels.brand.idBrand);
-    vehicleTypesProvider.loadVehiclesType();
+    vehicleTypesProvider.loadVehicleTypes();
     vehicleCountryProvider.loadCountries();
     vehicleCityProvider.loadCitiesByCountry(vehicle.country.idCountry);
   });
