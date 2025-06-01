@@ -10,68 +10,75 @@ import 'package:smarttolls/generated/l10n.dart';
 class FuelTypeAdminView extends StatelessWidget {
   static const String routerName = 'fuelTypeAdmin';
   static const String routerPath = '/fuelTypeAdmin';
+
   const FuelTypeAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    
     return Scaffold(
-      backgroundColor: AppStyle.backgroundGrey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(S.of(context).fuel,
-            style: TextStyle(
-                color: AppStyle.primary,
-                fontWeight: FontWeight.bold,
-                fontSize: isMobile ? 20 : 24)),
+        title: const Text(
+          'Tipos de Combustible',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: AppStyle.primary, size: 28),
-            onPressed: () => showAddFuelTypesDialog(context),
+            icon: const Icon(Icons.add),
+            onPressed: () => showAddFuelTypeDialog(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<FuelTypeProvider>(context, listen: false).loadFuelTypes();
+            },
           ),
         ],
-        iconTheme: IconThemeData(color: AppStyle.primary),
       ),
       drawer: isMobile ? const SmartTollsDrawer() : null,
-      body: isMobile
-            ? const SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      FuelTypeAdminMobileView(),
-                    ],
-                  ),
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
                 ),
-              )
-          : Row(  // Cambiamos a Row para diseño en tablet/desktop
-              children: [
-                const Expanded(
-                  flex: 3,  // 3 partes para el contenido principal
-                  child: FuelTypeAdminTabletView(),
-                ),
-                Expanded(
-                  flex: 2,  // 2 partes para la imagen
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(left: BorderSide(color: Colors.grey.shade200)),
-                    ),
-                    child: Center(
-                      child: Opacity(
-                        opacity: 0.3,
-                        child: Image.asset(
-                          'assets/fuel_pattern.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+              child: const FuelTypeAdminList(),
             ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+              decoration: BoxDecoration(
+                color: AppStyle.primary.withOpacity(0.05),
+                border: Border(left: BorderSide(color: Colors.grey.shade200)),
+              ),
+              child: Center(
+                child: Opacity(
+                  opacity: 0.2,
+                  child: Image.asset('assets/fuel_pattern.png', fit: BoxFit.contain),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -152,93 +159,109 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
     });
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     final provider = context.watch<FuelTypeProvider>();
-
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SearchBar(
-          hintText: S.of(context).search,
-          leading: Icon(Icons.search, color: Colors.grey.shade600),
-          elevation: MaterialStateProperty.all(1),
-          backgroundColor: MaterialStateProperty.all(Colors.white),
-          onChanged: (value) => provider.searchFuelType(value),
+        Text(
+          'Administración de Combustibles',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
+          ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los tipos de combustible disponibles',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
         
-        // Estado de carga
-        if (provider.isLoading)
-          const Center(child: CircularProgressIndicator()),
-
-        // Mensaje de error
-        if (provider.errorMessage != null)
-          Column(
-            children: [
-              Icon(Icons.error_outline, color: AppStyle.red, size: 48),
-              const SizedBox(height: 16),
-              Text(
-                provider.errorMessage!,
-                style: const TextStyle(
-                  color: AppStyle.red,
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppStyle.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () => provider.retryLoading(),
-                child: Text(S.of(context).retry,
-                    style: TextStyle(color: Colors.white)),
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
-
-        // Lista vacía
-        if (!provider.isLoading &&
-            provider.fuelType.isEmpty &&
-            provider.errorMessage == null)
-          Column(
-            children: [
-              Image.asset('assets/fuel_pattern.png', width: 150, opacity: const AlwaysStoppedAnimation(0.3)),
-              const SizedBox(height: 16),
-              Text(
-                'No hay tipos de combustible registrados',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Presiona el botón + para agregar uno nuevo',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade500,
-                ),
-              ),
-            ],
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar combustible...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            ),
+            onChanged: provider.searchFuelTypes,
           ),
-
-        // Lista de tipos de combustible
-        if (provider.fuelType.isNotEmpty)
-          ListView.separated(
-            itemCount: provider.fuelType.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              final fuelType = provider.fuelType[index];
-              return FuelTypeCard(fuelTypesName: fuelType);
-            },
-          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
+    );
+  }
+
+  Widget _buildContent(FuelTypeProvider provider) {
+    if (provider.isLoading && provider.fuelTypes.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.fuelTypes.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/no_data.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay combustibles registrados'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.fuelTypes.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final fuelType = provider.fuelTypes[index];
+        return FuelTypeCard(
+          fuelType: fuelType,
+          onEdit: () => showEditFuelTypeDialog(context, fuelType),
+          onDelete: () => showDeleteFuelTypeDialog(context, fuelType),
+        );
+      },
     );
   }
 }
@@ -246,157 +269,110 @@ class _FuelTypeAdminListState extends State<FuelTypeAdminList> {
 
 // Los diálogos (showAddFuelTypesDialog, showEditFuelTypeDialog, showDeleteFuelTypeDialog)
 // pueden mantenerse igual que en tu código original
-void showAddFuelTypesDialog(BuildContext context) {
-  final fuelTypeFuelController = TextEditingController();
+void showAddFuelTypeDialog(BuildContext context) {
+  final controller = TextEditingController();
   final provider = Provider.of<FuelTypeProvider>(context, listen: false);
-  
+
   showDialog(
     context: context,
-    builder: (context) {
-      return SingleChildScrollView( // Añade esto
-        child: AlertDialog(
-          contentPadding: const EdgeInsets.all(16),
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          content: Column(
-            mainAxisSize: MainAxisSize.min, // Importante
-            children: [
-              Text(S.of(context).addFuelType, 
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 20),
-              CustomField(
-                controller: fuelTypeFuelController,
-                hintText: S.of(context).fuelType,
-                keyboardType: TextInputType.text,
-                prefixIcon: const Icon(Icons.gas_meter),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese el tipo de combustible';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(S.of(context).cancel),
-            ),
-            TextButton(
-              onPressed: () async {
-                if (fuelTypeFuelController.text.isNotEmpty) {
-                  await provider.addFuelType(fuelTypeFuelController.text);
-                  Navigator.of(context).pop();
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('El tipo de combustible no puede estar vacío')),
-                  );
-                }
-              },
-              child: Text(S.of(context).add),
-            ),
-          ],
+    builder: (context) => AlertDialog(
+      title: const Text('Agregar Combustible'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del combustible',
+          border: OutlineInputBorder(),
         ),
-      );
-    },
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.addFuelType(controller.text);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Agregar'),
+        ),
+      ],
+    ),
   );
 }
 
 void showEditFuelTypeDialog(BuildContext context, StFuelTypesResponse fuelType) {
-  final fuelTypeFuelController = TextEditingController(text: fuelType.fuelTypeName);
+  final controller = TextEditingController(text: fuelType.fuelTypeName);
   final provider = Provider.of<FuelTypeProvider>(context, listen: false);
 
   showDialog(
     context: context,
-    builder: (context) {
-      return SingleChildScrollView( // Añade esto
-        child: AlertDialog(
-          contentPadding: const EdgeInsets.all(16),
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          content: Column(
-            mainAxisSize: MainAxisSize.min, // Importante
-            children: [
-              Text(S.of(context).editFuelType, 
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 20),
-              CustomField(
-                controller: fuelTypeFuelController,
-                hintText: S.of(context).fuelType,
-                keyboardType: TextInputType.text,
-                prefixIcon: const Icon(Icons.gas_meter),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese el tipo de combustible';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(S.of(context).cancel),
-            ),
-            TextButton(
-              onPressed: () async {
-                if (fuelTypeFuelController.text.isNotEmpty) {
-                  await provider.updateFuelType(
-                    fuelType.idFuelType,
-                    fuelTypeFuelController.text,
-                  );
-                  Navigator.of(context).pop();
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('El tipo de combustible no puede estar vacío')),
-                  );
-                }
-              },
-              child: Text(S.of(context).update),
-            ),
-          ],
+    builder: (context) => AlertDialog(
+      title: const Text('Editar Combustible'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del combustible',
+          border: OutlineInputBorder(),
         ),
-      );
-    },
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.updateFuelType(fuelType.idFuelType, controller.text);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Guardar'),
+        ),
+      ],
+    ),
   );
 }
+
 void showDeleteFuelTypeDialog(BuildContext context, StFuelTypesResponse fuelType) {
   final provider = Provider.of<FuelTypeProvider>(context, listen: false);
 
   showDialog(
     context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(S.of(context).deleteFuelType),
-        content: Text('${S.of(context).confirmDeleteFuelType} ${fuelType.fuelTypeName}?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(S.of(context).cancel),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              final scaffoldMessenger = ScaffoldMessenger.of(context);
-              
-              try {
-                await provider.deleteFuelType(fuelType.idFuelType);
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(content: Text('${fuelType.fuelTypeName} ${S.of(context).deletedSuccessfully}')),
-                );
-              } catch (e) {
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(content: Text('Error al eliminar: ${e.toString()}')),
-                );
-              }
-            },
-            child: Text(
-              S.of(context).delete,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ),
-        ],
-      );
-    },
+    builder: (context) => AlertDialog(
+      title: const Text('Eliminar Combustible'),
+      content: Text('¿Eliminar ${fuelType.fuelTypeName}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            Navigator.pop(context);
+            await provider.deleteFuelType(fuelType.idFuelType);
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
   );
 }

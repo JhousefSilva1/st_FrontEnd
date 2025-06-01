@@ -330,7 +330,7 @@ void showAddVehicleDialog(BuildContext context){
                   return DropdownButtonFormField<String>(
                     value: selectedFuelTypeId,
                     hint: Text(S.of(context).fuelType),
-                    items: fuelTypesProvider.fuelType.map((fuel){
+                    items: fuelTypesProvider.fuelTypes.map((fuel){
                      return DropdownMenuItem<String>( 
                       value: fuel.idFuelType.toString(),
                       child: Text(fuel.fuelTypeName ?? 'N/A'),
@@ -339,7 +339,7 @@ void showAddVehicleDialog(BuildContext context){
                     onChanged: (value) {
                       setState((){
                         selectedFuelTypeId = value;
-                        selectedFuelTypeName = fuelTypesProvider.fuelType
+                        selectedFuelTypeName = fuelTypesProvider.fuelTypes
                           .firstWhere((c) => c.idFuelType.toString() == value)
                           .fuelTypeName;
                           if (value == null) {

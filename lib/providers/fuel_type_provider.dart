@@ -1,138 +1,126 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
 
-
-
-class FuelTypeProvider extends ChangeNotifier{
-  List<StFuelTypesResponse> _allFuelType = []; // Lista completa
-  List<StFuelTypesResponse> _fuelType = []; // Lista filtrada
-
+class FuelTypeProvider extends ChangeNotifier {
+  List<StFuelTypesResponse> _allFuelTypes = [];
+  List<StFuelTypesResponse> _fuelTypes = [];
   bool _isLoading = false;
+  bool _isAdding = false;
+  bool _isUpdating = false;
+  bool _isDeleting = false;
+  String? _errorMessage;
 
-  String? _errorMessage = '';
-  String? _selectedFuelType = '';
-  String? _newFuelTypeName;
-
-  List<StFuelTypesResponse> get fuelType => _fuelType;
+  // Getters
+  List<StFuelTypesResponse> get fuelTypes => _fuelTypes;
   bool get isLoading => _isLoading;
+  bool get isAdding => _isAdding;
+  bool get isUpdating => _isUpdating;
+  bool get isDeleting => _isDeleting;
   String? get errorMessage => _errorMessage;
-  String? get selectedFuelType => _selectedFuelType;
-  String? get newFuelTypeName => _newFuelTypeName;
 
-  // Método para buscar tipos de combustible
-  void searchFuelType(String query){
-    if (query.isEmpty){
-      _fuelType = List.from(_allFuelType);
-    }else{
-      _fuelType = _allFuelType.where((fuelType) => 
-        fuelType.fuelTypeName?.toLowerCase().contains(query.toLowerCase()) ?? false
+  // Búsqueda
+  void searchFuelTypes(String query) {
+    if (query.isEmpty) {
+      _fuelTypes = List.from(_allFuelTypes);
+    } else {
+      _fuelTypes = _allFuelTypes.where((type) => 
+        type.fuelTypeName?.toLowerCase().contains(query.toLowerCase()) ?? false
       ).toList();
     }
     notifyListeners();
   }
 
-  // cargar tipos de combustible desde la API
-  Future<void> loadFuelTypes() async{
+  // Carga de datos
+  Future<void> loadFuelTypes() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
-    try{
+    try {
       final response = await SmartTollsApi().getAllFuelTypes();
-      if(response.isSuccess() && response.dataList != null){
-        _allFuelType = response.dataList!;
-        _fuelType = List.from(_allFuelType);
-      }else{
-        _errorMessage = response.message ?? 'Error al cargar los tipos de combustible';
+      if (response.isSuccess() && response.dataList != null) {
+        _allFuelTypes = response.dataList!;
+        _fuelTypes = List.from(_allFuelTypes);
+      } else {
+        _errorMessage = response.message ?? 'Error al cargar tipos de combustible';
       }
-    }catch(e){
+    } catch (e) {
       _errorMessage = 'Error de conexión: ${e.toString()}';
-    }finally{
+    } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  // agregar nuevo tipo de combustible
-  Future<void> addFuelType(String fuelTypeName) async{
-    _isLoading = true;
+  // Agregar nuevo tipo
+  Future<void> addFuelType(String name) async {
+    _isAdding = true;
     _errorMessage = null;
     notifyListeners();
 
-    try{
-      // final response = await SmartTollsApi().addFuelType(fuelTypeName);
-      final request = StFuelTypesRequest(
-        fuelTypeFuel: fuelTypeName,
-      );
-
-      // llamada a la API para agregar el tipo de combustible
+    try {
+      final request = StFuelTypesRequest(fuelTypeFuel: name);
       final response = await SmartTollsApi().createFuelType(request);
-          if (response.isSuccess()) {
-      await loadFuelTypes(); // Recargar la lista de marcas
-    } else {
-      _errorMessage = response.message ?? 'Error al agregar el tipo de combustible';
-    }
-
-    }catch(e){
-      _errorMessage = 'Error de conexión: ${e.toString()}';
-    }finally{
-      _isLoading = false;
+      
+      if (response.isSuccess()) {
+        await loadFuelTypes();
+      } else {
+        _errorMessage = response.message ?? 'Error al agregar tipo de combustible';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al agregar: ${e.toString()}';
+    } finally {
+      _isAdding = false;
       notifyListeners();
     }
   }
 
-  
-
-// Método para actualizar un tipo de combustible
-Future<void> updateFuelType(int fuelTypeId, String fuelTypeName) async {
-  _isLoading = true;
-  _errorMessage = null;
-  notifyListeners();
-
-  try {
-    final request = StFuelTypesRequest(
-      fuelTypeFuel: fuelTypeName,
-    );
-    
-    final response = await SmartTollsApi().updateFuelType(fuelTypeId, request);
-    
-    if (response.isSuccess()) {
-      await loadFuelTypes(); // Recargar la lista de tipos de combustible
-    } else {
-      _errorMessage = response.message ?? 'Error al actualizar el tipo de combustible';
-    }
-  } catch (e) {
-    _errorMessage = 'Error al actualizar el tipo de combustible: ${e.toString()}';
-  } finally {
-    _isLoading = false;
+  // Actualizar tipo
+  Future<void> updateFuelType(int id, String name) async {
+    _isUpdating = true;
+    _errorMessage = null;
     notifyListeners();
-  }
-}
 
-// Método para eliminar un tipo de combustible
-Future<void> deleteFuelType(int fuelTypeId) async {
-  _isLoading = true;
-  _errorMessage = null;
-  notifyListeners();
-
-  try {
-    final response = await SmartTollsApi().deleteFuelType(fuelTypeId);
-    
-    if (response.isSuccess()) {
-      await loadFuelTypes(); // Recargar la lista de tipos de combustible
-    } else {
-      _errorMessage = response.message ?? 'Error al eliminar el tipo de combustible';
+    try {
+      final request = StFuelTypesRequest(fuelTypeFuel: name);
+      final response = await SmartTollsApi().updateFuelType(id, request);
+      
+      if (response.isSuccess()) {
+        await loadFuelTypes();
+      } else {
+        _errorMessage = response.message ?? 'Error al actualizar tipo de combustible';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al actualizar: ${e.toString()}';
+    } finally {
+      _isUpdating = false;
+      notifyListeners();
     }
-  } catch (e) {
-    _errorMessage = 'Error al eliminar el tipo de combustible: ${e.toString()}';
-  } finally {
-    _isLoading = false;
-    notifyListeners();
   }
-}
 
-  // metodo para recargar datos
-    void retryLoading(){
+  // Eliminar tipo
+  Future<void> deleteFuelType(int id) async {
+    _isDeleting = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await SmartTollsApi().deleteFuelType(id);
+      
+      if (response.isSuccess()) {
+        await loadFuelTypes();
+      } else {
+        _errorMessage = response.message ?? 'Error al eliminar tipo de combustible';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al eliminar: ${e.toString()}';
+    } finally {
+      _isDeleting = false;
+      notifyListeners();
+    }
+  }
+
+  void retryLoading() {
     _errorMessage = null;
     loadFuelTypes();
   }
