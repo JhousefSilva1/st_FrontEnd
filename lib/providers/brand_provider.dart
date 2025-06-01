@@ -4,6 +4,14 @@ class BrandProvider extends ChangeNotifier {
   List<StBrandResponse> _allBrands = []; // Lista completa
   List<StBrandResponse> _brands = []; // Lista filtrada
   bool _isLoading = false;
+  bool _isAdding = false;
+bool _isUpdating = false;
+bool _isDeleting = false;
+
+bool get isAdding => _isAdding;
+bool get isUpdating => _isUpdating;
+bool get isDeleting => _isDeleting;
+
   String? _errorMessage = '';
   String? _selectedBrand = '';
   String? _newModelName;
@@ -46,32 +54,33 @@ class BrandProvider extends ChangeNotifier {
   }
   // Agregar nueva marca
   Future<void> addBrand(String brandName, String description, String country) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+  _isAdding = true;
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+  
   try {
-    // Crear el objeto request con todos los datos
     final request = StBrandRequest(
       brandName: brandName,
       brandDescription: description,
       brandManufacturingCountry: country,
     );
-    // Llamar a la API
+    
     final response = await SmartTollsApi().createBrands(request);
     
     if (response.isSuccess()) {
-      await loadBrands(); // Recargar la lista de marcas
+      await loadBrands();
     } else {
-      _errorMessage = response.message ?? 'Error al agregar el color';
+      _errorMessage = response.message ?? 'Error al agregar la marca';
     }
   } catch (e) {
-    _errorMessage = 'Error al agregar el Color ${e.toString()}';
+    _errorMessage = 'Error al agregar la marca: ${e.toString()}';
   } finally {
+    _isAdding = false;
     _isLoading = false;
     notifyListeners();
   }
-  }
-
+}
   // En BrandProvider class
 
 // Método para actualizar una marca

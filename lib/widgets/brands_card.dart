@@ -6,115 +6,119 @@ import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/views/views.dart';
 
 
-class BrandsCard extends StatelessWidget {
+class BrandCard extends StatelessWidget {
   final StBrandResponse brand;
 
-  const BrandsCard({
-    super.key,
-    required this.brand,
-  });
+  const BrandCard({super.key, required this.brand});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppStyle.white, width: 1),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: AppStyle.white,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 4,
-            spreadRadius: 1
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
-        ]
+        ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          children: [
-            // Parte clickeable (excluyendo los íconos)
-            Expanded(
-              child: GestureDetector(
-                  onTap: () {
-                      context.goNamed(
-                        ModelsAdminView.routerName,
-                        pathParameters: {'idBrand': brand.idBrand.toString()},
-                      );
-                  },
-                child: Row(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              // Logo/Icono
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(Icons.directions_car, 
+                  color: AppStyle.primary, size: 32),
+              ),
+              const SizedBox(width: 16),
+              
+              // Información
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(width: 8),
-                    const Icon(Icons.drive_eta, color: AppStyle.primary, size: 50),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Text(S.of(context).brand, 
-                                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                flex: 2,
-                                child: Text(brand.brandName ?? 'N/A', 
-                                  style: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Text(S.of(context).origin, 
-                                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                flex: 2,
-                                child: Text(brand.brandManufacturingCountry ?? 'N/A', 
-                                  style: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
-                              ),
-                            ],
-                          ),
-                        ],
+                    Text(
+                      brand.brandName ?? 'N/A',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    const SizedBox(height: 4),
+                    if (brand.brandDescription?.isNotEmpty ?? false)
+                      Text(
+                        brand.brandDescription!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   ],
                 ),
               ),
-            ),
-            // Íconos (no clickeables en el área principal)
-            Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              
+              // País y acciones
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const SizedBox(width: 8),
-                // En el BrandsCard, modificar los GestureDetector de los íconos
-                GestureDetector(
-                  onTap: () {
-                    showEditBrandDialog(context, brand);
-                  },
-                  child: const Icon(Icons.edit, color: AppStyle.yellow),
-                ),
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: () {
-                    showDeleteBrandDialog(context, brand);
-                  },
-                  child: const Icon(Icons.delete, color: AppStyle.red, size: 30),
-                ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppStyle.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.public, 
+                          color: AppStyle.primary, size: 14),
+                        const SizedBox(width: 4),
+                        Text(
+                          brand.brandManufacturingCountry ?? 'N/A',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppStyle.primary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, 
+                          color: AppStyle.yellow, size: 22),
+                        onPressed: () => showEditBrandDialog(context, brand),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete_outline, 
+                          color: AppStyle.red, size: 22),
+                        onPressed: () => showDeleteBrandDialog(context, brand),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
