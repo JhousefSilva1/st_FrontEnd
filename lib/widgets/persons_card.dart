@@ -17,134 +17,95 @@ class PersonsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Sección superior con avatar y nombre
-          _buildTopSection(context),
-          
-          // Divisor
-          const Divider(height: 1, thickness: 1),
-          
-          // Información con iconos
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: _buildInfoSection(context),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
-          
-          // Sección de ubicación
-          _buildLocationSection(),
         ],
       ),
-    );
-  }
-
-  Widget _buildTopSection(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Row(
-        children: [
-          // Avatar con icono
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppStyle.primary.withOpacity(0.1), //avatar color
-              border: Border.all(color: AppStyle.primary, width: 1.5),
-            ),
-            child: Icon(
-              _getAvatarIcon(),
-              size: 24,
-              color: AppStyle.primary,
-            ),
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        leading: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: AppStyle.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
           ),
-          
-          const SizedBox(width: 12),
-          
-          // Nombre y tipo
-          Expanded(
+          child: Icon(
+            _getAvatarIcon(),
+            color: AppStyle.primary,
+            size: 28,
+          ),
+        ),
+        title: Text(
+          '${person.personName ?? ''} ${person.personSurname ?? ''}'.trim(),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        subtitle: Text(
+          person.personType.personType ?? 'N/A',
+          style: TextStyle(color: Colors.grey.shade600),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit, color: AppStyle.yellow),
+              onPressed: onEdit,
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: AppStyle.red),
+              onPressed: onDelete,
+            ),
+          ],
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${person.personName ?? ''} ${person.personSurname ?? ''}'.trim(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                _buildInfoRow(Icons.calendar_today, S.of(context).bornDate, _formatDate(person.personBirthdate)),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.email, S.of(context).email, person.personEmail ?? 'N/A'),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.phone, S.of(context).whatsApp, person.personWhatsappNumber ?? 'N/A'),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.credit_card, S.of(context).dni, person.personDni ?? 'N/A'),
+                const SizedBox(height: 8),
+                _buildInfoRow(
+                  person.gender == 'M' ? Icons.male : Icons.female,
+                  S.of(context).gender,
+                  person.gender.genderName ?? 'N/A'
                 ),
-                const SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: AppStyle.primary.withOpacity(0.1), //tipe person
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    person.personType.personType ?? 'N/A',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
-                  ),
+                const SizedBox(height: 8),
+                _buildInfoRow(
+                  Icons.location_on,
+                  S.of(context).location,
+                  '${person.city.cityName ?? 'N/A'}, ${person.country.countryName ?? 'N/A'}'
                 ),
               ],
             ),
           ),
-          
-          // Botones de acción
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton (
-                icon:  const Icon(Icons.edit, size: 20, color: AppStyle.primary),
-                onPressed: onEdit,
-              ),
-              IconButton(
-                icon: Icon(Icons.delete, size: 20, color: Colors.red[400]),
-                onPressed: onDelete,
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoSection(BuildContext context) {
-    return Column(
-      children: [
-        _buildInfoItem(Icons.calendar_today, S.of(context).bornDate, _formatDate(person.personBirthdate)),
-        const SizedBox(height: 12),
-        _buildInfoItem(Icons.email, S.of(context).email, person.personEmail ?? 'N/A'),
-        const SizedBox(height: 12),
-        _buildInfoItem(Icons.phone, S.of(context).whatsApp, person.personWhatsappNumber ?? 'N/A'),
-        const SizedBox(height: 12),
-        _buildInfoItem(Icons.credit_card, S.of(context).dni, person.personDni ?? 'N/A'),
-        const SizedBox(height: 12),
-        _buildInfoItem(
-          person.gender == 'M' ? Icons.male : Icons.female, 
-          S.of(context).gender, 
-          person.gender.genderName ?? 'N/A'
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoItem(IconData icon, String label, String value) {
+  Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: AppStyle.primary),
+        Icon(icon, size: 18, color: AppStyle.primary),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -152,51 +113,17 @@ class PersonsCard extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
               ),
               const SizedBox(height: 2),
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               ),
             ],
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildLocationSection() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppStyle.primary.withOpacity(0.03), // mapa color
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(12),
-          bottomRight: Radius.circular(12),
-        ),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.location_on, size: 18, color: AppStyle.primary),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              '${person.city.cityName ?? 'N/A'}, ${person.country.countryName ?? 'N/A'}',
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -211,7 +138,6 @@ class PersonsCard extends StatelessWidget {
 
   String _formatDate(String? date) {
     if (date == null || date.isEmpty) return 'N/A';
-    // Implementa tu lógica de formateo de fecha aquí
     return date;
   }
 }

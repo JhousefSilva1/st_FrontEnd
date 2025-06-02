@@ -1,176 +1,205 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/person_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/widgets/widgets.dart';
 import 'package:smarttolls/widgets/persons_card.dart';
 
-import '../../../widgets/widgets.dart';
-
-class PersonAdminView extends StatelessWidget{
+class PersonAdminView extends StatelessWidget {
   static const String routerName = 'adminPersons';
   static const String routerPath = '/adminPersons';
 
   const PersonAdminView({super.key});
 
   @override
-  Widget build(BuildContext context){
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          centerTitle: true,
-          text: S.of(context).managePersons,
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).managePersons,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: AppStyle.white,
-        drawer: isMobile ? const SmartTollsDrawer() : null,
-        body: isMobile
-            ? const SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      PersonAdminMobileView(),
-                    ],
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<PersonProvider>(context, listen: false).loadAllPersons();
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
+              ),
+              child: const PersonAdminList(),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/persons_pattern.png', fit: BoxFit.contain),
                   ),
                 ),
-              )
-            : const PersonAdminTabletView(),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
 
-class PersonAdminMobileView extends StatelessWidget{
-  const PersonAdminMobileView({super.key});
-  @override
-  Widget build(BuildContext context){
-    return const Column(
-      children: [
-        PersonAdminList(),
-      ],
-    );
-  }
-}
-
-class PersonAdminTabletView extends StatelessWidget{
-  const PersonAdminTabletView({super.key});
-
-  @override
-  Widget build(BuildContext context){
-    return const  Row(
-      children: [
-         SmartTollsDrawer(),
-        Expanded(
-          flex:2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  PersonAdminList(),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class PersonAdminList extends StatefulWidget{
+class PersonAdminList extends StatefulWidget {
   const PersonAdminList({super.key});
 
   @override
   State<PersonAdminList> createState() => _PersonAdminListState();
 }
 
-class _PersonAdminListState extends State<PersonAdminList>{
+class _PersonAdminListState extends State<PersonAdminList> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _loadPersons();
-  }
-  void _loadPersons(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<PersonProvider>(context, listen: false);
-      provider.loadAllPersons().then((_) {
-        if (provider.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(provider.errorMessage!)),
-          );
-        }
-      });
+      Provider.of<PersonProvider>(context, listen: false).loadAllPersons();
     });
   }
 
   @override
-  Widget build(BuildContext context){
-    final provider = Provider.of<PersonProvider>(context);
+  Widget build(BuildContext context) {
+    final provider = context.watch<PersonProvider>();
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomField(
-          hintText: S.of(context).search,
-          onChanged: (value) {
-            provider.searchPersons(value);
-          },
-        ),
-        const SizedBox(height: 16),
-        if(provider.isLoading && provider.persons.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(
-              color: AppStyle.primary,
-              strokeWidth: 2,
-            ),
+        Text(
+          'Administración de Personas',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
           ),
-          if(provider.errorMessage != null)
-            Column(
-              children: [
-                Text(
-                  provider.errorMessage!,
-                  style: const TextStyle(color: AppStyle.red),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: provider.retryLoading,
-                  child: Text(S.of(context).retry,
-                  style: const TextStyle(
-                    color: AppStyle.white,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),    
-                ),
-                const SizedBox(height: 16),
-              ],
-            ),
-            if(!provider.isLoading && provider.persons.isEmpty && provider.errorMessage == null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: Text('No hay personas registradas',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                    color: AppStyle.primary.withOpacity(0.5),
-                  ),
-                ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los registros de personas del sistema',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Campo de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              if(provider.persons.isNotEmpty)
-                ListView.separated(
-                  itemCount: provider.persons.length,
-                  itemBuilder: (context, index) {
-                    final person = provider.persons[index];
-                    return PersonsCard(person: person);
-                  },
-                  physics: const NeverScrollableScrollPhysics(),
-                  primary: false,
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) => const SizedBox(height: 16),
-                )
+            ],
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar persona...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            ),
+            onChanged: provider.searchPersons,
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
+    );
+  }
+
+  Widget _buildContent(PersonProvider provider) {
+    if (provider.isLoading && provider.persons.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.persons.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/nodata.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay personas registradas'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.persons.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final person = provider.persons[index];
+        return PersonsCard(
+          person: person,
+          onEdit: () {
+            // Implementa showEditPersonDialog(context, person);
+          },
+          onDelete: () {
+            // Implementa showDeletePersonDialog(context, person);
+          },
+        );
+      },
     );
   }
 }

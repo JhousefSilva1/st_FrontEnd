@@ -90,14 +90,14 @@ class StaffPreviewCard extends StatelessWidget{
                     onTap: (){
                       // edit
                     },
-                    child: const Icon(Icons.edit, color: Colors.blue, size: 30),
+                    child: const Icon(Icons.edit, color: Color.fromARGB(255, 150, 160, 5), size: 30),
                   ),
                   const SizedBox(width: 16),
                   GestureDetector(
                     onTap: (){
                       // delete
                     },
-                    child: const Icon(Icons.delete, color: Colors.red, size: 30),
+                    child: const Icon(Icons.delete, color: Color.fromARGB(255, 2, 116, 36), size: 30),
                   ),
                   const SizedBox(width: 8),
                 ],
