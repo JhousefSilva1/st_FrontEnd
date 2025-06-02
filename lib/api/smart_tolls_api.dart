@@ -1190,6 +1190,75 @@ Future<StResponse<StTollsResponse>> createToll(StTollsRequest tollsRequest) asyn
     );
   }
 }
+// updateCity
+Future<StResponse<StCityResponse>> updateCity(int cityId, StCityRequest cityRequest) async {
+  try {
+    final response = await httpPut('$_baseUrl/city/update/$cityId', getHeaders(), jsonEncode(cityRequest.toJson()));
+
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StCityResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StCityResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al actualizar la ciudad',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StCityResponse>.createEmpty();
+      }
+    }
+
+    final responseJson = json.decode(response.body);
+    final cityData = StCityResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StCityResponse>(
+      data: cityData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StCityResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la actualización de la ciudad',
+      error: e.toString(),
+    );
+  }
+}
+
+// deleteCity
+Future<StResponse<StCityResponse>> deleteCity(int cityId) async {
+  try {
+    final response = await httpDelete('$_baseUrl/city/delete/$cityId', getHeaders());
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StCityResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StCityResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al eliminar la ciudad',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StCityResponse>.createEmpty();
+      }
+    }
+    return StResponse<StCityResponse>(
+      status: response.statusCode,
+      message: 'Ciudad eliminada correctamente',
+    );
+  } catch (e) {
+    return StResponse<StCityResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la eliminación de la ciudad',
+      error: e.toString(),
+    );
+  }
+}
+
 // getAllTolls
 Future<StResponse<StTollsResponse>> getAllTolls() async {
   try {

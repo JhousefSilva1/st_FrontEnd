@@ -1,83 +1,85 @@
-// city_admin_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/city_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/utils/utils.dart';
-import 'package:smarttolls/widgets/city_card.dart';
-import 'package:smarttolls/widgets/custom_app_bar.dart';
-import 'package:smarttolls/widgets/custom_field.dart';
-import 'package:smarttolls/widgets/menu/desktop/drawer.dart';
+import 'package:smarttolls/widgets/widgets.dart';
 
 class CityAdminView extends StatelessWidget {
   static const String routerName = 'cityAdmin';
   static const String routerPath = '/cityAdmin/:countryId';
-
+  
   final int countryId;
 
   const CityAdminView({super.key, required this.countryId});
 
   @override
   Widget build(BuildContext context) {
-
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              onPressed: () => showAddCityDialog(context, countryId),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).city,
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).city,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: AppStyle.white,
-        body: isMobile
-            ? SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      CityAdminList(countryId: countryId), // Pasa el countryId aquí
-                    ],
-                  ),
-                ),
-              )
-            : CityAdminTabletView(countryId: countryId), // Y aquí
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => showAddCityDialog(context, countryId),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<CityProvider>(context, listen: false).loadCitiesByCountry(countryId);
+            },
+          ),
+        ],
       ),
-    );
-  }
-}
-
-class CityAdminTabletView extends StatelessWidget {
-    final int countryId;
-
-  const CityAdminTabletView({super.key, required this.countryId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SmartTollsDrawer(),
-        Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  CityAdminList(countryId: countryId), // Pasa el countryId aquí
-                ],
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
               ),
+              child: CityAdminList(countryId: countryId),
             ),
           ),
-        )
-      ],
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/city_pattern.png', fit: BoxFit.contain),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -86,7 +88,6 @@ class CityAdminList extends StatefulWidget {
   final int countryId;
 
   const CityAdminList({super.key, required this.countryId});
-
 
   @override
   State<CityAdminList> createState() => _CityAdminListState();
@@ -109,109 +110,223 @@ class _CityAdminListState extends State<CityAdminList> {
 
   void _loadCities() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<CityProvider>(context, listen: false);
-      provider.loadCitiesByCountry(widget.countryId);
+      Provider.of<CityProvider>(context, listen: false)
+          .loadCitiesByCountry(widget.countryId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CityProvider>();
-
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomField(
-          hintText: S.of(context).search,
-          prefixIcon: const Icon(Icons.search, color: AppStyle.primary),
-          onChanged: (value) {
-            provider.searchCities(value);
-          },
-        ),
-        const SizedBox(height: 16),
-        
-        if (provider.isLoading && provider.cities.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(),
+        Text(
+          'Administración de Ciudades',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
           ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona las ciudades disponibles',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
         
-        if (provider.errorMessage != null)
-          Column(
-            children: [
-              Text(
-                provider.errorMessage!,
-                style: const TextStyle(color: AppStyle.red, fontSize: 16),
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: provider.retryLoading,
-                child: Text(S.of(context).retry,
-                    style: const TextStyle(color: AppStyle.white)),
-              ),
-              const SizedBox(height: 16),
             ],
           ),
-        
-        if (!provider.isLoading && provider.cities.isEmpty && provider.errorMessage == null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32),
-            child: Text('No hay ciudades disponibles',
-                style: const TextStyle(color: AppStyle.primary, fontSize: 16)),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar ciudad...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            ),
+            onChanged: provider.searchCities,
           ),
+        ),
+        const SizedBox(height: 24),
         
-        if (provider.cities.isNotEmpty)
-          ListView.separated(
-            itemCount: provider.cities.length,
-            itemBuilder: (context, index) {
-              final city = provider.cities[index];
-              return CityCard(city: city);
-            },
-            physics: const NeverScrollableScrollPhysics(),
-            primary: false,
-            shrinkWrap: true,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-          ),
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
+    );
+  }
+
+  Widget _buildContent(CityProvider provider) {
+    if (provider.isLoading && provider.cities.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.cities.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/nodata.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay ciudades registradas'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.cities.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final city = provider.cities[index];
+        return CityCard(
+          city: city,
+          onEdit: () => showEditCityDialog(context, city, widget.countryId),
+          onDelete: () => showDeleteCityDialog(context, city),
+        );
+      },
     );
   }
 }
 
+// Diálogos refactorizados
 void showAddCityDialog(BuildContext context, int countryId) {
-  final cityNameController = TextEditingController();
+  final controller = TextEditingController();
   final provider = Provider.of<CityProvider>(context, listen: false);
 
-  Utils.textFieldAlert(
+  showDialog(
     context: context,
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomField(
-          controller: cityNameController,
-          hintText: S.of(context).city,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.location_city, color: AppStyle.primary),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor ingrese el nombre de la ciudad';
-            }
-            return null;
-          },
+    builder: (context) => AlertDialog(
+      title: const Text('Agregar Ciudad'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre de la ciudad',
+          border: OutlineInputBorder(),
         ),
-        const SizedBox(height: 10),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.addCity(controller.text, countryId);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Agregar'),
+        ),
       ],
     ),
-    negativeText: S.of(context).cancel,
-    positiveOnPressed: () async {
-      if (cityNameController.text.isNotEmpty) {
-        await provider.addCity(cityNameController.text, countryId);
-        Navigator.of(context, rootNavigator: true).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('El nombre de la ciudad es requerido')),
-        );
-      }
-    },
-    positiveText: S.of(context).add,
-    title: S.of(context).addCity,
+  );
+}
+
+void showEditCityDialog(BuildContext context, StCityResponse city, int countryId) {
+  final controller = TextEditingController(text: city.cityName);
+  final provider = Provider.of<CityProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Editar Ciudad'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre de la ciudad',
+          border: OutlineInputBorder(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.updateCity(city.idCity ?? 0, controller.text, countryId);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Guardar'),
+        ),
+      ],
+    ),
+  );
+}
+
+void showDeleteCityDialog(BuildContext context, StCityResponse city) {
+  final provider = Provider.of<CityProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Eliminar Ciudad'),
+      content: Text('¿Eliminar ${city.cityName}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            Navigator.pop(context);
+            await provider.deleteCity(city.idCity ?? 0);
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
   );
 }
