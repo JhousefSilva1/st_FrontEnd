@@ -1,223 +1,315 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
+import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/person_type_provider.dart';
+import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
-import '../../../generated/l10n.dart';
-import '../../../providers/providers.dart';
-import '../../../style/app_style.dart';
-import '../../../utils/utils.dart';
-
-class PersonTypeAdminView extends StatelessWidget{
+class PersonTypeAdminView extends StatelessWidget {
   static const String routerName = 'personTypeAdmin';
   static const String routerPath = '/personTypeAdmin';
-
+  
   const PersonTypeAdminView({super.key});
 
   @override
-  Widget build(BuildContext context){
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              onPressed: () => showAddPersonTypeDialog(context),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).personType,
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).personType,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
-          backgroundColor: AppStyle.white,
-          drawer: isMobile ? const SmartTollsDrawer() : null,
-          body: isMobile
-            ? const SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      PersonTypeAdminMobileView(),
-                    ],
+        ),
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => showAddPersonTypeDialog(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<PersonTypeProvider>(context, listen: false).loadPersonTypes();
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
+              ),
+              child: const PersonTypeAdminList(),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/person_type_pattern.png', fit: BoxFit.contain),
                   ),
                 ),
-              )
-            : const PersonTypeAdminTabletView(),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
-class PersonTypeAdminMobileView extends StatelessWidget{
-  const PersonTypeAdminMobileView({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        PersonTypeAdminList(),
-      ],
-    );
-  }
-}
-
-class PersonTypeAdminTabletView extends StatelessWidget{
-  const PersonTypeAdminTabletView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        SmartTollsDrawer(),
-        Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  PersonTypeAdminList(),
-                ],
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
-class PersonTypeAdminList extends StatefulWidget{
+class PersonTypeAdminList extends StatefulWidget {
   const PersonTypeAdminList({super.key});
 
   @override
   State<PersonTypeAdminList> createState() => _PersonTypeAdminListState();
 }
-  class _PersonTypeAdminListState extends State<PersonTypeAdminList> {
 
-    @override
-    void initState(){
-      super.initState();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Provider.of<PersonTypeProvider>(context, listen: false).loadPersonTypes();
-      });
-    }
-
-    @override
-    Widget build(BuildContext context){
-      final provider = context.watch<PersonTypeProvider>();
-
-      return Column(
-        children: [
-          CustomField(
-            hintText: S.of(context).search,
-            prefixIcon: const Icon(Icons.search, color: AppStyle.primary),
-            onChanged: (value){
-              provider.searchPersonTypes(value);
-            },
-          ),
-          const SizedBox(height: 16),
-//    Estado de carga
-          if(provider.isLoading && provider.personTypes.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 32),
-              child: CircularProgressIndicator(),
-            ),
-            // mensaje de error
-            if(provider.errorMessage != null)
-              Column(
-                children: [
-                  Text(
-                    provider.errorMessage!,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: AppStyle.red,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: provider.retryLoading,
-                      child: Text(S.of(context).retry,
-                        style: const TextStyle(color: AppStyle.white)),
-                    ),
-                    const SizedBox(height: 16),
-                ],
-              ),
-              if(!provider.isLoading && provider.personTypes.isEmpty && provider.errorMessage == null)
-                 Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 32),
-                  child: Text('No hay tipos de personas disponibles',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: AppStyle.red,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-
-                // lista de tipos de personas
-                if(provider.personTypes.isNotEmpty)
-                  ListView.separated(
-                    itemCount: provider.personTypes.length,
-                    itemBuilder: (context, index){
-                      final personType = provider.personTypes[index];
-                      return PersonTypeCard(personType: personType);
-                    },
-                    physics: const NeverScrollableScrollPhysics(),
-                    primary: false,
-                    shrinkWrap: true,
-                    separatorBuilder: (context, index) => const SizedBox(height: 16),
-                  ),
-          ],
-      );
-    }
+class _PersonTypeAdminListState extends State<PersonTypeAdminList> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PersonTypeProvider>(context, listen: false).loadPersonTypes();
+    });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<PersonTypeProvider>();
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Administración de Tipos de Persona',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los tipos de persona disponibles',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar tipo de persona...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            ),
+            onChanged: provider.searchPersonTypes,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
+      ],
+    );
+  }
 
+  Widget _buildContent(PersonTypeProvider provider) {
+    if (provider.isLoading && provider.personTypes.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.personTypes.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/no_data.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay tipos de persona registrados'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.personTypes.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final personType = provider.personTypes[index];
+        return PersonTypeCard(
+          personType: personType,
+          onEdit: () => showEditPersonTypeDialog(context, personType),
+          onDelete: () => showDeletePersonTypeDialog(context, personType),
+        );
+      },
+    );
+  }
+}
+
+// Diálogos refactorizados
 void showAddPersonTypeDialog(BuildContext context) {
-  final personTypeController = TextEditingController();
+  final controller = TextEditingController();
   final provider = Provider.of<PersonTypeProvider>(context, listen: false);
 
-    Utils.textFieldAlert(
+  showDialog(
     context: context,
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomField(
-          controller: personTypeController,
-          hintText: S.of(context).vehicleType,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.car_rental),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor ingrese tipo de vehiculo';
-            }
-            return null;
-          },
+    builder: (context) => AlertDialog(
+      title: const Text('Agregar Tipo de Persona'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del tipo de persona',
+          border: OutlineInputBorder(),
         ),
-        
-        const SizedBox(height: 10),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.addPersonType(controller.text);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Agregar'),
+        ),
       ],
     ),
-    negativeText: S.of(context).cancel, 
-    positiveOnPressed: () async {
-      if (personTypeController.text.isNotEmpty) {
-        await provider.addPersonType(
-          personTypeController.text,
-      
-
-        );
-        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Nombre y país son campos requeridos')),
-        );
-      }
-    },
-    positiveText: S.of(context).add,
-    title: S.of(context).addPersonType
   );
-  
+}
 
+void showEditPersonTypeDialog(BuildContext context, StPersonTypeResponse personType) {
+  final controller = TextEditingController(text: personType.personType);
+  final provider = Provider.of<PersonTypeProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Editar Tipo de Persona'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del tipo de persona',
+          border: OutlineInputBorder(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.updatePersonType(personType.idPersonType ?? 0, controller.text);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Guardar'),
+        ),
+      ],
+    ),
+  );
+}
+
+void showDeletePersonTypeDialog(BuildContext context, StPersonTypeResponse personType) {
+  final provider = Provider.of<PersonTypeProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Eliminar Tipo de Persona'),
+      content: Text('¿Eliminar ${personType.personType}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            Navigator.pop(context);
+            await provider.deletePersonType(personType.idPersonType ?? 0);
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
 }

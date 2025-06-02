@@ -1500,7 +1500,75 @@ Future<StResponse<StRoadTypeResponse>> deleteRoadType(int roadTypeId) async {
       return StResponse.createEmpty();
     }
   }
+// updatePersonType
+  Future<StResponse<StPersonTypeResponse>> updatePersonType(int personTypeId, StPersonTypeRequest personTypeRequest) async {
+    try {
+      final response = await httpPut('$_baseUrl/personsType/$personTypeId', getHeaders(), jsonEncode(personTypeRequest.toJson()));
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          return StResponse<StPersonTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try {
+          final errorJson = json.decode(response.body);
+          return StResponse<StPersonTypeResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al actualizar el tipo de persona',
+            error: errorJson['error'] ?? '',
+          );
+        } catch (e) {
+          return StResponse<StPersonTypeResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final personTypeData = StPersonTypeResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StPersonTypeResponse>(
+        data: personTypeData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    } catch (e) {
+      return StResponse<StPersonTypeResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la actualización del tipo de persona',
+        error: e.toString(),
+      );
+    }
+  }
 
+  // deletePersonType
+  Future<StResponse<StPersonTypeResponse>> deletePersonType(int personTypeId) async {
+    try {
+      final response = await httpDelete('$_baseUrl/personsType/$personTypeId', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          return StResponse<StPersonTypeResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try {
+          final errorJson = json.decode(response.body);
+          return StResponse<StPersonTypeResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al eliminar el tipo de persona',
+            error: errorJson['error'] ?? '',
+          );
+        } catch (e) {
+          return StResponse<StPersonTypeResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final personTypeData = StPersonTypeResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StPersonTypeResponse>(
+        data: personTypeData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    } catch (e) {
+      return StResponse<StPersonTypeResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la eliminación del tipo de persona',
+        error: e.toString(),
+      );
+    }
+  }
 
 // GET ALL PERSONS
   // Future<StResponse<StPersonResponse>>getAllPersons() async{
