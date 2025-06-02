@@ -357,7 +357,7 @@ class _SignUpFormState extends State<SignUpForm> {
               return DropdownButtonFormField<String>(
                 value: _selectedGenderId,
                 hint: Text(S.of(context).gender),
-                items: genderProvider.gender.map((gender) {
+                items: genderProvider.genders.map((gender) {
                   return DropdownMenuItem<String>(
                     value: gender.idGender.toString(),
                     child: Text(gender.genderName ?? 'N/A'),

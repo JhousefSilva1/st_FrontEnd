@@ -1379,6 +1379,76 @@ Future<StResponse<StRoadTypeResponse>> deleteRoadType(int roadTypeId) async {
       return StResponse.createEmpty();
     }
   }
+  // edit gender
+  Future<StResponse<StGenderResponse>> updateGender(int genderId, StGenderRequest genderRequest) async {
+    try {
+      final response = await httpPut('$_baseUrl/gender/$genderId', getHeaders(), jsonEncode(genderRequest.toJson()));
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          return StResponse<StGenderResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try {
+          final errorJson = json.decode(response.body);
+          return StResponse<StGenderResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al actualizar el género',
+            error: errorJson['error'] ?? '',
+          );
+        } catch (e) {
+          return StResponse<StGenderResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final genderData = StGenderResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StGenderResponse>(
+        data: genderData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    } catch (e) {
+      return StResponse<StGenderResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la actualización del género',
+        error: e.toString(),
+      );
+    }
+  }
+
+  // deleteGender
+  Future<StResponse<StGenderResponse>> deleteGender(int genderId) async {
+    try {
+      final response = await httpDelete('$_baseUrl/gender/$genderId', getHeaders());
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          return StResponse<StGenderResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try {
+          final errorJson = json.decode(response.body);
+          return StResponse<StGenderResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al eliminar el género',
+            error: errorJson['error'] ?? '',
+          );
+        } catch (e) {
+          return StResponse<StGenderResponse>.createEmpty();
+        }
+      }
+      final responseJson = json.decode(response.body);
+      final genderData = StGenderResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StGenderResponse>(
+        data: genderData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    } catch (e) {
+      return StResponse<StGenderResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la eliminación del género',
+        error: e.toString(),
+      );
+    }
+  }
+
 // create PersonType
   Future<StResponse<StPersonTypeResponse>> createPersonType(StPersonTypeRequest personTypeRequest) async{
     try{

@@ -1,110 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
-class GenderCard extends StatelessWidget{
+class GenderCard extends StatelessWidget {
   final StGenderResponse gender;
+  final Function() onEdit;
+  final Function() onDelete;
 
   const GenderCard({
     super.key,
     required this.gender,
+    required this.onEdit,
+    required this.onDelete,
   });
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppStyle.white, width: 1),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: AppStyle.white,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            spreadRadius: 1,
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        leading: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: AppStyle.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            Icons.person,
+            color: AppStyle.primary,
+            size: 28,
+          ),
+        ),
+        title: Text(
+          gender.genderName ?? 'N/A',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: (){
-
-                },
-                child: Row(
-                  children: [
-                    const SizedBox(width: 8),
-                    const Icon(Icons.person, color: AppStyle.primary, size: 50),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex:2,
-                                child:Text(
-                                  S.of(context).gender,
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w700
-                                  )
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                flex:2,
-                                child:Text(
-                                  gender.genderName ?? 'N/A',
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w700
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                        
-                      ),
-                    )
-                  ],
-                ),
-              )
+            IconButton(
+              icon: const Icon(Icons.edit, color: AppStyle.yellow),
+              onPressed: onEdit,
             ),
-            Expanded(
-              flex:2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: (){
-                      // editar
-                    },
-                    child: const Icon(Icons.edit, color: AppStyle.primary),
-                  ),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: (){
-                      // eliminar
-                    },
-                    child: const Icon(Icons.delete, color: AppStyle.primary),
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            )
+            IconButton(
+              icon: const Icon(Icons.delete, color: AppStyle.red),
+              onPressed: onDelete,
+            ),
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }

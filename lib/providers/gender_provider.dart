@@ -1,87 +1,136 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
 
-class GenderProvider extends ChangeNotifier{
+class GenderProvider extends ChangeNotifier {
   List<StGenderResponse> _allGenders = [];
-  List<StGenderResponse> _gender = [];
+  List<StGenderResponse> _genders = [];
+  
   bool _isLoading = false;
-  String? _errorMessage = '';
-  String? _selectedGender = '';
-  String? _newGenderName;
-  // int? _currentGenderId; // Añade esta variable para trackear el género actual
-  List<StGenderResponse> get gender => _gender;
+  bool _isAdding = false;
+  bool _isUpdating = false;
+  bool _isDeleting = false;
+  String? _errorMessage;
+
+  // Getters
+  List<StGenderResponse> get genders => _genders;
   bool get isLoading => _isLoading;
+  bool get isAdding => _isAdding;
+  bool get isUpdating => _isUpdating;
+  bool get isDeleting => _isDeleting;
   String? get errorMessage => _errorMessage;
-  String? get selectedGender => _selectedGender;
-  String? get newGenderName => _newGenderName;
-  // int? get currentGenderId => _currentGenderId; // Getter para el género actual
-  // Método para buscar géneros
-  void searchGenders(String query){
-    if(query.isEmpty){
-      _gender = List.from(_allGenders);
-    }else{
-      _gender = _allGenders.where((gender) =>
+
+  // Búsqueda de géneros
+  void searchGenders(String query) {
+    if (query.isEmpty) {
+      _genders = List.from(_allGenders);
+    } else {
+      _genders = _allGenders.where((gender) => 
         gender.genderName?.toLowerCase().contains(query.toLowerCase()) ?? false
       ).toList();
     }
     notifyListeners();
   }
 
-  // cargar géneros desde la API
-  Future<void> loadGenders() async{
+  // Cargar géneros desde la API
+  Future<void> loadGenders() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
-    try{
+
+    try {
       final response = await SmartTollsApi().getAllGenders();
-        
-        if(response.isSuccess() && response.dataList != null){
-          _allGenders = response.dataList!;
-          _gender = List.from(_allGenders);
-        }else{
-          _errorMessage = response.message ?? 'Error al cargar los géneros';
-        }
-    }catch(e){
+      if (response.isSuccess() && response.dataList != null) {
+        _allGenders = response.dataList!;
+        _genders = List.from(_allGenders);
+      } else {
+        _errorMessage = response.message ?? 'Error al cargar los géneros';
+      }
+    } catch (e) {
       _errorMessage = 'Error de conexión: ${e.toString()}';
-    }finally{
+    } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
-  // agregar nuevo géneroq
-  Future<void> addGenders(String genderName) async{
-    _isLoading = true;
+
+  // Agregar nuevo género
+  Future<void> addGender(String genderName) async {
+    _isAdding = true;
     _errorMessage = null;
     notifyListeners();
-    try{
-      // crear el objeto request con todos los datos
-      final request = StGenderRequest(
-        genderName: genderName,
-      );
-      // llamar a la API
+
+    try {
+      final request = StGenderRequest(genderName: genderName);
       final response = await SmartTollsApi().createGender(request);
-        
-        if(response.isSuccess()){
-          await loadGenders(); // Recargar la lista de géneros
-        }else{
-          _errorMessage = response.message ?? 'Error al agregar el género';
-        }
-    }catch(e){
-      _errorMessage = 'Error de conexión: ${e.toString()}';
-    }finally{
-      _isLoading = false;
+      
+      if (response.isSuccess()) {
+        await loadGenders();
+      } else {
+        _errorMessage = response.message ?? 'Error al agregar género';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al agregar: ${e.toString()}';
+    } finally {
+      _isAdding = false;
       notifyListeners();
     }
   }
-  // Método para recargar los dattos
-  void retryLoading(){
+
+  // Actualizar género
+  Future<void> updateGender(int idGender, String genderName) async {
+    _isUpdating = true;
     _errorMessage = null;
-     loadGenders();
+    notifyListeners();
+
+    try {
+      final request = StGenderRequest(genderName: genderName);
+      final response = await SmartTollsApi().updateGender(idGender, request);
+      
+      if (response.isSuccess()) {
+        await loadGenders();
+      } else {
+        _errorMessage = response.message ?? 'Error al actualizar género';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al actualizar: ${e.toString()}';
+    } finally {
+      _isUpdating = false;
+      notifyListeners();
+    }
   }
-  // metodo para limpiar
-  void clearGenders(){
+
+  // Eliminar género
+  Future<void> deleteGender(int idGender) async {
+    _isDeleting = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await SmartTollsApi().deleteGender(idGender);
+      
+      if (response.isSuccess()) {
+        await loadGenders();
+      } else {
+        _errorMessage = response.message ?? 'Error al eliminar género';
+      }
+    } catch (e) {
+      _errorMessage = 'Error al eliminar: ${e.toString()}';
+    } finally {
+      _isDeleting = false;
+      notifyListeners();
+    }
+  }
+
+  // Reintentar carga
+  void retryLoading() {
+    _errorMessage = null;
+    loadGenders();
+  }
+
+  // Limpiar datos
+  void clearGenders() {
     _allGenders = [];
-    _gender = [];
+    _genders = [];
     notifyListeners();
   }
 }
