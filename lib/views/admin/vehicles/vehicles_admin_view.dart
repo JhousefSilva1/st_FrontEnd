@@ -1,174 +1,204 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import '../../../widgets/widgets.dart';
 
-class VehiclesAdminView extends StatelessWidget{
+class VehiclesAdminView extends StatelessWidget {
   static const String routerName = 'adminVehicles';
   static const String routerPath = '/adminVehicles';
 
   const VehiclesAdminView({super.key});
 
   @override
-  Widget build(BuildContext context){
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-        return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          centerTitle: true,
-          text: S.of(context).vehicle,
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).vehicle,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: AppStyle.white,
-        drawer: isMobile ? const SmartTollsDrawer() : null,
-        body: isMobile
-            ? const SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      VehicleAdminMobileView(),
-                    ],
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+   
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<VehiclesProvider>(context, listen: false).loadAllVehicles();
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
+              ),
+              child: const VehiclesAdminList(),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/vehicles_pattern.png', fit: BoxFit.contain),
                   ),
                 ),
-              )
-            : const VehicleAdminTabletView(),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
-class VehicleAdminMobileView extends StatelessWidget{
-  const VehicleAdminMobileView({super.key});
+
+class VehiclesAdminList extends StatefulWidget {
+  const VehiclesAdminList({super.key});
+
   @override
-  Widget build(BuildContext context){
-    return const Column(
-      children: [
-        VehicleAdminList(),
-      ],
-    );
-  }
+  State<VehiclesAdminList> createState() => _VehiclesAdminListState();
 }
 
-class VehicleAdminTabletView extends StatelessWidget{
-  const VehicleAdminTabletView({super.key});
-
+class _VehiclesAdminListState extends State<VehiclesAdminList> {
   @override
-  Widget build(BuildContext context){
-    return const  Row(
-      children: [
-         SmartTollsDrawer(),
-        Expanded(
-          flex:2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  VehicleAdminList(),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-
-class VehicleAdminList extends StatefulWidget{
-  const VehicleAdminList({super.key});
-
-  @override
-  State<VehicleAdminList> createState() => _VehicleAdminListState();
-}
-class _VehicleAdminListState extends State<VehicleAdminList>{
-  @override
-  void initState(){
+  void initState() {
     super.initState();
-    _loadVehicles();
-  }
-
-  void _loadVehicles(){
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      final provider = Provider.of<VehiclesProvider>(context, listen:false);
-provider.loadAllVehicles().then((_){
-  final errorMsg = provider.errorMessage;
-  if (errorMsg != null && errorMsg.isNotEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(errorMsg)),
-    );
-  }
-});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<VehiclesProvider>(context, listen: false).loadAllVehicles();
     });
   }
-    @override
-  Widget build(BuildContext context){
-    final provider = Provider.of<VehiclesProvider>(context);
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<VehiclesProvider>();
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomField(
-          hintText: S.of(context).search,
-          onChanged: (value) {
-            provider.searchVehicles(value);
-          },
-        ),
-        const SizedBox(height: 16),
-        if(provider.isLoading && provider.vehicles.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(
-              color: AppStyle.primary,
-              strokeWidth: 2,
-            ),
+        Text(
+          'Administración de Vehículos',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
           ),
-          if(provider.errorMessage != null)
-            Column(
-              children: [
-                Text(
-                  provider.errorMessage!,
-                  style: const TextStyle(color: AppStyle.red),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: provider.retryLoading,
-                  child: Text(S.of(context).retry,
-                  style: const TextStyle(
-                    color: AppStyle.white,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),    
-                ),
-                const SizedBox(height: 16),
-              ],
-            ),
-            if(!provider.isLoading && provider.vehicles.isEmpty && provider.errorMessage == null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: Text('No hay vehicles registrados',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                    color: AppStyle.primary.withOpacity(0.5),
-                  ),
-                ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los vehículos registrados en el sistema',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              if(provider.vehicles.isNotEmpty)
-                ListView.separated(
-                  itemCount: provider.vehicles.length,
-                  itemBuilder: (context, index) {
-                    final vehicles = provider.vehicles[index];
-                    return VehiclesCard(vehicle: vehicles);
-                  },
-                  physics: const NeverScrollableScrollPhysics(),
-                  primary: false,
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) => const SizedBox(height: 16),
-                )
+            ],
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar vehículo...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            ),
+            onChanged: provider.searchVehicles,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
     );
   }
+
+  Widget _buildContent(VehiclesProvider provider) {
+    if (provider.isLoading && provider.vehicles.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.vehicles.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/nodata.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay vehículos registrados'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.vehicles.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final vehicle = provider.vehicles[index];
+        return VehiclesCard(
+          vehicle: vehicle,
+        );
+      },
+    );
+  }
 }
+
+// Diálogos para vehículos

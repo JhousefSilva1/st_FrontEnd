@@ -3,7 +3,6 @@ import 'package:smarttolls/api/response/admin/st_vehicles_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
-
 class VehiclesCard extends StatelessWidget {
   final StVehicleResponse vehicle;
   final VoidCallback? onEdit;
@@ -17,136 +16,114 @@ class VehiclesCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context){
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical:8),
-      shape: RoundedRectangleBorder(
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Sección superior con avatar y nombre
-          _buildTopSection(context),
-
-          // Divisor
+          // Header section with avatar and basic info
+          _buildHeaderSection(context),
+          
+          // Divider
           const Divider(height: 1, thickness: 1),
-
-          // Información con iconos
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: _buildInfoSection(context),
-          ),
-
-          // Sección de ubicación
-          _buildLocationSection(),
+          
+          // Detailed information section
+          _buildInfoSection(context),
         ],
-      
-        
-      )
+      ),
     );
   }
-  Widget _buildTopSection(BuildContext context){
+
+  Widget _buildHeaderSection(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child:  Row(
+      padding: const EdgeInsets.all(16),
+      child: Row(
         children: [
+          // Avatar/Icon
           Container(
-            width: 48,
-            height: 48,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppStyle.primary.withOpacity(0.1), //avatar color
-              border: Border.all(color: AppStyle.primary, width: 1.5),
+              color: AppStyle.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.car_repair,
               color: AppStyle.primary,
-              size: 24
+              size: 28,
             ),
           ),
-
-          const SizedBox(width: 12),
-
-          // marca y modelo
+          
+          const SizedBox(width: 16),
+          
+          // Title and subtitle
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  ' ${vehicle.vehiclesModels.modelName}'.trim(),
+                  '${vehicle.vehiclesModels.modelName}'.trim(),
                   style: const TextStyle(
-                    fontSize:16.0,
-                    fontWeight: FontWeight.w700
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color:AppStyle.primary.withOpacity(0.1), //brand
-                    borderRadius: BorderRadius.circular(12),
+                Text(
+                  vehicle.vehiclesType.vehiclesTypesName ?? 'N/A',
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 14,
                   ),
-                  child: Text(
-                    vehicle.vehiclesType.vehiclesTypesName ?? 'N/A',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppStyle.primary,
-                    ),
-                  ),
-                )
+                ),
               ],
             ),
           ),
-          // botones de acción
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.edit, color: AppStyle.primary),
-                onPressed: onEdit,
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete, color: AppStyle.red),
-                onPressed: onDelete,
-              ),
-            ],
-          ),
+          
+          // Action buttons
 
         ],
       ),
     );
   }
 
-  Widget _buildInfoSection(BuildContext context){
-    return Column(
-      children: [
-        _buildInfoItem(Icons.car_crash, S.of(context).licensePlate, vehicle.licensePlate ?? 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.confirmation_number, S.of(context).chassisNumber, vehicle.chassisNumber ?? 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.numbers, S.of(context).engineNumber, vehicle.engineNumber ?? 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.calendar_today, S.of(context).manufacturingYear, vehicle.manufacturingYear ?? 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.monitor_weight, S.of(context).weight, vehicle.weight != null ? '${vehicle.weight} kg' : 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.local_gas_station, S.of(context).fuelType, vehicle.fuelTypes.fuelTypeName ?? 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.color_lens, S.of(context).color, vehicle.vehiclesColors.colorName ?? 'N/A'),
-        const SizedBox(height: 8),
-        _buildInfoItem(Icons.card_membership_sharp, S.of(context).city, vehicle.city.cityName ?? 'N/A'),
-        const SizedBox(height: 8),
-
-      ],
+  Widget _buildInfoSection(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Column(
+        children: [
+          _buildInfoRow(Icons.car_crash, S.of(context).licensePlate, vehicle.licensePlate ?? 'N/A'),
+          const SizedBox(height: 8),
+          _buildInfoRow(Icons.confirmation_number, S.of(context).chassisNumber, vehicle.chassisNumber ?? 'N/A'),
+          const SizedBox(height: 8),
+          _buildInfoRow(Icons.numbers, S.of(context).engineNumber, vehicle.engineNumber ?? 'N/A'),
+          const SizedBox(height: 8),
+          _buildInfoRow(Icons.calendar_today, S.of(context).manufacturingYear, vehicle.manufacturingYear ?? 'N/A'),
+          const SizedBox(height: 8),
+          _buildInfoRow(Icons.monitor_weight, S.of(context).weight, vehicle.weight != null ? '${vehicle.weight} kg' : 'N/A'),
+          const SizedBox(height: 8),
+          _buildInfoRow(Icons.local_gas_station, S.of(context).fuelType, vehicle.fuelTypes.fuelTypeName ?? 'N/A'),
+          const SizedBox(height: 8),
+          _buildInfoRow(Icons.color_lens, S.of(context).color, vehicle.vehiclesColors.colorName ?? 'N/A'),
+          const SizedBox(height: 8),
+          _buildLocationRow(),
+        ],
+      ),
     );
   }
 
-    Widget _buildInfoItem(IconData icon, String label, String value) {
+  Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -178,31 +155,35 @@ class VehiclesCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLocationSection(){
-          return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppStyle.primary.withOpacity(0.03), // mapa color
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(12),
-          bottomRight: Radius.circular(12),
-        ),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.location_on, size: 18, color: AppStyle.primary),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              '${vehicle.city.cityName?? 'N/A'}, ${vehicle.country.countryName ?? 'N/A'}',
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey[700],
+  Widget _buildLocationRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Icon(Icons.location_on, size: 20, color: AppStyle.primary),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                S.current.location,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                ),
               ),
-            ),
+              const SizedBox(height: 2),
+              Text(
+                '${vehicle.city.cityName ?? 'N/A'}, ${vehicle.country.countryName ?? 'N/A'}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
