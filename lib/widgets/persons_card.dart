@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/generated/l10n.dart';
-import 'package:smarttolls/style/app_style.dart';
 
+import '../generated/l10n.dart';
+import '../style/app_style.dart';
 class PersonsCard extends StatelessWidget {
   final StPersonResponse person;
   final VoidCallback? onEdit;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/person_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
@@ -86,6 +87,8 @@ class PersonAdminList extends StatefulWidget {
 }
 
 class _PersonAdminListState extends State<PersonAdminList> {
+  String selectedType = '';
+
   @override
   void initState() {
     super.initState();
@@ -97,6 +100,13 @@ class _PersonAdminListState extends State<PersonAdminList> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<PersonProvider>();
+
+    final filteredPersons = selectedType.isEmpty
+        ? provider.persons
+        : provider.persons.where((p) =>
+            (p.personType.personType ?? '')
+                .toLowerCase()
+                .contains(selectedType.toLowerCase())).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +129,14 @@ class _PersonAdminListState extends State<PersonAdminList> {
         ),
         const SizedBox(height: 24),
 
-        // Campo de búsqueda
+        // Filtro por tipo de persona
+        PersonTypeFilter(
+          selected: selectedType,
+          onChanged: (value) => setState(() => selectedType = value),
+        ),
+        const SizedBox(height: 24),
+
+        // Búsqueda
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -145,14 +162,14 @@ class _PersonAdminListState extends State<PersonAdminList> {
         const SizedBox(height: 24),
 
         Expanded(
-          child: _buildContent(provider),
+          child: _buildContent(filteredPersons, provider),
         ),
       ],
     );
   }
 
-  Widget _buildContent(PersonProvider provider) {
-    if (provider.isLoading && provider.persons.isEmpty) {
+  Widget _buildContent(List<StPersonResponse> persons, PersonProvider provider) {
+    if (provider.isLoading && persons.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -172,7 +189,7 @@ class _PersonAdminListState extends State<PersonAdminList> {
       );
     }
 
-    if (!provider.isLoading && provider.persons.isEmpty) {
+    if (!provider.isLoading && persons.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -186,17 +203,17 @@ class _PersonAdminListState extends State<PersonAdminList> {
     }
 
     return ListView.separated(
-      itemCount: provider.persons.length,
+      itemCount: persons.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        final person = provider.persons[index];
+        final person = persons[index];
         return PersonsCard(
           person: person,
           onEdit: () {
-            // Implementa showEditPersonDialog(context, person);
+            // showEditPersonDialog(context, person);
           },
           onDelete: () {
-            // Implementa showDeletePersonDialog(context, person);
+            // showDeletePersonDialog(context, person);
           },
         );
       },
