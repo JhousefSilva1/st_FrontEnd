@@ -1,215 +1,315 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/country_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/utils/utils.dart';
-import 'package:smarttolls/widgets/country_card.dart';
-import 'package:smarttolls/widgets/custom_app_bar.dart';
-import 'package:smarttolls/widgets/custom_field.dart';
-import 'package:smarttolls/widgets/menu/desktop/drawer.dart';
+import 'package:smarttolls/widgets/widgets.dart';
 
-class CountryAdminView extends StatelessWidget{
+class CountryAdminView extends StatelessWidget {
   static const String routerName = 'countryAdmin';
   static const String routerPath = '/countryAdmin';
-
+  
   const CountryAdminView({super.key});
 
   @override
-  Widget build(BuildContext context){
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              onPressed: () => showAddCountryDialog(context),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text:  S.of(context).country,
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).country,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: AppStyle.white,
-        drawer: isMobile ? const SmartTollsDrawer() : null,
-        body: isMobile
-            ? const SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    CountryAdminMobileView(),
-                  ],
-                  ),
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => showAddCountryDialog(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<CountryProvider>(context, listen: false).loadCountries();
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
               ),
-            )
-            :const CountryAdminTabletView(),
+              child: const CountryAdminList(),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/country_pattern.png', fit: BoxFit.contain),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
-class CountryAdminMobileView extends StatelessWidget{
-  const CountryAdminMobileView({super.key});
-  @override
-  Widget build(BuildContext context){
-    return const Column(
-      children: [
-        CountryAdminList(),
-      ],
-    );
-  }
-}
-class CountryAdminTabletView extends StatelessWidget{
-  const CountryAdminTabletView({super.key});
-  @override
-  Widget build(BuildContext context){
-    return const Row(
-      children: [
-        SmartTollsDrawer(),
-        Expanded(
-          flex:2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  CountryAdminList(),
-                ],
-              ),
-            ),
-          )
-        )
-      ],
-    );
-  }
-}
-class CountryAdminList extends StatefulWidget{
+
+class CountryAdminList extends StatefulWidget {
   const CountryAdminList({super.key});
 
   @override
   State<CountryAdminList> createState() => _CountryAdminListState();
 }
 
-class _CountryAdminListState extends State<CountryAdminList>{
+class _CountryAdminListState extends State<CountryAdminList> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Aquí puedes llamar a tu función de carga de datos
       Provider.of<CountryProvider>(context, listen: false).loadCountries();
     });
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final provider = context.watch<CountryProvider>();
-
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // barra de búsqueda
-        CustomField(
-          hintText: S.of(context).search,
-          prefixIcon: const Icon(Icons.search, color: AppStyle.primary),
-          onChanged: (value) {
-            // implementar la lógica de búsqueda
-            provider.searchCountries(value);
-          },
+        Text(
+          'Administración de Países',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
+          ),
         ),
-        const SizedBox(height: 16),
-        // Estado de carga
-        if(provider.isLoading && provider.countries.isEmpty)
-        const Padding(
-          padding: EdgeInsets.all(16),
-          child: CircularProgressIndicator(),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los países disponibles',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
         ),
-        // Mensaje de error
-        if(provider.errorMessage != null)
-          Column(
-            children: [
-              Text(
-                provider.errorMessage!,
-                style: const TextStyle(color: AppStyle.red, fontSize: 16),
+        const SizedBox(height: 24),
+        
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: provider.retryLoading,
-                child: Text(S.of(context).retry,
-                        style: const TextStyle(color: AppStyle.white)),
-              ),
-              const SizedBox(height: 16),
             ],
           ),
-          // Lista vacia
-          if(!provider.isLoading && provider.countries.isEmpty && provider.errorMessage == null)
-            const Padding(
-              padding:  EdgeInsets.symmetric(vertical: 32),
-              child: Text('No hay paises disponibles',
-                style:  TextStyle(
-                  color: AppStyle.primary,
-                  fontSize: 16)
-                  ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar país...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             ),
-
-            // Lista de paises
-            if(provider.countries.isNotEmpty)
-              ListView.separated(
-                itemCount: provider.countries.length,
-                itemBuilder: (context, index){
-                  final country = provider.countries[index];
-                  return CountryCard(country: country);
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                primary: false,
-                shrinkWrap: true,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
-              ),
+            onChanged: provider.searchCountries,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
+    );
+  }
+
+  Widget _buildContent(CountryProvider provider) {
+    if (provider.isLoading && provider.countries.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.countries.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/nodata.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay países registrados'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.countries.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final country = provider.countries[index];
+        return CountryCard(
+          country: country,
+          onEdit: () => showEditCountryDialog(context, country),
+          onDelete: () => showDeleteCountryDialog(context, country),
+        );
+      },
     );
   }
 }
 
-void showAddCountryDialog(BuildContext context){
-  final countryNameController = TextEditingController();
+// Diálogos refactorizados
+void showAddCountryDialog(BuildContext context) {
+  final controller = TextEditingController();
   final provider = Provider.of<CountryProvider>(context, listen: false);
 
-    Utils.textFieldAlert(
+  showDialog(
     context: context,
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomField(
-          controller: countryNameController,
-          hintText: S.of(context).country,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.public, color: AppStyle.primary),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor ingrese el nombre de la marca';
-            }
-            return null;
-          },
+    builder: (context) => AlertDialog(
+      title: const Text('Agregar País'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del país',
+          border: OutlineInputBorder(),
         ),
-        const SizedBox(height: 10),
-
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.addCountry(controller.text);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Agregar'),
+        ),
       ],
     ),
-    negativeText: S.of(context).cancel, 
-    positiveOnPressed: () async {
-      if (countryNameController.text.isNotEmpty) {
-        await provider.addCountries(
-          countryNameController.text,
-        );
-        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Nombre y país son campos requeridos')),
-        );
-      }
-    },
-    positiveText: S.of(context).add,
-    title: S.of(context).addCountry,
   );
+}
 
+void showEditCountryDialog(BuildContext context, StCountryResponse country) {
+  final controller = TextEditingController(text: country.countryName);
+  final provider = Provider.of<CountryProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Editar País'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del país',
+          border: OutlineInputBorder(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.updateCountry(country.idCountry ?? 0, controller.text);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Guardar'),
+        ),
+      ],
+    ),
+  );
+}
+
+void showDeleteCountryDialog(BuildContext context, StCountryResponse country) {
+  final provider = Provider.of<CountryProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Eliminar País'),
+      content: Text('¿Eliminar ${country.countryName}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            Navigator.pop(context);
+            await provider.deleteCountry(country.idCountry ?? 0);
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
 }

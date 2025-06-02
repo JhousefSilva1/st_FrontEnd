@@ -1029,6 +1029,80 @@ Future<StResponse<StWalletResponse>> updateWalletBalance(
       return StResponse.createEmpty();
     }
   } 
+  
+  // updateCountry
+  Future<StResponse<StCountryResponse>> updateCountry(int countryId, StCountryRequest countryRequest) async {
+    try {
+      final response = await httpPut('$_baseUrl/country/update/$countryId', getHeaders(), jsonEncode(countryRequest.toJson()));
+
+      if (response.statusCode >= HttpStatus.badRequest) {
+        if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+          return StResponse<StCountryResponse>(status: HttpStatus.networkConnectTimeoutError);
+        }
+        try {
+          final errorJson = json.decode(response.body);
+          return StResponse<StCountryResponse>(
+            status: response.statusCode,
+            message: errorJson['message'] ?? 'Error al actualizar el país',
+            error: errorJson['error'] ?? '',
+          );
+        } catch (e) {
+          return StResponse<StCountryResponse>.createEmpty();
+        }
+      }
+
+      final responseJson = json.decode(response.body);
+      final countryData = StCountryResponse.createEmpty().fromMap(responseJson['data']);
+      return StResponse<StCountryResponse>(
+        data: countryData,
+        status: response.statusCode,
+        message: responseJson['message'],
+      );
+    } catch (e) {
+      return StResponse<StCountryResponse>(
+        status: HttpStatus.internalServerError,
+        message: 'Error durante la actualización del país',
+        error: e.toString(),
+      );
+    }
+  }
+
+  // deleteCountry
+Future<StResponse<StCountryResponse>> deleteCountry(int countryId) async {
+  try {
+    final response = await httpDelete('$_baseUrl/country/delete/$countryId', getHeaders());
+    
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StCountryResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StCountryResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al eliminar el país',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StCountryResponse>.createEmpty();
+      }
+    }
+    
+    final responseJson = json.decode(response.body);
+    final countryData = StCountryResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StCountryResponse>(
+      data: countryData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StCountryResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la eliminación del país',
+      error: e.toString(),
+    );
+  }
+}
 
 
 // create city
