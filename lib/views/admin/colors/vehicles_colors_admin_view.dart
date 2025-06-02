@@ -182,7 +182,7 @@ class _VehiclesColorsAdminListState extends State<VehiclesColorsAdminList> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/no_data.png', width: 150),
+            Image.asset('assets/nodata.png', width: 150),
             const SizedBox(height: 16),
             const Text('No hay colores de vehículos registrados'),
           ],
