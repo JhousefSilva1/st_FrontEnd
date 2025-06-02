@@ -75,6 +75,8 @@ class S {
   String get city => Intl.message('city', name: 'city');
   String get circulationSquare => Intl.message('Circulation Square', name: 'circulationSquare');
   String get color => Intl.message('color', name: 'color');
+  String get colorNameRequired => Intl.message('colorNameRequired', name: 'colorNameRequired');
+  String get colorManagement => Intl.message('Color Management', name: 'colorManagement');
   String get comingSoon => Intl.message('comingSoon', name: 'comingSoon');
   String get confirmDeleteBrand => Intl.message('Are you sure you want to delete this brand?', name: 'confirmDeleteBrand');
   String get confirmDeleteColor => Intl.message('Are you sure you want to delete this color?', name: 'confirmDeleteColor');
@@ -132,6 +134,7 @@ class S {
   String get login => Intl.message('Login', name: 'login');
   String get loginToYourAccount => Intl.message('Login to your account', name: 'loginToYourAccount');
   String get logout => Intl.message('Logout', name: 'logout');
+  String get manageAvailableColors => Intl.message('Manage Available Colors', name: 'manageAvailableColors');
   String get managePersons => Intl.message('People Management', name: 'People Management');
   String get manufacturingYear => Intl.message('manufacturingYear', name: 'manufacturingYear');
   String get model => Intl.message('Model', name: 'model');
@@ -143,6 +146,7 @@ class S {
   String get noUserData => Intl.message('noUserData', name: 'noUserData');
   String get noVehicleSelected => Intl.message('noVehicleSelected', name: 'noVehicleSelected');
   String get noVehiclesFound => Intl.message('noVehiclesFound', name: 'noVehiclesFound');
+  String get noColorsAvailable => Intl.message('noColorsAvailable', name: 'noColorsAvailable');
   String get notification => Intl.message('Notification', name: 'notification');
   String get origin => Intl.message('Origin', name: 'origin');
   String get password => Intl.message('Password', name: 'password');
@@ -190,6 +194,7 @@ class S {
   String get roadType => Intl.message('road type', name: 'roadType');
   String get scanQrToPay => Intl.message('scanQrToPay', name: 'scanQrToPay');
   String get search => Intl.message('Search', name: 'search');
+  String get searchColors => Intl.message('Search Colors', name: 'searchColors');
   String get seeAll => Intl.message('See All', name: 'seeAll');
   String get selectToll => Intl.message('selectToll', name: 'selectToll');
   String get selectUserType => Intl.message('Select User Type', name: 'selectUserType');

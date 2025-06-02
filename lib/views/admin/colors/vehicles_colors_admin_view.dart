@@ -1,95 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/vehicles_colors_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
-class VehiclesColorsAdminView extends StatelessWidget{
+class VehiclesColorsAdminView extends StatelessWidget {
   static const String routerName = 'vehiclesColorsAdmin';
   static const String routerPath = '/vehiclesColorsAdmin';
+  
   const VehiclesColorsAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final VehiclesColorsProvider vehiclesColorsProvider = Provider.of<VehiclesColorsProvider>(context);
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions:[
-            IconButton(
-              onPressed: () => showAddColorDialog(context),
-              icon: const Icon(Icons.add_rounded, color: Colors.blue, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).color
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).color,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: Colors.white,
-        drawer: isMobile ? const SmartTollsDrawer() : null,
-        body: isMobile
-            ? const SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      VehiclesColorsAdminMobileView(),
-                    ],
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => showAddColorDialog(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<VehiclesColorsProvider>(context, listen: false).loadVehiclesColors();
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
+              ),
+              child: const VehiclesColorsAdminList(),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/colors_pattern.png', fit: BoxFit.contain),
                   ),
                 ),
-              )
-            : const VehiclesColorsAdminTabletView(),
-      ),
-        );
-  }
-}
-
-class VehiclesColorsAdminMobileView extends StatelessWidget{
-  const VehiclesColorsAdminMobileView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        VehiclesColorsAdminList(),
-      ],
-    );
-  }
-}
-
-class VehiclesColorsAdminTabletView extends StatelessWidget{
-  const VehiclesColorsAdminTabletView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children:[
-        SmartTollsDrawer(),
-        Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  VehiclesColorsAdminList(),
-                ],
               ),
-            )
-          )
-
-          ),
-        
-      ],
+            ),
+        ],
+      ),
     );
   }
 }
 
-class VehiclesColorsAdminList extends StatefulWidget{
+class VehiclesColorsAdminList extends StatefulWidget {
   const VehiclesColorsAdminList({super.key});
 
   @override
@@ -97,186 +90,238 @@ class VehiclesColorsAdminList extends StatefulWidget{
 }
 
 class _VehiclesColorsAdminListState extends State<VehiclesColorsAdminList> {
-  
   @override
-  void initState(){
+  void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<VehiclesColorsProvider>(context, listen: false).loadVehiclesColors();
-    });    
+    });
   }
 
   @override
-  Widget build (BuildContext context){
+  Widget build(BuildContext context) {
     final provider = context.watch<VehiclesColorsProvider>();
-
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomField(
-          hintText: S.of(context).search,
-          prefixIcon: const Icon(Icons.search_off_rounded),
-          onChanged: (value) {
-            provider.searchColors(value);
-          },
+        Text(
+          'Administración de Colores de Vehículos',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
+          ),
         ),
-        const SizedBox(height: 16),
-
-        // estadod de carga
-        if (provider.errorMessage != null)
-          Column(
-            children: [
-              Text(
-                 provider.errorMessage!,
-                 style: const TextStyle(
-                  color: AppStyle.red,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold
-                ),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los colores de vehículos disponibles',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed:() =>provider.retryLoading(),
-                child: Text(S.of(context).retry),
-              ),
-              const SizedBox(height: 16),
             ],
           ),
-          if(!provider.isLoading && provider.colors.isEmpty && provider.errorMessage == null)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 32),
-              child: Text(
-                'No hay colores de vehiculos disponibles',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppStyle.primary,
-                ),
-              ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar color...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             ),
-
-            //Lista de colores de vehiculos
-            if(provider.colors.isNotEmpty)
-              ListView.separated(
-                itemCount: provider.colors.length,
-                itemBuilder: (context, index) {
-                  final vehiclesColors = provider.colors[index];
-                  return VehiclesColorsCard(
-                    vehiclesColorsName: vehiclesColors
-                    
-                  );
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                primary: false,
-                shrinkWrap: true,
-                separatorBuilder: (context, index) => const SizedBox(height: 16),
-              ) 
+            onChanged: provider.searchColors,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
+    );
+  }
+
+  Widget _buildContent(VehiclesColorsProvider provider) {
+    if (provider.isLoading && provider.colors.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.colors.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/no_data.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay colores de vehículos registrados'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.colors.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final color = provider.colors[index];
+        return VehiclesColorsCard(
+          color: color,
+          onEdit: () => showEditColorDialog(context, color),
+          onDelete: () => showDeleteColorDialog(context, color),
+        );
+      },
     );
   }
 }
 
-void showAddColorDialog(BuildContext context){
+// Diálogos refactorizados
+void showAddColorDialog(BuildContext context) {
   final colorNameController = TextEditingController();
   final colorDescriptionController = TextEditingController();
   final provider = Provider.of<VehiclesColorsProvider>(context, listen: false);
 
- Utils.textFieldAlert(
+  showDialog(
     context: context,
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomField(
-          controller: colorNameController,
-          hintText: S.of(context).color,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.color_lens),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor ingrese el color';
+    builder: (context) => AlertDialog(
+      title: const Text('Agregar Color de Vehículo'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: colorNameController,
+            decoration: const InputDecoration(
+              labelText: 'Nombre del color',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: colorDescriptionController,
+            decoration: const InputDecoration(
+              labelText: 'Descripción',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (colorNameController.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
             }
-            return null;
+            
+            await provider.addColor(
+              colorNameController.text,
+              colorDescriptionController.text,
+            );
+            
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
           },
+          child: const Text('Agregar'),
         ),
-        const SizedBox(height: 10),
-        CustomField(
-          controller: colorDescriptionController,
-          hintText: S.of(context).description,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.info),
-        ),
-        const SizedBox(height: 10),
       ],
     ),
-    negativeText: S.of(context).cancel, 
-    positiveOnPressed: () async {
-      if (colorNameController.text.isNotEmpty && colorDescriptionController.text.isNotEmpty) {
-        await provider.addColor(
-          colorNameController.text,
-          colorDescriptionController.text,
-
-        );
-        Navigator.of(context, rootNavigator: true).pop(); // Cierra solo el diálogo
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Nombre y país son campos requeridos')),
-        );
-      }
-    },
-    positiveText: S.of(context).add,
-    title: S.of(context).addColor,
   );
 }
 
-// editar
 void showEditColorDialog(BuildContext context, StVehiclesColorsResponse color) {
   final colorNameController = TextEditingController(text: color.colorName);
   final colorDescriptionController = TextEditingController(text: color.colorDescription);
   final provider = Provider.of<VehiclesColorsProvider>(context, listen: false);
 
-  Utils.textFieldAlert(
+  showDialog(
     context: context,
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomField(
-          controller: colorNameController,
-          hintText: S.of(context).color,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.color_lens),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor ingrese el color';
+    builder: (context) => AlertDialog(
+      title: const Text('Editar Color de Vehículo'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: colorNameController,
+            decoration: const InputDecoration(
+              labelText: 'Nombre del color',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: colorDescriptionController,
+            decoration: const InputDecoration(
+              labelText: 'Descripción',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (colorNameController.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
             }
-            return null;
+            
+            await provider.updateColor(
+              color.idColor ?? 0,
+              colorNameController.text,
+              colorDescriptionController.text,
+            );
+            
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
           },
+          child: const Text('Guardar'),
         ),
-        const SizedBox(height: 10),
-        CustomField(
-          controller: colorDescriptionController,
-          hintText: S.of(context).description,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.info),
-        ),
-        const SizedBox(height: 10),
       ],
     ),
-    negativeText: S.of(context).cancel, 
-    positiveOnPressed: () async {
-      if (colorNameController.text.isNotEmpty) {
-        await provider.updateColor(
-          color.idColor ?? 0, // Asumiendo que el modelo tiene un id
-          colorNameController.text,
-          colorDescriptionController.text,
-        );
-        Navigator.of(context, rootNavigator: true).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('El nombre del color es requerido')),
-        );
-      }
-    },
-    positiveText: S.of(context).update,
-    title: S.of(context).editColors,
   );
 }
 
@@ -285,38 +330,23 @@ void showDeleteColorDialog(BuildContext context, StVehiclesColorsResponse color)
 
   showDialog(
     context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(S.of(context).deleteColor),
-        content: Text('${S.of(context).confirmDeleteColor} ${color.colorName}?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(S.of(context).cancel),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              final scaffoldMessenger = ScaffoldMessenger.of(context);
-              
-              try {
-                await provider.deleteColor(color.idColor);
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(content: Text('${color.colorName} ${S.of(context).deletedSuccessfully}')),
-                );
-              } catch (e) {
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(content: Text('Error al eliminar: ${e.toString()}')),
-                );
-              }
-            },
-            child: Text(
-              S.of(context).delete,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ),
-        ],
-      );
-    },
+    builder: (context) => AlertDialog(
+      title: const Text('Eliminar Color de Vehículo'),
+      content: Text('¿Eliminar ${color.colorName}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            Navigator.pop(context);
+            await provider.deleteColor(color.idColor ?? 0);
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
   );
 }
