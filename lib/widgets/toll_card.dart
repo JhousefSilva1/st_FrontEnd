@@ -1,146 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:smarttolls/api/api.dart';
-import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
 class TollCard extends StatelessWidget {
   final StTollsResponse toll;
+  final Function() onEdit;
+  final Function() onDelete;
 
   const TollCard({
     super.key,
     required this.toll,
+    required this.onEdit,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppStyle.white, width: 1),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: AppStyle.white,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            spreadRadius: 1,
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        leading: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: AppStyle.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            Icons.route,
+            color: AppStyle.primary,
+            size: 28,
+          ),
+        ),
+        title: Text(
+          toll.tollsName ?? 'N/A',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Row(
-                children: [
-                  const SizedBox(width: 8),
-                  const Icon(Icons.route, color: AppStyle.primary, size: 50),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(S.of(context).tollName,
-                                  style: const TextStyle(
-                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              flex: 2,
-                              child: Text(toll.tollsName ?? 'N/A',
-                                  style: const TextStyle(
-                                      fontSize: 16.0, fontWeight: FontWeight.w700)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(S.of(context).place,
-                                  style: const TextStyle(
-                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              flex: 2,
-                              child: Text(toll.places.placeName ?? 'N/A',
-                                  style: const TextStyle(
-                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(S.of(context).city,
-                                  style: const TextStyle(
-                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              flex: 2,
-                              child: Text(toll.places.city.cityName ?? 'N/A',
-                                  style: const TextStyle(
-                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(S.of(context).country,
-                                  style: const TextStyle(
-                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              flex: 2,
-                              child: Text(toll.places.city.country?.countryName ?? 'N/A',
-                                  style: const TextStyle(
-                                      fontSize: 14.0, fontWeight: FontWeight.w500)),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            if (toll.places.placeName != null)
+              Text(
+                'Lugar: ${toll.places.placeName!}',
+                style: TextStyle(color: Colors.grey.shade600),
               ),
+            if (toll.places.city.cityName != null)
+              Text(
+                'Ciudad: ${toll.places.city.cityName!}',
+                style: TextStyle(color: Colors.grey.shade600),
+              ),
+          ],
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit, color: AppStyle.yellow),
+              onPressed: onEdit,
             ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                      onTap: () {
-                        // editar
-                      },
-                      child: const Icon(Icons.edit, color: AppStyle.primary)
-                  ),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                      onTap: () {
-                        // eliminar
-                      },
-                      child: const Icon(Icons.delete, color: AppStyle.red)
-                  ),
-                ],
-              )
-            )
+            IconButton(
+              icon: const Icon(Icons.delete, color: AppStyle.red),
+              onPressed: onDelete,
+            ),
           ],
         ),
       ),

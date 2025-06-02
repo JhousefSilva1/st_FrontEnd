@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
 import '../../../providers/providers.dart';
@@ -11,65 +10,75 @@ import '../../../providers/providers.dart';
 class TollAdminView extends StatelessWidget {
   static const String routerName = 'tollAdmin';
   static const String routerPath = '/tollAdmin';
-
+  
   const TollAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+    final isMobile = MediaQuery.of(context).size.width < 600;
     
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              onPressed: () => showAddTollDialog(context),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).tolls,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).tolls,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: AppStyle.white,
-        body: isMobile
-            ? SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      TollAdminList(),
-                    ],
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => showAddTollDialog(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<TollProvider>(context, listen: false).loadAllTolls();
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
+              ),
+              child: const TollAdminList(),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/tolls_pattern.jpg', fit: BoxFit.contain),
                   ),
                 ),
-              )
-            : TollAdminTabletView(),
-      ),
-    );
-  }
-}
-
-class TollAdminTabletView extends StatelessWidget {
-  const TollAdminTabletView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        const SmartTollsDrawer(),
-        Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  TollAdminList(),
-                ],
               ),
             ),
-          )
-        )
-      ],
+        ],
+      ),
     );
   }
 }
@@ -85,89 +94,119 @@ class _TollAdminListState extends State<TollAdminList> {
   @override
   void initState() {
     super.initState();
-    _loadTolls();
-  }
-
-  void _loadTolls() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<TollProvider>(context, listen: false);
-      provider.loadAllTolls();
+      Provider.of<TollProvider>(context, listen: false).loadAllTolls();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TollProvider>(context);
-
+    final provider = context.watch<TollProvider>();
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomField(
-          hintText: S.of(context).search,
-          prefixIcon: const Icon(Icons.search, color: AppStyle.primary),
-          onChanged: (value) {
-            provider.searchTolls(value);
-          },
-        ),
-        const SizedBox(height: 16),
-
-        if(provider.isLoading && provider.tolls.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(color: AppStyle.primary, strokeWidth: 2.5),
+        Text(
+          'Administración de Peajes',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
           ),
-
-        if(provider.errorMessage != null)
-          Column(
-            children: [
-              Text(
-                provider.errorMessage!,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: AppStyle.red,
-                ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los peajes disponibles en el sistema',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: provider.retryLoading,
-                child: Text(S.of(context).retry,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: AppStyle.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
             ],
           ),
-
-        if(!provider.isLoading && provider.tolls.isEmpty && provider.errorMessage == null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32),
-            child: Text('No Hay Peajes',
-              style: const TextStyle(
-                fontSize: 16,
-                color: AppStyle.primary,
-              ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar peaje...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             ),
+            onChanged: provider.searchTolls,
           ),
+        ),
+        const SizedBox(height: 24),
         
-        if(provider.tolls.isNotEmpty)
-          ListView.separated(
-            itemCount: provider.tolls.length,
-            itemBuilder: (context, index) {
-              final toll = provider.tolls[index];
-              return TollCard(toll: toll);
-            },
-            physics: const NeverScrollableScrollPhysics(),
-            primary: false,
-            shrinkWrap: true,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-          )
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
+    );
+  }
+
+  Widget _buildContent(TollProvider provider) {
+    if (provider.isLoading && provider.tolls.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.tolls.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/nodata.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay peajes registrados'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.tolls.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final toll = provider.tolls[index];
+        return TollCard(
+          toll: toll,
+          onEdit: () => showEditTollDialog(context, toll),
+          onDelete: () => showDeleteTollDialog(context, toll),
+        );
+      },
     );
   }
 }
 
+// Diálogos
 void showAddTollDialog(BuildContext context) {
   final tollNameController = TextEditingController();
   final provider = Provider.of<TollProvider>(context, listen: false);
@@ -175,167 +214,237 @@ void showAddTollDialog(BuildContext context) {
   final cityProvider = Provider.of<CityProvider>(context, listen: false);
   final placeProvider = Provider.of<PlaceProvider>(context, listen: false);
 
-  // Variables para almacenar las selecciones
   String? selectedCountryId;
   String? selectedCityId;
   String? selectedPlaceId;
 
-  // Variables para los nombres mostrados
-  String? selectedCountryName;
-  String? selectedCityName;
-  String? selectedPlaceName;
-
-  Utils.textFieldAlert(
+  showDialog(
     context: context,
-    content: SingleChildScrollView(
-      child: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomField(
-                controller: tollNameController,
-                hintText: S.of(context).tollName,
-                keyboardType: TextInputType.text,
-                prefixIcon: const Icon(Icons.route, color: AppStyle.primary),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese el nombre del peaje';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              
-              // Dropdown de Países
-              Consumer<CountryProvider>(
-                builder: (context, countryProvider, _) {
-                  return DropdownButtonFormField<String>(
-                    value: selectedCountryId,
-                    hint: Text(S.of(context).country),
-                    items: countryProvider.countries.map((country) {
-                      return DropdownMenuItem<String>(
-                        value: country.idCountry.toString(),
-                        child: Text(country.countryName ?? 'N/A'),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedCountryId = value;
-                        selectedCountryName = countryProvider.countries
-                            .firstWhere((c) => c.idCountry.toString() == value)
-                            .countryName;
-                        
-                        // Resetear selecciones dependientes
-                        selectedCityId = null;
-                        selectedCityName = null;
-                        selectedPlaceId = null;
-                        selectedPlaceName = null;
-                        
-                        if (value != null) {
-                          cityProvider.loadCitiesByCountry(int.parse(value));
-                        }
-                      });
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.flag, color: AppStyle.primary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+    builder: (context) => StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return AlertDialog(
+          title: const Text('Agregar Peaje'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: tollNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Nombre del peaje',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Dropdown de Países
+                DropdownButtonFormField<String>(
+                  value: selectedCountryId,
+                  hint: const Text('País'),
+                  items: countryProvider.countries.map((country) {
+                    return DropdownMenuItem<String>(
+                      value: country.idCountry.toString(),
+                      child: Text(country.countryName ?? 'N/A'),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCountryId = value;
+                      selectedCityId = null;
+                      selectedPlaceId = null;
+                      if (value != null) {
+                        cityProvider.loadCitiesByCountry(int.parse(value));
+                      }
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Dropdown de Ciudades
+                DropdownButtonFormField<String>(
+                  value: selectedCityId,
+                  hint: const Text('Ciudad'),
+                  items: cityProvider.cities.map((city) {
+                    return DropdownMenuItem<String>(
+                      value: city.idCity.toString(),
+                      child: Text(city.cityName ?? 'N/A'),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCityId = value;
+                      selectedPlaceId = null;
+                      if (value != null) {
+                        placeProvider.loadPlacesByCity(int.parse(value));
+                      }
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Dropdown de Lugares
+                DropdownButtonFormField<String>(
+                  value: selectedPlaceId,
+                  hint: const Text('Lugar'),
+                  items: placeProvider.places.map((place) {
+                    return DropdownMenuItem<String>(
+                      value: place.idPlaces.toString(),
+                      child: Text(place.placeName ?? 'N/A'),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPlaceId = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (tollNameController.text.isEmpty || selectedPlaceId == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Todos los campos son requeridos')),
                   );
-                },
-              ),
-              const SizedBox(height: 16),
-              
-              // Dropdown de Ciudades
-              Consumer<CityProvider>(
-                builder: (context, cityProvider, _) {
-                  return DropdownButtonFormField<String>(
-                    value: selectedCityId,
-                    hint: Text(S.of(context).city),
-                    items: cityProvider.cities.map((city) {
-                      return DropdownMenuItem<String>(
-                        value: city.idCity.toString(),
-                        child: Text(city.cityName ?? 'N/A'),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedCityId = value;
-                        selectedCityName = cityProvider.cities
-                            .firstWhere((c) => c.idCity.toString() == value)
-                            .cityName;
-                        
-                        // Resetear selección de lugares
-                        selectedPlaceId = null;
-                        selectedPlaceName = null;
-                        
-                        if (value != null) {
-                          placeProvider.loadPlacesByCity(int.parse(value));
-                        }
-                      });
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.location_city, color: AppStyle.primary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              
-              // Dropdown de Lugares
-              Consumer<PlaceProvider>(
-                builder: (context, placeProvider, _) {
-                  return DropdownButtonFormField<String>(
-                    value: selectedPlaceId,
-                    hint: Text(S.of(context).place),
-                    items: placeProvider.places.map((place) {
-                      return DropdownMenuItem<String>(
-                        value: place.idPlaces.toString(),
-                        child: Text(place.placeName ?? 'N/A'),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedPlaceId = value;
-                        selectedPlaceName = placeProvider.places
-                            .firstWhere((p) => p.idPlaces.toString() == value)
-                            .placeName;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.place, color: AppStyle.primary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      ),
+                  return;
+                }
+                
+                await provider.addToll(
+                  tollNameController.text, 
+                  int.parse(selectedPlaceId!)
+                );
+                
+                if (provider.errorMessage == null) {
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Agregar'),
+            ),
+          ],
+        );
+      },
     ),
-    negativeText: S.of(context).cancel,
-    positiveOnPressed: () async {
-      if (tollNameController.text.isNotEmpty && selectedPlaceId != null) {
-        await provider.addToll(
-          tollNameController.text, 
-          int.parse(selectedPlaceId!)
+  );
+}
+
+void showEditTollDialog(BuildContext context, StTollsResponse toll) {
+  final tollNameController = TextEditingController(text: toll.tollsName);
+  final provider = Provider.of<TollProvider>(context, listen: false);
+  final placeProvider = Provider.of<PlaceProvider>(context, listen: false);
+
+  String? selectedPlaceId = toll.places.idPlaces?.toString();
+
+  showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return AlertDialog(
+          title: const Text('Editar Peaje'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: tollNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Nombre del peaje',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Dropdown de Lugares
+                DropdownButtonFormField<String>(
+                  value: selectedPlaceId,
+                  hint: const Text('Lugar'),
+                  items: placeProvider.places.map((place) {
+                    return DropdownMenuItem<String>(
+                      value: place.idPlaces.toString(),
+                      child: Text(place.placeName ?? 'N/A'),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPlaceId = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (tollNameController.text.isEmpty || selectedPlaceId == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Todos los campos son requeridos')),
+                  );
+                  return;
+                }
+                
+                await provider.updateToll(
+                  toll.idTolls ?? 0,
+                  tollNameController.text,
+                  int.parse(selectedPlaceId!)
+                );
+                
+                if (provider.errorMessage == null) {
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Guardar'),
+            ),
+          ],
         );
-        Navigator.of(context, rootNavigator: true).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Todos los campos son requeridos')),
-        );
-      }
-    },
-    positiveText: S.of(context).add,
-    title: S.of(context).addToll,
+      },
+    ),
+  );
+}
+
+void showDeleteTollDialog(BuildContext context, StTollsResponse toll) {
+  final provider = Provider.of<TollProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Eliminar Peaje'),
+      content: Text('¿Eliminar ${toll.tollsName}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            Navigator.pop(context);
+            await provider.deleteToll(toll.idTolls ?? 0);
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
   );
 }

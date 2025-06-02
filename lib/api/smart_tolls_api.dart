@@ -1277,6 +1277,74 @@ Future<StResponse<StTollsResponse>> getAllTolls() async {
   }
 }
 
+// updateToll
+Future<StResponse<StTollsResponse>> updateToll(int tollId, StTollsRequest tollsRequest) async {
+  try {
+    final response = await httpPut('$_baseUrl/toll/update/$tollId', getHeaders(), jsonEncode(tollsRequest.toJson()));
+
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StTollsResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StTollsResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al actualizar el peaje',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StTollsResponse>.createEmpty();
+      }
+    }
+
+    final responseJson = json.decode(response.body);
+    final tollData = StTollsResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StTollsResponse>(
+      data: tollData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StTollsResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la actualización del peaje',
+      error: e.toString(),
+    );
+  }
+}
+// deleteToll
+Future<StResponse<StTollsResponse>> deleteToll(int tollId) async {
+  try {
+    final response = await httpDelete('$_baseUrl/toll/delete/$tollId', getHeaders());
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StTollsResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StTollsResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al eliminar el peaje',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StTollsResponse>.createEmpty();
+      }
+    }
+    return StResponse<StTollsResponse>(
+      status: response.statusCode,
+      message: 'Peaje eliminado correctamente',
+    );
+  } catch (e) {
+    return StResponse<StTollsResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la eliminación del peaje',
+      error: e.toString(),
+    );
+  }
+}
+
 
 // Create place
 Future<StResponse<StPlaceResponse>> createPlace(StPlacesRequest placeRequest) async {
@@ -1327,6 +1395,73 @@ Future<StResponse<StPlaceResponse>> getPlacesByCity(int idCity) async {
     return responseData;
   } catch (e) {
     return StResponse.createEmpty();
+  }
+}
+// updatePlace
+Future<StResponse<StPlaceResponse>> updatePlace(int placeId, StPlacesRequest placeRequest) async {
+  try {
+    final response = await httpPut('$_baseUrl/places/update/$placeId', getHeaders(), jsonEncode(placeRequest.toJson()));
+
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StPlaceResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StPlaceResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al actualizar el lugar',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StPlaceResponse>.createEmpty();
+      }
+    }
+
+    final responseJson = json.decode(response.body);
+    final placeData = StPlaceResponse.createEmpty().fromMap(responseJson['data']);
+    return StResponse<StPlaceResponse>(
+      data: placeData,
+      status: response.statusCode,
+      message: responseJson['message'],
+    );
+  } catch (e) {
+    return StResponse<StPlaceResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la actualización del lugar',
+      error: e.toString(),
+    );
+  }
+}
+// deletePlace
+Future<StResponse<StPlaceResponse>> deletePlace(int placeId) async {
+  try {
+    final response = await httpDelete('$_baseUrl/places/delete/$placeId', getHeaders());
+    if (response.statusCode >= HttpStatus.badRequest) {
+      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+        return StResponse<StPlaceResponse>(status: HttpStatus.networkConnectTimeoutError);
+      }
+      try {
+        final errorJson = json.decode(response.body);
+        return StResponse<StPlaceResponse>(
+          status: response.statusCode,
+          message: errorJson['message'] ?? 'Error al eliminar el lugar',
+          error: errorJson['error'] ?? '',
+        );
+      } catch (e) {
+        return StResponse<StPlaceResponse>.createEmpty();
+      }
+    }
+    return StResponse<StPlaceResponse>(
+      status: response.statusCode,
+      message: 'Lugar eliminado correctamente',
+    );
+  } catch (e) {
+    return StResponse<StPlaceResponse>(
+      status: HttpStatus.internalServerError,
+      message: 'Error durante la eliminación del lugar',
+      error: e.toString(),
+    );
   }
 }
 

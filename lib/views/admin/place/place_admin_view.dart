@@ -1,86 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/generated/l10n.dart';
+import 'package:smarttolls/providers/place_provider.dart';
 import 'package:smarttolls/style/app_style.dart';
-import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
-import '../../../providers/providers.dart';
-
-class PlaceAdminView extends StatelessWidget{
-
+class PlaceAdminView extends StatelessWidget {
   static const String routerName = 'placeAdmin';
   static const String routerPath = '/placeAdmin/:cityId';
-
+  
   final int cityId;
 
   const PlaceAdminView({super.key, required this.cityId});
 
   @override
   Widget build(BuildContext context) {
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+    final isMobile = MediaQuery.of(context).size.width < 600;
     
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions:[
-            IconButton(
-              onPressed: () => showAddPlaceDialog(context, cityId),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
-          ],
-          centerTitle: true,
-          text: S.of(context).place,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).place,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: AppStyle.white,
-        body: isMobile
-            ? SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      PlaceAdminList(cityId: cityId), // Pasa el cityId aquí
-                    ],
+        centerTitle: true,
+        backgroundColor: AppStyle.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => showAddPlaceDialog(context, cityId),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<PlaceProvider>(context, listen: false).loadPlacesByCity(cityId);
+            },
+          ),
+        ],
+      ),
+      drawer: isMobile ? const SmartTollsDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile) const SmartTollsDrawer(),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.grey.shade50],
+                ),
+              ),
+              child: PlaceAdminList(cityId: cityId),
+            ),
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppStyle.primary.withOpacity(0.05),
+                  border: Border(left: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset('assets/place_pattern.png', fit: BoxFit.contain),
                   ),
                 ),
-              )
-            : PlaceAdminTabletView(cityId: cityId), // Y aquí
+              ),
+            ),
+        ],
       ),
     );
   }
 }
 
-class PlaceAdminTabletView extends StatelessWidget {
-  final int cityId;
-
-  const PlaceAdminTabletView({super.key, required this.cityId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SmartTollsDrawer(),
-        Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  PlaceAdminList(cityId: cityId), // Pasa el cityId aquí
-                ],
-              ),
-            ),
-          )
-          
-          )
-      ],
-    );
-  }
-}
-
-class PlaceAdminList extends StatefulWidget{
+class PlaceAdminList extends StatefulWidget {
   final int cityId;
 
   const PlaceAdminList({super.key, required this.cityId});
@@ -97,135 +101,232 @@ class _PlaceAdminListState extends State<PlaceAdminList> {
   }
 
   @override
-    void didUpdateWidget(PlaceAdminList oldWidget) {
+  void didUpdateWidget(PlaceAdminList oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.cityId != widget.cityId) {
       _loadPlaces();
     }
   }
 
-    void _loadPlaces() {
+  void _loadPlaces() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<PlaceProvider>(context, listen: false);
-      provider.loadPlacesByCity(widget.cityId);
+      Provider.of<PlaceProvider>(context, listen: false)
+          .loadPlacesByCity(widget.cityId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<PlaceProvider>(context);
-
+    final provider = context.watch<PlaceProvider>();
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomField(
-          hintText: S.of(context).search,
-          prefixIcon: const Icon(Icons.search, color: AppStyle.primary),
-          onChanged: (value) {
-            provider.searchPlaces(value);
-          },
-        ),
-        const SizedBox(height: 16),
-
-        if(provider.isLoading && provider.places.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(
-              color: AppStyle.primary,
-               strokeWidth: 2.5
-               ),
+        Text(
+          'Administración de Lugares',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.primary,
           ),
-
-          if(provider.errorMessage != null)
-          Column(
-            children: [
-              Text(
-                provider.errorMessage!,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: AppStyle.red,
-                ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Gestiona los lugares disponibles',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Barra de búsqueda
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: provider.retryLoading,
-                child: Text(S.of(context).retry,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: AppStyle.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
             ],
           ),
-
-          if(!provider.isLoading && provider.places.isEmpty && provider.errorMessage == null)
-            const Padding(
-              padding:  EdgeInsets.symmetric(vertical: 32),
-              child: Text('No Hay Lugares',
-                style:  TextStyle(
-                  fontSize: 16,
-                  color: AppStyle.primary,
-                ),
-              ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar lugar...',
+              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             ),
-          
-          if(provider.places.isNotEmpty)
-            ListView.separated(
-              itemCount: provider.places.length,
-              itemBuilder: (context, index) {
-                final place = provider.places[index];
-                return PlaceCard(place: place);
-              },
-              physics: const NeverScrollableScrollPhysics(),
-              primary: false,
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-            )
+            onChanged: provider.searchPlaces,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Contenido principal
+        Expanded(
+          child: _buildContent(provider),
+        ),
       ],
     );
-  } 
+  }
 
+  Widget _buildContent(PlaceProvider provider) {
+    if (provider.isLoading && provider.places.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
+    if (provider.errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(provider.errorMessage!),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: provider.retryLoading,
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!provider.isLoading && provider.places.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/nodata.png', width: 150),
+            const SizedBox(height: 16),
+            const Text('No hay lugares registrados'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: provider.places.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final place = provider.places[index];
+        return PlaceCard(
+          place: place,
+          onEdit: () => showEditPlaceDialog(context, place, widget.cityId),
+          onDelete: () => showDeletePlaceDialog(context, place),
+        );
+      },
+    );
+  }
 }
 
+// Diálogos refactorizados
 void showAddPlaceDialog(BuildContext context, int cityId) {
-  final placeNameController = TextEditingController();
+  final controller = TextEditingController();
   final provider = Provider.of<PlaceProvider>(context, listen: false);
 
-    Utils.textFieldAlert(
+  showDialog(
     context: context,
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomField(
-          controller: placeNameController,
-          hintText: S.of(context).place,
-          keyboardType: TextInputType.text,
-          prefixIcon: const Icon(Icons.location_city, color: AppStyle.primary),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor ingrese el nombre de la ciudad';
-            }
-            return null;
-          },
+    builder: (context) => AlertDialog(
+      title: const Text('Agregar Lugar'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del lugar',
+          border: OutlineInputBorder(),
         ),
-        const SizedBox(height: 10),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.addPlace(controller.text, cityId);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Agregar'),
+        ),
       ],
     ),
-    negativeText: S.of(context).cancel,
-    positiveOnPressed: () async {
-      if (placeNameController.text.isNotEmpty) {
-        await provider.addPlace(placeNameController.text, cityId);
-        Navigator.of(context, rootNavigator: true).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('El nombre de la ciudad es requerido')),
-        );
-      }
-    },
-    positiveText: S.of(context).add,
-    title: S.of(context).addPlace,
   );
+}
 
+void showEditPlaceDialog(BuildContext context, StPlaceResponse place, int cityId) {
+  final controller = TextEditingController(text: place.placeName);
+  final provider = Provider.of<PlaceProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Editar Lugar'),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          labelText: 'Nombre del lugar',
+          border: OutlineInputBorder(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (controller.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('El nombre es requerido')),
+              );
+              return;
+            }
+            
+            await provider.updatePlace(place.idPlaces ?? 0, controller.text, cityId);
+            if (provider.errorMessage == null) {
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Guardar'),
+        ),
+      ],
+    ),
+  );
+}
+
+void showDeletePlaceDialog(BuildContext context, StPlaceResponse place) {
+  final provider = Provider.of<PlaceProvider>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Eliminar Lugar'),
+      content: Text('¿Eliminar ${place.placeName}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            Navigator.pop(context);
+            await provider.deletePlace(place.idPlaces ?? 0);
+          },
+          child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
 }
