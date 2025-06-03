@@ -224,6 +224,42 @@ Future<StResponse<StBrandResponse>> deleteBrand(int brandId) async {
           return StResponse.createEmpty();
         }
       }
+
+      // update brand
+      Future<StResponse<StBrandResponse>> updateBrandById(int idBrand, StBrandRequest brandRequest) async {
+        try {
+          final response = await httpPut('$_baseUrl/brands/update/$idBrand', getHeaders(), jsonEncode(brandRequest.toJson()));
+          if (response.statusCode >= HttpStatus.badRequest) {
+            if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
+              return StResponse<StBrandResponse>(status: HttpStatus.networkConnectTimeoutError);
+            }
+            try {
+              final errorJson = json.decode(response.body);
+              return StResponse<StBrandResponse>(
+                status: response.statusCode,
+                message: errorJson['message'] ?? 'Error al actualizar la marca',
+                error: errorJson['error'] ?? '',
+              );
+            } catch (e) {
+              return StResponse<StBrandResponse>.createEmpty();
+            }
+          }
+          final responseJson = json.decode(response.body);
+          final brandData = StBrandResponse.createEmpty().fromMap(responseJson['data']);
+          return StResponse<StBrandResponse>(
+            data: brandData,
+            status: response.statusCode,
+            message: responseJson['message'],
+          );
+        } catch (e) {
+          return StResponse<StBrandResponse>(
+            status: HttpStatus.internalServerError,
+            message: 'Error durante la actualización de la marca',
+            error: e.toString(),
+          );
+        }
+      }
+
 // - MODELS
       // create model by brandId
       Future<StResponse<StVehiclesModelsResponse>> createModelByBrand(StVehiclesModelsRequest modelsRequest) async {

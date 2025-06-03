@@ -554,6 +554,7 @@ void showEditBrandDialog(BuildContext context, StBrandResponse brand) {
           brandDescriptionController.text,
           brandCountryController.text,
         );
+
         Navigator.of(context, rootNavigator: true).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

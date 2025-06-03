@@ -85,12 +85,7 @@ bool get isDeleting => _isDeleting;
   // En BrandProvider class
 
 // Método para actualizar una marca
-Future<void> updateBrand(
-  int brandId, 
-  String brandName, 
-  String brandDescription,
-  String brandCountry
-) async {
+Future<void> updateBrand(int brandId, String brandName, String brandDescription, String brandCountry) async {
   _isLoading = true;
   _errorMessage = null;
   notifyListeners();
