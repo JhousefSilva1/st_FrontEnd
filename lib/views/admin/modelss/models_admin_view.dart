@@ -379,7 +379,7 @@ Widget _buildContent(ModelProvider provider, bool isMobile) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/no_models.png', width: isMobile ? 250 : 350),
+          Image.asset('assets/no_models.jpg', width: isMobile ? 250 : 350),
           const SizedBox(height: 20),
           Text(
             'No hay modelos registrados',
@@ -503,7 +503,7 @@ Widget _buildContent(ModelProvider provider, bool isMobile) {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  'assets/no_data.png', 
+                  'assets/nodata.png', 
                   width: isMobile ? 250 : 350,
                 ),
                 const SizedBox(height: 20),
