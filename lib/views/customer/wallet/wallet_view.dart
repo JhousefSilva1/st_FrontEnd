@@ -27,7 +27,7 @@ class WalletView extends StatelessWidget {
           text: S.of(context).wallet,
         ),
         backgroundColor: AppStyle.ligthGrey,
-        drawer: isMobile ? const SmartTollsMobileDrawer() : null,
+        // drawer: isMobile ? const SmartTollsMobileDrawer() : null,
         body: isMobile 
             ? const SingleChildScrollView(
                 child: Padding(

@@ -60,7 +60,7 @@ class HomeView extends StatelessWidget {
             ],
           ),
         ),
-        drawer: isMobile ? const SmartTollsMobileDrawer() : null,
+        // drawer: isMobile ? const SmartTollsMobileDrawer() : null,
         backgroundColor: AppStyle.ligthGrey,
         body: isMobile
             ? const SingleChildScrollView(

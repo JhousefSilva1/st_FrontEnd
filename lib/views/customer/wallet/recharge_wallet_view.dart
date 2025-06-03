@@ -23,7 +23,7 @@ class RechargeWalletView extends StatelessWidget {
           text: S.of(context).rechargeWallet,
         ),
         backgroundColor: AppStyle.ligthGrey,
-        drawer: isMobile ? const SmartTollsDrawer() : null,
+        // drawer: isMobile ? const SmartTollsDrawer() : null,
         body: isMobile
             ? const SingleChildScrollView(
                 child: Padding(

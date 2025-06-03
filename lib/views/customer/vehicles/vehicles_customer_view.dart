@@ -34,7 +34,7 @@ class VehiclesCustomerView extends StatelessWidget {
           text: S.of(context).myVehicles,
         ),
         backgroundColor: AppStyle.white,
-        drawer: isMobile ? const SmartTollsMobileDrawer() : null,
+        // drawer: isMobile ? const SmartTollsMobileDrawer() : null,
         body: isMobile
             ? const SingleChildScrollView(
                 child: Padding(

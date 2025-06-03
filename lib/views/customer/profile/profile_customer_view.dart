@@ -23,7 +23,7 @@ class ProfileCustomerView extends StatelessWidget {
           centerTitle: true,
           text: S.of(context).profile,
         ),
-        drawer: const SmartTollsMobileDrawer(), // Siempre drawer mobile
+        // drawer: const SmartTollsMobileDrawer(), // Siempre drawer mobile
         body: const SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16),
