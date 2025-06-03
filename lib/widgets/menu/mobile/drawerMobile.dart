@@ -32,9 +32,10 @@ class SmartTollsMobileDrawer extends StatelessWidget{
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                         '${userProvider.role ?? ''} ${userProvider.personId ?? ''}',
+                          '${(userProvider.role ?? '').replaceFirst('ROLE_', '')} ${userProvider.personId ?? ''}',
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
+
                       ],
                     );
                   },
