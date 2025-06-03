@@ -12,7 +12,7 @@ import '../../../providers/Auth/sign_up_provider.dart';
 class SignUpView extends StatelessWidget {
   static const String routerName = 'signUp';
   static const String routerPath = '/signUp';
-
+  
   const SignUpView({super.key});
 
   @override
@@ -25,7 +25,7 @@ class SignUpView extends StatelessWidget {
           text: S.of(context).signUp,
         ),
         backgroundColor: AppStyle.white,
-        drawer: isMobile ? const SmartTollsMobileDrawer() : null,
+        // drawer: isMobile ? const SmartTollsMobileDrawer() : null,
         body: isMobile
             ? const SingleChildScrollView(
                 child: Padding(
@@ -96,6 +96,9 @@ class _SignUpFormState extends State<SignUpForm> {
   String? _selectedPersonTypeId;
   String? _selectedCountryId;
   String? _selectedCityId;
+
+  bool _obscurePassword = true;
+bool _obscureConfirmPassword = true;
 
   @override
   void initState() {
@@ -268,29 +271,72 @@ class _SignUpFormState extends State<SignUpForm> {
           const SizedBox(height: 16),
           
           // Password
-          CustomField(
-            controller: _passwordController,
-            hintText: S.of(context).password,
-            obscureText: true,
-            prefixIcon: const Icon(Icons.lock, color: AppStyle.primary),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return S.of(context).pleaseEnterPassword;
-              }
-              if (value.length < 6) {
-                return S.of(context).passwordTooShort;
-              }
-              return null;
-            },
-          ),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: _obscurePassword,
+              decoration: InputDecoration(
+                hintText: S.of(context).password,
+                prefixIcon: const Icon(Icons.lock, color: AppStyle.primary),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    color: AppStyle.primary,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: AppStyle.primary),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: AppStyle.primary),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return S.of(context).pleaseEnterPassword;
+                }
+                if (value.length < 6) {
+                  return S.of(context).passwordTooShort;
+                }
+                return null;
+              },
+            ),
+
           const SizedBox(height: 16),
           
           // Confirm Password
-          CustomField(
+          TextFormField(
             controller: _confirmPasswordController,
-            hintText: S.of(context).confirmPassword,
-            obscureText: true,
-            prefixIcon: const Icon(Icons.lock_outline, color: AppStyle.primary),
+            obscureText: _obscureConfirmPassword,
+            decoration: InputDecoration(
+              hintText: S.of(context).confirmPassword,
+              prefixIcon: const Icon(Icons.lock_outline, color: AppStyle.primary),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                  color: AppStyle.primary,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureConfirmPassword = !_obscureConfirmPassword;
+                  });
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(color: AppStyle.primary),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(color: AppStyle.primary),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return S.of(context).pleaseConfirmPassword;
@@ -301,6 +347,7 @@ class _SignUpFormState extends State<SignUpForm> {
               return null;
             },
           ),
+
           const SizedBox(height: 16),
           
           // DNI

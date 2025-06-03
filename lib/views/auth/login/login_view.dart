@@ -84,8 +84,15 @@ class LoginTabletView extends StatelessWidget {
   }
 }
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  bool _obscureLoginPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -121,26 +128,41 @@ class LoginForm extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
-          CustomField(
-            hintText: S.of(context).password,
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: S.of(context).password,
+              prefixIcon: const Icon(Icons.lock),
+              
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureLoginPassword ? Icons.visibility_off : Icons.visibility,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureLoginPassword = !_obscureLoginPassword;
+                  });
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(color: AppStyle.primary),
+                
+              ),
+            ),
             keyboardType: TextInputType.visiblePassword,
-            obscureText: true,
+            obscureText: _obscureLoginPassword,
             onChanged: (value) => loginProvider.request.personPassword = value,
-            prefixIcon: const Icon(Icons.lock),
             validator: (value) {
-              if(value.isEmpty) {
+              if (value == null || value.isEmpty) {
                 return 'La contraseña es requerida';
               }
               return null;
             },
-            // suffixIcon: GestureDetector(
-            //   onTap: () => loginProvider.togglePasswordVisibility(),
-            //   child: Icon(
-            //     loginProvider.obscureText? Icons.visibility_off: Icons.visibility,
-            //     color: AppStyle.primary,
-            //   ),
-            // ),
           ),
+
           const SizedBox(height: 16),
           CustomButton(
             onPressed: () => loginProvider.goHome(context), 
