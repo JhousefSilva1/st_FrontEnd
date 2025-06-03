@@ -1,4 +1,5 @@
 {
+    "@@locale": "en",
     "accountNumber": "Account Number",
     "add": "Add",
     "addBrand": "Add Brand",
@@ -29,8 +30,6 @@
     "edit": "Edit",
     "editVehicle": "Edit Vehicle",
     "email": "Email",
-    "emailIsRequired": "Email is required",
-    "emailIsInvalid": "Email is invalid",
     "employee": "Operator",
     "engineNumber": "Engine Number",
     "finalSection": "Final Section",

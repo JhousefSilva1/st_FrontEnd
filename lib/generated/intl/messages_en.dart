@@ -60,10 +60,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "edit": MessageLookupByLibrary.simpleMessage("Edit"),
     "editVehicle": MessageLookupByLibrary.simpleMessage("Edit Vehicle"),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
-    "emailIsInvalid": MessageLookupByLibrary.simpleMessage("Email is invalid"),
-    "emailIsRequired": MessageLookupByLibrary.simpleMessage(
-      "Email is required",
-    ),
     "employee": MessageLookupByLibrary.simpleMessage("Operator"),
     "engineNumber": MessageLookupByLibrary.simpleMessage("Engine Number"),
     "finalSection": MessageLookupByLibrary.simpleMessage("Final Section"),
