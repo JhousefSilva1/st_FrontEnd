@@ -42,9 +42,19 @@ class TollsOperadorProvider extends ChangeNotifier {
   List<StCityResponse> get cities => _cities;
   List<StPlaceResponse> get places => _places;
 
-  @override
-  void dispose() {
-    super.dispose();
+  void clearAllFields() {
+    _selectedToll = null;
+    _foundVehicles = [];
+    _selectedVehicle = null;
+    _vehicleWallet = null;
+    _licensePlateQuery = '';
+    _selectedCountryId = null;
+    _selectedCityId = null;
+    _selectedPlaceId = null;
+    _cities = [];
+    _places = [];
+    _errorMessage = null;
+    notifyListeners();
   }
 
   Future<void> loadAllTolls() async {
@@ -54,15 +64,11 @@ class TollsOperadorProvider extends ChangeNotifier {
 
     try {
       final response = await SmartTollsApi().getAllTolls();
-      
       if (response.isSuccess()) {
         _tolls = response.dataList ?? [];
-        
-        // Filtrar por lugar si está seleccionado
         if (_selectedPlaceId != null) {
           _tolls = _tolls.where((toll) => toll.places.idPlaces == _selectedPlaceId).toList();
         }
-        
         if (_tolls.isNotEmpty) {
           _selectedToll = _tolls.first;
         }
@@ -80,7 +86,6 @@ class TollsOperadorProvider extends ChangeNotifier {
   Future<void> loadCountries() async {
     _isLoading = true;
     notifyListeners();
-    
     try {
       final response = await SmartTollsApi().getAllCountries();
       if (response.isSuccess()) {
@@ -93,11 +98,10 @@ class TollsOperadorProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   Future<void> loadCitiesByCountry(int countryId) async {
     _isLoading = true;
     notifyListeners();
-    
     try {
       final response = await SmartTollsApi().getCitiesByCountry(countryId);
       if (response.isSuccess()) {
@@ -114,11 +118,10 @@ class TollsOperadorProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   Future<void> loadPlacesByCity(int cityId) async {
     _isLoading = true;
     notifyListeners();
-    
     try {
       final response = await SmartTollsApi().getPlacesByCity(cityId);
       if (response.isSuccess()) {
@@ -133,7 +136,7 @@ class TollsOperadorProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   void selectPlace(int placeId) {
     _selectedPlaceId = placeId;
     notifyListeners();
@@ -152,22 +155,18 @@ class TollsOperadorProvider extends ChangeNotifier {
 
   Future<void> searchVehicleByLicensePlate() async {
     if (_licensePlateQuery.isEmpty) return;
-
     _isLoading = true;
     _errorMessage = null;
     _foundVehicles = [];
     _selectedVehicle = null;
     _vehicleWallet = null;
     notifyListeners();
-
     try {
       final allVehiclesResponse = await SmartTollsApi().getAllVehicles();
-      
       if (allVehiclesResponse.isSuccess()) {
         _foundVehicles = (allVehiclesResponse.dataList ?? []).where((vehicle) {
           return vehicle.licensePlate?.toLowerCase().contains(_licensePlateQuery.toLowerCase()) ?? false;
         }).toList();
-
         if (_foundVehicles.isEmpty) {
           _errorMessage = 'No se encontró vehículo con esa matrícula';
         }
@@ -191,13 +190,10 @@ class TollsOperadorProvider extends ChangeNotifier {
 
   Future<void> _loadVehicleWallet() async {
     if (_selectedVehicle?.idVehicle == null) return;
-
     _isLoading = true;
     notifyListeners();
-
     try {
       final walletResponse = await SmartTollsApi().getWalletByVehicleId(_selectedVehicle!.idVehicle!);
-      
       if (walletResponse.isSuccess()) {
         _vehicleWallet = walletResponse.data;
       } else {
@@ -217,47 +213,34 @@ class TollsOperadorProvider extends ChangeNotifier {
       notifyListeners();
       return false;
     }
-
     if ((_vehicleWallet?.balance ?? 0) < _tollChargeAmount) {
       _errorMessage = 'El vehículo no tiene saldo suficiente';
       notifyListeners();
       return false;
     }
-
     _isLoading = true;
     notifyListeners();
-
     try {
-      // 1. Actualizar saldo en la wallet
       final walletResponse = await SmartTollsApi().updateWalletBalance(
         _vehicleWallet!.idWallet!,
         -_tollChargeAmount,
       );
-
       if (!walletResponse.isSuccess()) {
         _errorMessage = walletResponse.message ?? 'Error al actualizar el saldo';
         return false;
       }
-
-      // 2. Registrar la transacción
       final transactionRequest = TransactionRequest(
         vehicleId: _selectedVehicle!.idVehicle!,
         tollId: _selectedToll!.idTolls!,
         walletId: _vehicleWallet!.idWallet!,
       );
-
       final transactionResponse = await SmartTollsApi().registerTollPass(transactionRequest);
-
       if (transactionResponse.isSuccess()) {
-        // Actualizar datos locales
         _vehicleWallet = walletResponse.data;
-        
-        // Limpiar selección
         _selectedVehicle = null;
         _vehicleWallet = null;
         _licensePlateQuery = '';
         _foundVehicles = [];
-        
         return true;
       } else {
         _errorMessage = transactionResponse.message ?? 'Error al registrar la transacción';

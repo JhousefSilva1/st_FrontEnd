@@ -119,8 +119,7 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
           const SnackBar(content: Text('Foto tomada con éxito')),
         );
         
-        // Procesar la imagen para lectura de matrícula
-        // _processImageForLicensePlate(image.path);
+        // Procesar imagen para lectura de matrícula
       }
     } catch (e) {
       if (mounted) {
@@ -148,7 +147,7 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
       children: [
         const Icon(Icons.camera_alt, size: 64),
         const SizedBox(height: 16),
-        Text('Se necesitan permisos de cámara', style: const TextStyle(fontSize: 16)),
+        const Text('Se necesitan permisos de cámara', style: TextStyle(fontSize: 16)),
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: _checkCameraPermission,
@@ -163,7 +162,7 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
       children: [
         const CircularProgressIndicator(),
         const SizedBox(height: 16),
-        Text('Inicializando cámara...', style: const TextStyle(fontSize: 16)),
+        const Text('Inicializando cámara...', style: TextStyle(fontSize: 16)),
         if (_cameras == null || _cameras!.isEmpty)
           const Text('No se encontraron cámaras disponibles'),
       ],
@@ -183,12 +182,9 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Cámara para lectura de placa',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const Divider(height: 24),
                 AspectRatio(
@@ -209,7 +205,7 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
                       icon: const Icon(Icons.qr_code_scanner),
                       label: const Text('Escanear QR'),
                       onPressed: () {
-                        // Implementar escaneo QR
+                        // Lógica de escaneo QR
                       },
                     ),
                   ],
@@ -231,9 +227,9 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
 
   @override
   Widget build(BuildContext context) {
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+    final bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     final provider = Provider.of<TollsOperadorProvider>(context, listen: false);
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       provider.loadCountries();
     });
@@ -241,10 +237,7 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
     return Scaffold(
       backgroundColor: AppStyle.white,
       appBar: isMobile
-          ? CustomAppBar(
-              centerTitle: true,
-              text: S.of(context).tollsOperator,
-            )
+          ? CustomAppBar(centerTitle: true, text: S.of(context).tollsOperator)
           : null,
       drawer: isMobile ? const SmartTollsMobileDrawer() : null,
       body: isMobile
@@ -252,7 +245,13 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    TextButton.icon(
+                      onPressed: () => provider.clearAllFields(),
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Limpiar todo'),
+                    ),
                     const LocationFilterSection(),
                     const SizedBox(height: 24),
                     _buildCameraSection(context),
@@ -277,17 +276,21 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        TextButton.icon(
+                          onPressed: () => provider.clearAllFields(),
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('Limpiar todo'),
+                        ),
+                        const SizedBox(height: 8),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Sección de cámara (70%)
                             Expanded(
                               flex: 7,
                               child: Column(
                                 children: [
                                   _buildCameraSection(context),
                                   const SizedBox(height: 16),
-                                  // Mostrar IDs seleccionados
                                   Card(
                                     child: Padding(
                                       padding: const EdgeInsets.all(16),
@@ -323,7 +326,6 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
                               ),
                             ),
                             const SizedBox(width: 24),
-                            // Sección de controles (30%)
                             Expanded(
                               flex: 3,
                               child: Column(
@@ -352,8 +354,6 @@ class _TollsOperadorViewState extends State<TollsOperadorView> with WidgetsBindi
   }
 }
 
-// ... (Los demás widgets como LocationFilterSection, TollSelectionSection, etc. 
-// permanecen igual que en tu código original)
 
 class LocationFilterSection extends StatelessWidget {
   const LocationFilterSection({super.key});
@@ -485,50 +485,37 @@ class TollSelectionSection extends StatelessWidget {
             const Divider(height: 24),
             provider.isLoading && provider.tolls.isEmpty
                 ? const Center(child: CircularProgressIndicator())
-                : provider.errorMessage != null
-                    ? Column(
-                        children: [
-                          Text(
-                            provider.errorMessage!,
-                            style: const TextStyle(color: Colors.red),
+                : Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: DropdownButton<StTollsResponse>(
+                      value: provider.selectedToll,
+                      isExpanded: true,
+                      underline: const SizedBox(),
+                      items: provider.tolls.map((toll) {
+                        return DropdownMenuItem<StTollsResponse>(
+                          value: toll,
+                          child: Text(
+                            toll.tollsName ?? 'Peaje sin nombre',
+                            style: const TextStyle(fontSize: 16),
                           ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: provider.retryLoading,
-                            child: Text(S.of(context).retry),
-                          ),
-                        ],
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: DropdownButton<StTollsResponse>(
-                          value: provider.selectedToll,
-                          isExpanded: true,
-                          underline: const SizedBox(),
-                          items: provider.tolls.map((toll) {
-                            return DropdownMenuItem<StTollsResponse>(
-                              value: toll,
-                              child: Text(
-                                toll.tollsName ?? 'Peaje sin nombre',
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (toll) {
-                            provider.selectToll(toll);
-                          },
-                        ),
-                      ),
+                        );
+                      }).toList(),
+                      onChanged: (toll) {
+                        provider.selectToll(toll);
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
     );
   }
 }
+
 
 class VehicleSearchSection extends StatefulWidget {
   const VehicleSearchSection({super.key});
@@ -589,54 +576,71 @@ class _VehicleSearchSectionState extends State<VehicleSearchSection> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onChanged: (value) {
+                    onSubmitted: (value) async {
                       provider.setLicensePlateQuery(value);
+                      await provider.searchVehicleByLicensePlate();
+
+                      if (!mounted) return;
+
+                      if (provider.foundVehicles.isNotEmpty) {
+                        await provider.selectVehicle(provider.foundVehicles.first);
+                      }
+
+                      if (!mounted) return;
+
+                      final vehicle = provider.selectedVehicle;
+                      final wallet = provider.vehicleWallet;
+                      final amount = provider.tollChargeAmount;
+
+                      if (vehicle != null && wallet != null) {
+                        if ((wallet.balance ?? 0) < amount) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const AlertDialog(
+                              title: Text('Saldo insuficiente'),
+                              content: Text('El vehículo no tiene saldo suficiente para pagar el peaje.'),
+                            ),
+                          );
+                          await Future.delayed(const Duration(seconds: 3));
+                          if (context.mounted) Navigator.pop(context);
+                        } else {
+                          final success = await provider.chargeTollFee(context);
+                          if (!mounted) return;
+
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => AlertDialog(
+                              title: Text(success ? 'Cobro exitoso' : 'Error'),
+                              content: Text(success
+                                  ? 'Se cobró correctamente Bs. ${amount.toStringAsFixed(2)}'
+                                  : (provider.errorMessage ?? 'No se pudo procesar el cobro')),
+                            ),
+                          );
+                          await Future.delayed(const Duration(seconds: 3));
+                          if (context.mounted) Navigator.pop(context);
+                        }
+                      } else if (provider.errorMessage != null) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text('Error'),
+                            content: Text(provider.errorMessage!),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Cerrar'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: provider.isLoading ? null : provider.searchVehicleByLicensePlate,
-                  child: provider.isLoading 
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(S.of(context).search),
-                ),
               ],
             ),
-            if (provider.foundVehicles.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              Text(
-                S.of(context).foundVehicles,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              ...provider.foundVehicles.map((vehicle) => Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  title: Text(vehicle.licensePlate ?? ''),
-                  subtitle: Text('Modelo: ${vehicle.vehiclesModels.modelName ?? ''}'),
-                  trailing: provider.selectedVehicle?.idVehicle == vehicle.idVehicle
-                      ? const Icon(Icons.check, color: Colors.green)
-                      : null,
-                  onTap: () {
-                    provider.selectVehicle(vehicle);
-                  },
-                ),
-              )),
-            ],
           ],
         ),
       ),
