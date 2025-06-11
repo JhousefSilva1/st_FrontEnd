@@ -10,285 +10,151 @@ import 'package:smarttolls/widgets/widgets.dart';
 
 import '../../../generated/l10n.dart';
 
-class ProfileOperadorView extends StatelessWidget{
+class ProfileOperadorView extends StatelessWidget {
   static const String routerName = 'priofileOperador';
   static const String routerPath = '/profileOperador';
 
   const ProfileOperadorView({super.key});
+
   @override
-  Widget build(BuildContext context){
-    bool isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+  Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
 
     return ChangeNotifierProvider(
-      create:(_) => ProfileProvider()..loadCurrentUserData(),
+      create: (_) => ProfileProvider()..loadCurrentUserData(),
       child: Scaffold(
-        backgroundColor: AppStyle.white,
-          appBar: isMobile
-              ? CustomAppBar(
-                  centerTitle: true,
-                  text: S.of(context).profile,                
-              )
-              :null,
+        backgroundColor: Colors.grey.shade100,
         drawer: isMobile ? const SmartTollsMobileDrawer() : null,
-        body: isMobile
-            ? const SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: ProfileOperadorMobileView(),
+        appBar: isMobile
+            ? AppBar(
+                title: Text(
+                  S.of(context).profile,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-            )
-            :const ProfileOperadorTabletView(),
+                backgroundColor: AppStyle.primary,
+                iconTheme: const IconThemeData(color: Colors.white),
+              )
+            : null,
+        body: Row(
+          children: [
+            if (!isMobile) const SmartTollsOperadorDrawer(),
+            const Expanded(child: ProfileOperadorContent()),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: AppStyle.primary,
+          child: const Icon(Icons.edit),
+        ),
       ),
     );
   }
 }
 
-class ProfileOperadorMobileView extends StatelessWidget{
-  const ProfileOperadorMobileView({super.key});
-  @override
-  Widget build(BuildContext context){
-    final provider = Provider.of<ProfileProvider>(context);
+class ProfileOperadorContent extends StatelessWidget {
+  const ProfileOperadorContent({super.key});
 
-    
-    if(provider.isLoading && provider.currentUser == null){
-      return const Center(child: CircularProgressIndicator());
-    }
-        if (provider.errorMessage != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(provider.errorMessage!),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: provider.retryLoading,
-              child: Text(S.of(context).retry),
-            ),
-          ],
-        ),
-      );
-    }
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<ProfileProvider>();
     final user = provider.currentUser;
-    if (user == null) {
-      return Center(child: Text(S.of(context).noUserData));
-    }
-    return Column(
-      children: [
-        _buildProfileHeader(context, user),
-        const SizedBox(height: 24),
-        _buildPersonalInfoSection(context, user),
-        const SizedBox(height: 24),
-        _buildContactInfoSection(context, user),
-      ],
-    );
-  }
-}
 
-class ProfileOperadorTabletView extends StatelessWidget{
-  const ProfileOperadorTabletView({super.key});
-  @override
-  Widget build(BuildContext context){
-    final provider = Provider.of<ProfileProvider>(context);
-        if (provider.isLoading && provider.currentUser == null) {
+    if (provider.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (provider.errorMessage != null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(provider.errorMessage!),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: provider.retryLoading,
-              child: Text(S.of(context).retry),
-            ),
-          ],
-        ),
+        child: Text(provider.errorMessage!, style: const TextStyle(color: Colors.red)),
       );
     }
 
-    final user = provider.currentUser;
     if (user == null) {
       return Center(child: Text(S.of(context).noUserData));
     }
 
-    return Row(
-      children: [
-        const SmartTollsOperadorDrawer(), // Drawer para tablet
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppStyle.primary, Color(0xFF1976D2)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
+            ),
+            child: Column(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      _buildProfileHeader(context, user),
-                      const SizedBox(height: 32),
-                      _buildPersonalInfoSection(context, user),
-                    ],
+                CircleAvatar(
+                  radius: 48,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.person, size: 48, color: AppStyle.primary),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  '${user.personName ?? ''} ${user.personSurname ?? ''}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(width: 24),
-                Expanded(
-                  flex: 1,
-                  child: _buildContactInfoSection(context, user),
+                const SizedBox(height: 4),
+                Text(
+                  user.personType?.personType ?? '',
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                ProfileSectionCard(
+                  title: S.of(context).personalInfo,
+                  icon: Icons.info,
+                  children: [
+                    ProfileInfoRow(label: S.of(context).dni, value: user.personDni ?? ''),
+                    ProfileInfoRow(label: S.of(context).bornDate, value: _formatDate(user.personBirthdate)),
+                    ProfileInfoRow(label: S.of(context).age, value: '${user.personAge ?? 'N/A'} años'),
+                    ProfileInfoRow(label: S.of(context).gender, value: user.gender?.genderName ?? ''),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                ProfileSectionCard(
+                  title: S.of(context).contactInfo,
+                  icon: Icons.contact_mail,
+                  children: [
+                    ProfileInfoRow(label: S.of(context).email, value: user.personEmail ?? ''),
+                    ProfileInfoRow(label: S.of(context).whatsApp, value: user.personWhatsappNumber ?? ''),
+                    ProfileInfoRow(label: S.of(context).address, value: user.personAddress ?? ''),
+                    ProfileInfoRow(
+                      label: S.of(context).location,
+                      value: '${user.city?.cityName ?? ''}, ${user.country?.countryName ?? ''}',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
-}
 
-
-
-Widget _buildProfileHeader(BuildContext context, StPersonResponse user) {
-  return Row(
-    children: [
-      Container(
-        width: 80,
-        height: 80,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppStyle.primary.withOpacity(0.1),
-          border: Border.all(color: AppStyle.primary, width: 2),
-        ),
-        child: Icon(
-          Icons.person,
-          size: 40,
-          color: AppStyle.primary,
-        ),
-      ),
-      const SizedBox(width: 16),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${user.personName ?? ''} ${user.personSurname ?? ''}',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              user.personType?.personType ?? 'N/A',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _buildPersonalInfoSection(BuildContext context, StPersonResponse user) {
-  return Card(
-    elevation: 2,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            S.of(context).personalInfo,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Divider(height: 24),
-          _buildInfoRow(S.of(context).dni, user.personDni ?? 'N/A'),
-          const SizedBox(height: 12),
-          _buildInfoRow(S.of(context).bornDate, _formatDate(user.personBirthdate)),
-          const SizedBox(height: 12),
-          _buildInfoRow(S.of(context).age, user.personAge ?? 'N/A'),
-          const SizedBox(height: 12),
-          _buildInfoRow(S.of(context).gender, user.gender?.genderName ?? 'N/A'),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget _buildContactInfoSection(BuildContext context, StPersonResponse user) {
-  return Card(
-    elevation: 2,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            S.of(context).contactInfo,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Divider(height: 24),
-          _buildInfoRow(S.of(context).email, user.personEmail ?? 'N/A'),
-          const SizedBox(height: 12),
-          _buildInfoRow(S.of(context).whatsApp, user.personWhatsappNumber ?? 'N/A'),
-          const SizedBox(height: 12),
-          _buildInfoRow(S.of(context).address, user.personAddress ?? 'N/A'),
-          const SizedBox(height: 12),
-          _buildInfoRow(
-            S.of(context).location, 
-            '${user.city?.cityName ?? 'N/A'}, ${user.country?.countryName ?? 'N/A'}'
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget _buildInfoRow(String label, String value) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(
-        width: 100,
-        child: Text(
-          label,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Colors.grey[600],
-          ),
-        ),
-      ),
-      const SizedBox(width: 16),
-      Expanded(
-        child: Text(
-          value,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-String _formatDate(String? date) {
-  if (date == null || date.isEmpty) return 'N/A';
-  // Implementa tu lógica de formateo de fecha aquí
-  return date;
+  String _formatDate(String? date) {
+    if (date == null || date.isEmpty) return 'N/A';
+    return date;
+  }
 }

@@ -24,4 +24,5 @@ class AppStyle{
   static const Color purple = Color(0xFF8E44AD);
   static const Color pink = Color(0xFFEC407A);
   static const Color backgroundGrey = Color.fromARGB(255, 82, 117, 128);
+  static const Color primaryColor = Color(0xFF1570A4);
 }

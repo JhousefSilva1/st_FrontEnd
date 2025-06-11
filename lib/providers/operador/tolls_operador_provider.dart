@@ -7,6 +7,7 @@ import 'package:smarttolls/api/response/admin/st_country_response.dart';
 import 'package:smarttolls/api/response/admin/st_city_response.dart';
 
 class TollsOperadorProvider extends ChangeNotifier {
+  bool _isCharging = false;
   List<StTollsResponse> _tolls = [];
   StTollsResponse? _selectedToll;
   List<StVehicleResponse> _foundVehicles = [];
@@ -208,51 +209,69 @@ class TollsOperadorProvider extends ChangeNotifier {
   }
 
   Future<bool> chargeTollFee(BuildContext context) async {
-    if (_selectedToll == null || _selectedVehicle == null || _vehicleWallet == null) {
-      _errorMessage = 'Seleccione un peaje y un vehículo válido';
-      notifyListeners();
-      return false;
-    }
-    if ((_vehicleWallet?.balance ?? 0) < _tollChargeAmount) {
-      _errorMessage = 'El vehículo no tiene saldo suficiente';
-      notifyListeners();
-      return false;
-    }
+    if (_isCharging) return false;
+    _isCharging = true;
     _isLoading = true;
     notifyListeners();
+
     try {
+      // Validaciones iniciales
+      if (_selectedToll == null || _selectedVehicle == null || _vehicleWallet == null) {
+        throw Exception('Datos incompletos para el cobro');
+      }
+
+      final currentBalance = _vehicleWallet!.balance ?? 0;
+      if (currentBalance < _tollChargeAmount) {
+        throw Exception('Saldo insuficiente');
+      }
+
+      // 1. Primero actualizar el saldo
       final walletResponse = await SmartTollsApi().updateWalletBalance(
         _vehicleWallet!.idWallet!,
         -_tollChargeAmount,
       );
+
       if (!walletResponse.isSuccess()) {
-        _errorMessage = walletResponse.message ?? 'Error al actualizar el saldo';
-        return false;
+        throw Exception(walletResponse.message ?? 'Error al actualizar saldo');
       }
+
+      // 2. Registrar la transacción
       final transactionRequest = TransactionRequest(
         vehicleId: _selectedVehicle!.idVehicle!,
         tollId: _selectedToll!.idTolls!,
         walletId: _vehicleWallet!.idWallet!,
       );
+
       final transactionResponse = await SmartTollsApi().registerTollPass(transactionRequest);
-      if (transactionResponse.isSuccess()) {
-        _vehicleWallet = walletResponse.data;
-        _selectedVehicle = null;
-        _vehicleWallet = null;
-        _licensePlateQuery = '';
-        _foundVehicles = [];
-        return true;
-      } else {
-        _errorMessage = transactionResponse.message ?? 'Error al registrar la transacción';
-        return false;
+
+      if (!transactionResponse.isSuccess()) {
+        // Revertir el cargo si falla el registro
+        await SmartTollsApi().updateWalletBalance(
+          _vehicleWallet!.idWallet!,
+          _tollChargeAmount,
+        );
+        throw Exception(transactionResponse.message ?? 'Error al registrar transacción');
       }
+
+      // Actualizar estado local
+      _vehicleWallet = walletResponse.data;
+      _clearAfterPayment();
+      return true;
     } catch (e) {
-      _errorMessage = 'Error: ${e.toString()}';
+      _errorMessage = e.toString();
       return false;
     } finally {
+      _isCharging = false;
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void _clearAfterPayment() {
+    _selectedVehicle = null;
+    _vehicleWallet = null;
+    _licensePlateQuery = '';
+    _foundVehicles = [];
   }
 
   void retryLoading() {
@@ -260,4 +279,5 @@ class TollsOperadorProvider extends ChangeNotifier {
     notifyListeners();
     loadAllTolls();
   }
+  
 }
