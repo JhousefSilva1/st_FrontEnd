@@ -259,34 +259,57 @@ return Padding(
 );
   }
 
-  Widget _buildActionButtons() {
-    return Consumer<TollsOperadorProvider>(
-      builder: (context, provider, _) {
-        if (provider.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+Widget _buildActionButtons() {
+  return Consumer<TollsOperadorProvider>(
+    builder: (context, provider, _) {
+      if (provider.isLoading) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-        return Row(
-          children: [
-            if (provider.errorMessage != null)
-              Expanded(
-                child: ErrorMessageCard(
-                  message: provider.errorMessage!,
-                  onRetry: provider.retryLoading,
+      final hasPayment = provider.selectedVehicle != null && provider.vehicleWallet != null;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              if (provider.errorMessage != null)
+                Expanded(
+                  child: ErrorMessageCard(
+                    message: provider.errorMessage!,
+                    onRetry: provider.retryLoading,
+                  ),
                 ),
-              ),
-            if (provider.selectedVehicle != null && provider.vehicleWallet != null)
-              Expanded(
-                child: PaymentButton(
-                  amount: provider.tollChargeAmount,
-                  onPressed: () => _processPayment(context, provider),
+              if (hasPayment)
+                Expanded(
+                  child: PaymentButton(
+                    amount: provider.tollChargeAmount,
+                    onPressed: () => _processPayment(context, provider),
+                  ),
                 ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.clear),
+            label: const Text('Limpiar formulario'),
+            onPressed: () {
+              provider.clearAllFields(); // 👈 Aquí se llama a tu método del provider
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey[300],
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-          ],
-        );
-      },
-    );
-  }
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   Future<void> _processPayment(BuildContext context, TollsOperadorProvider provider) async {
     final success = await provider.chargeTollFee(context);
