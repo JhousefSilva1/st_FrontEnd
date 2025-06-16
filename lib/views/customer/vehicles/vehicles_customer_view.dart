@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/generated/l10n.dart';
@@ -6,6 +7,7 @@ import 'package:smarttolls/providers/customer/vehicle_customer_provider.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/utils.dart';
+import 'package:smarttolls/views/customer/vehicles/add_vehicle_customer_view.dart';
 import 'package:smarttolls/widgets/customer/vehicles_customer_card.dart';
 import 'package:smarttolls/widgets/menu/mobile/drawerMobile.dart';
 import 'package:smarttolls/widgets/widgets.dart';
@@ -24,11 +26,10 @@ class VehiclesCustomerView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          actions: [
-            IconButton(
-              onPressed: () => showAddVehicleDialog(context),
-              icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
-            )
+          actions: [IconButton(
+            onPressed: () => context.pushNamed(AddVehicleCustomerView.routerName),
+            icon: const Icon(Icons.add_rounded, color: AppStyle.primary, size: 30),
+          )
           ],
           centerTitle: true,
           text: S.of(context).myVehicles,

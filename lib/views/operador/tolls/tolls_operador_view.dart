@@ -266,35 +266,17 @@ Widget _buildActionButtons() {
         return const Center(child: CircularProgressIndicator());
       }
 
-      final hasPayment = provider.selectedVehicle != null && provider.vehicleWallet != null;
-
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            children: [
-              if (provider.errorMessage != null)
-                Expanded(
-                  child: ErrorMessageCard(
-                    message: provider.errorMessage!,
-                    onRetry: provider.retryLoading,
-                  ),
-                ),
-              if (hasPayment)
-                Expanded(
-                  child: PaymentButton(
-                    amount: provider.tollChargeAmount,
-                    onPressed: () => _processPayment(context, provider),
-                  ),
-                ),
-            ],
-          ),
+        // if (false) const SizedBox.shrink(), // nunca se ejecutará
+
           const SizedBox(height: 16),
           ElevatedButton.icon(
             icon: const Icon(Icons.clear),
             label: const Text('Limpiar formulario'),
             onPressed: () {
-              provider.clearAllFields(); // 👈 Aquí se llama a tu método del provider
+              provider.clearAllFields();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey[300],
@@ -310,6 +292,7 @@ Widget _buildActionButtons() {
     },
   );
 }
+
 
   Future<void> _processPayment(BuildContext context, TollsOperadorProvider provider) async {
     final success = await provider.chargeTollFee(context);
@@ -366,92 +349,128 @@ class _VideoStreamWithOCRState extends State<VideoStreamWithOCR> {
     super.dispose();
   }
 
-  void _startPolling() {
-    _timer = Timer.periodic(const Duration(seconds: 2), (_) async {
-      if (_isProcessing) return;
-      
-      try {
-        _isProcessing = true;
-        final provider = Provider.of<TollsOperadorProvider>(context, listen: false);
-        
-        final response = await http.get(Uri.parse('http://192.168.0.10:5000/last_plate'));
-        if (response.statusCode == 200) {
-          final body = jsonDecode(response.body);
-          final rawPlate = body['plate']?.toString().trim() ?? '';
-          final plate = rawPlate.replaceAll(' ', '');
-          
-          if (plate.isNotEmpty && plate != _lastProcessedPlate) {
-            _lastProcessedPlate = plate;
-            
-            provider.setLicensePlateQuery(plate);
-            await provider.searchVehicleByLicensePlate();
-            
-            if (provider.foundVehicles.isNotEmpty) {
-              await provider.selectVehicle(provider.foundVehicles.first);
-              
-              if (provider.vehicleWallet != null && provider.selectedToll != null) {
-                final success = await provider.chargeTollFee(context);
+void _startPolling() {
+  _timer = Timer.periodic(const Duration(seconds: 2), (_) async {
+    if (_isProcessing) return;
+
+    try {
+      _isProcessing = true;
+      final provider = Provider.of<TollsOperadorProvider>(context, listen: false);
+
+      final response = await http.get(Uri.parse('http://192.168.0.10:5000/last_plate'));
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        final rawPlate = body['plate']?.toString().trim() ?? '';
+        final plate = rawPlate.replaceAll(' ', '');
+
+        if (plate.isNotEmpty && plate != _lastProcessedPlate) {
+          _lastProcessedPlate = plate;
+
+          // 🔍 Validación: campos obligatorios seleccionados
+          final missing = <String>[];
+          if (provider.selectedCountryId == null) missing.add("país");
+          if (provider.selectedCityId == null) missing.add("ciudad");
+          if (provider.selectedPlaceId == null) missing.add("lugar");
+          if (provider.selectedToll == null) missing.add("peaje");
+
+          if (missing.isNotEmpty) {
+            _showAutoDialog(
+              title: 'Faltan datos',
+              message: 'Selecciona: ${missing.join(', ')}',
+              isSuccess: false,
+            );
+            return;
+          }
+
+          provider.setLicensePlateQuery(plate);
+          await provider.searchVehicleByLicensePlate();
+          if (provider.foundVehicles.isEmpty) {
+            _showAutoDialog(
+              title: 'Vehículo no encontrado',
+              message: 'No se encontró ningún vehículo con la placa: $plate',
+              isSuccess: false,
+            );
+            return;
+          }
+
+
+          if (provider.foundVehicles.isNotEmpty) {
+            await provider.selectVehicle(provider.foundVehicles.first);
+
+            if (provider.vehicleWallet != null) {
+              final success = await provider.chargeTollFee(context);
+
+              if (success) {
+                _showAutoDialog(
+                  title: '¡Pago exitoso!',
+                  message: 'Placa: $plate\nMonto: Bs. ${provider.tollChargeAmount.toStringAsFixed(2)}',
+                  isSuccess: true,
+                );
                 
-                if (success) {
-                  _showAutoDialog(
-                    title: '¡Pago exitoso!',
-                    message: 'Placa: $plate\nMonto: Bs. ${provider.tollChargeAmount.toStringAsFixed(2)}',
-                    isSuccess: true,
-                  );
-                }
+              } else {
+                _showAutoDialog(
+                  title: 'Error de pago',
+                  message: provider.errorMessage ?? 'Ocurrió un error desconocido.',
+                  isSuccess: false,
+                );
               }
             }
           }
         }
-      } catch (e) {
-        debugPrint('Error en polling: $e');
-      } finally {
-        _isProcessing = false;
       }
-    });
-  }
+    } catch (e) {
+      debugPrint('Error en polling: $e');
+    } finally {
+      _isProcessing = false;
+    }
+  });
+}
 
-  void _showAutoDialog({required String title, required String message, bool isSuccess = false}) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        backgroundColor: Colors.white,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isSuccess ? Icons.check_circle : Icons.error,
+
+void _showAutoDialog({required String title, required String message, bool isSuccess = false}) {
+  if (!mounted) return; // ✅ Evita usar un context destruido
+
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: Colors.white,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isSuccess ? Icons.check_circle : Icons.error,
+            color: isSuccess ? Colors.green : Colors.red,
+            size: 60,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
               color: isSuccess ? Colors.green : Colors.red,
-              size: 60,
             ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: isSuccess ? Colors.green : Colors.red,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ],
       ),
-    );
+    ),
+  );
 
-    Timer(const Duration(seconds: 3), () {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-      }
-    });
-  }
+  Future.delayed(const Duration(seconds: 3), () {
+    if (mounted && Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+    }
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {

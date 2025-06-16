@@ -7,6 +7,7 @@ import 'package:smarttolls/providers/Auth/sign_up_provider.dart';
 import 'package:smarttolls/providers/customer/vehicle_customer_provider.dart';
 import 'package:smarttolls/providers/operador/tolls_operador_provider.dart';
 import 'package:smarttolls/providers/providers.dart';
+import 'package:smarttolls/views/customer/vehicles/add_vehicle_customer_view.dart';
 import 'package:smarttolls/views/views.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -231,6 +232,12 @@ class AppRouter {
         path: WelcomeView.routerPath,
         builder: (context, state) => const WelcomeView(),
       ),
+      // Dentro de las rutas del ShellRoute para cliente
+        GoRoute(
+          name: AddVehicleCustomerView.routerName,
+          path: AddVehicleCustomerView.routerPath,
+          builder: (context, state) => const AddVehicleCustomerView(),
+        ),
 
       // operador
       GoRoute(

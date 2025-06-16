@@ -258,7 +258,7 @@ class TollsOperadorProvider extends ChangeNotifier {
       _clearAfterPayment();
       return true;
     } catch (e) {
-      _errorMessage = e.toString();
+      _errorMessage = e.toString().replaceFirst('Exception: ', '');
       return false;
     } finally {
       _isCharging = false;

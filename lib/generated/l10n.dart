@@ -4,9 +4,13 @@ import 'package:intl/intl.dart';
 import 'intl/messages_all.dart';
 
 
+
+
 class S {
   S();
   static S? _current;
+
+
 
 
   static S get current {
@@ -15,7 +19,11 @@ class S {
   }
 
 
+
+
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+
+
 
 
   static Future<S> load(Locale locale) {
@@ -30,6 +38,8 @@ class S {
   }
 
 
+
+
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
     assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
@@ -37,7 +47,10 @@ class S {
   }
 
 
+
+
   static S? maybeOf(BuildContext context) => Localizations.of<S>(context, S);
+
 
 // Strings organizadas alfabéticamente
   String get accountNumber => Intl.message('Número de Cuenta', name: 'accountNumber');
@@ -236,6 +249,7 @@ class S {
   String get year => Intl.message('Año', name: 'year');
 }
 
+
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
   List<Locale> get supportedLocales => const [Locale('es')];
@@ -243,4 +257,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   @override Future<S> load(Locale locale) => S.load(locale);
   @override bool shouldReload(AppLocalizationDelegate old) => false;
 }
+
+
+
+
 
