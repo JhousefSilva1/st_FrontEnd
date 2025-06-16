@@ -68,7 +68,7 @@ class S {
   String get addPlace => Intl.message('lugar', name: 'addPlace');
   String get addRoadType => Intl.message('tipo de vía', name: 'addRoadType');
   String get addToll => Intl.message('Agregar Peaje', name: 'addToll');
-  String get addVehicle => Intl.message('agregarVehículo', name: 'addVehicle');
+  String get addVehicle => Intl.message('agregar Vehículo', name: 'addVehicle');
   String get addVehicleType => Intl.message('Agregar Tipo de Vehículo', name: 'addVehicleType');
   String get addVehicles => Intl.message('Agregar Vehículo Nuevo', name: 'addVehicles');
   String get address => Intl.message('Dirección', name: 'address');

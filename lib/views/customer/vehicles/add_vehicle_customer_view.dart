@@ -87,6 +87,16 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
       body: SafeArea(
         child: Column(
           children: [
+
+            Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Image.asset(
+            'assets/car.jpg', // Asegúrate que esta ruta exista
+            height: 120,
+            fit: BoxFit.contain,
+          ),
+        ),
+
             _buildStepIndicator(),
             Expanded(
               child: PageView(
@@ -211,66 +221,55 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
     );
   }
 
-  Widget _buildNavigationButtons() {
-    final provider = Provider.of<VehiclesCustomerProvider>(context);
-    
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          if (_currentStep > 0)
-            Expanded(
-              child: OutlinedButton(
-                onPressed: () => _previousStep(),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(0, 50),
-                  side: const BorderSide(color: AppStyle.primary),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  S.of(context).back,
-                  style: const TextStyle(color: AppStyle.primary),
-                ),
+Widget _buildNavigationButtons() {
+  final provider = Provider.of<VehiclesCustomerProvider>(context);
+
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        if (_currentStep > 0)
+          GestureDetector(
+            onTap: _previousStep,
+            child: Container(
+              height: 60,
+              width: 60,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey,
               ),
+              child: const Icon(Icons.arrow_back, color: Colors.white),
             ),
-          if (_currentStep > 0) const SizedBox(width: 16),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: provider.isLoading ? null : () => _nextStep(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppStyle.primary,
-                minimumSize: const Size(0, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: _currentStep == 0
-                  ? Text(
-                      S.of(context).continueText,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : provider.isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : Text(
-                          S.of(context).addVehicle,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+          )
+        else
+          const SizedBox(width: 60), // para mantener alineación
+
+        GestureDetector(
+          onTap: provider.isLoading ? null : _nextStep,
+          child: Container(
+            height: 60,
+            width: 60,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppStyle.primary,
+            ),
+            child: Center(
+              child: provider.isLoading
+                  ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                  : Icon(
+                      _currentStep == 0 ? Icons.arrow_forward : Icons.check,
+                      color: Colors.white,
+                      size: 28,
+                    ),
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 
   void _nextStep() async {
     if (!_stepFormKeys[_currentStep].currentState!.validate()) {
@@ -528,51 +527,132 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
     );
   }
 
-  Future<void> _submitForm() async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final personId = userProvider.personId;
-    
-    if (personId == null || personId == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("No se pudo identificar al usuario"),
-          behavior: SnackBarBehavior.floating,
+Future<void> _submitForm() async {
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final personId = userProvider.personId;
+
+  if (personId == null || personId == 0) {
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Error"),
+        content: const Text("No se pudo identificar al usuario."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+    return;
+  }
+
+  final vehicleProvider = Provider.of<VehiclesCustomerProvider>(context, listen: false);
+
+  try {
+    await vehicleProvider.addVehicle(
+      _plateController.text,
+      _chassisController.text,
+      _engineController.text,
+      _yearController.text,
+      _weightController.text,
+      int.parse(_selectedFuelTypeId!),
+      int.parse(_selectedColorId!),
+      int.parse(_selectedModelId!),
+      int.parse(_selectedTypeId!),
+      int.parse(_selectedBrandId!),
+      int.parse(_selectedCityId!),
+      int.parse(_selectedCountryId!),
+      personId,
+    );
+
+   if (mounted) {
+  await _showSuccessDialog(); // Muestra confirmación elegante
+}
+
+} catch (e) {
+  String message = e.toString()
+    .replaceAll('Exception: ', '')
+    .replaceAll('Error: ', '')
+    .trim();
+
+  await showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text("Error al registrar vehículo"),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text("Aceptar"),
+        ),
+      ],
+    ),
+  );
+}
+
+
+}
+Future<void> _showSuccessDialog() async {
+  await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        backgroundColor: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle, color: Colors.green, size: 64),
+              const SizedBox(height: 16),
+              const Text(
+                "¡Registro exitoso!",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "El vehículo fue registrado correctamente.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.done, color: Colors.white), // ícono blanco también
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppStyle.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // cierra el diálogo
+                  Navigator.of(context).pop(); // vuelve atrás de la vista
+                },
+                label: const Text(
+                  "Aceptar",
+                  style: TextStyle(color: Colors.white), // ✔️ Texto blanco
+                ),
+              )
+
+            ],
+          ),
         ),
       );
-      return;
-    }
-
-    final vehicleProvider = Provider.of<VehiclesCustomerProvider>(context, listen: false);
-    
-    try {
-      await vehicleProvider.addVehicle(
-        _plateController.text,
-        _chassisController.text,
-        _engineController.text,
-        _yearController.text,
-        _weightController.text,
-        int.parse(_selectedFuelTypeId!),
-        int.parse(_selectedColorId!),
-        int.parse(_selectedModelId!),
-        int.parse(_selectedTypeId!),
-        int.parse(_selectedBrandId!),
-        int.parse(_selectedCityId!),
-        int.parse(_selectedCountryId!),
-        personId,
-      );
-
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Error al agregar vehículo: ${e.toString()}"),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
-  }
+    },
+  );
 }
+
+}
+

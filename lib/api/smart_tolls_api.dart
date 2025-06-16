@@ -71,6 +71,26 @@ Future<StResponse<StTokenRequest>> autenticateUser(StAuthRequest authRequest) as
     );
   }
 }
+// VERIFFIACION
+
+Future<bool> existsPlate(String plate) async {
+  final response = await http.get(Uri.parse('$_baseUrl/api/vehicles/exists/plate/$plate'));
+  final json = jsonDecode(response.body);
+  return json['data'] == true;
+}
+
+Future<bool> existsChassis(String chassis) async {
+  final response = await http.get(Uri.parse('$_baseUrl/api/vehicles/exists/chassis/$chassis'));
+  final json = jsonDecode(response.body);
+  return json['data'] == true;
+}
+
+Future<bool> existsEngine(String engine) async {
+  final response = await http.get(Uri.parse('$_baseUrl/api/vehicles/exists/engine/$engine'));
+  final json = jsonDecode(response.body);
+  return json['data'] == true;
+}
+
 // VEHICLES 
 // -BRANDS
   // create brand

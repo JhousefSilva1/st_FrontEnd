@@ -64,51 +64,53 @@ Future<void> addVehicle(
   int idFuelTypes,
   int idVehiclesColors,
   int idVehiclesModels,
-  int idVehiclesType,  // Este parámetro estaba después de idVehiclesBrand en tu código
+  int idVehiclesType,
   int idVehiclesBrand,
   int idCity,
   int idCountry,
   int personId,
 ) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
 
-    try {
- final request = StVehiclesRequest(
-    licensePlate: licensePlate,
-    chassisNumber: chassisNumber,
-    engineNumber: engineNumber,
-    manufacturingYear: manufacturingYear,
-    weight: double.parse(weight),
-    idFuelTypes: idFuelTypes,
-    idVehiclesColors: idVehiclesColors,
-    idVehiclesModels: idVehiclesModels,
-    idVehiclesType: idVehiclesType,  // Asegúrate que el orden coincida
-    idVehiclesBrand: idVehiclesBrand,
-    idCity: idCity,
-    idCountry: idCountry,
-    idPerson: personId,
-  );
-      
-      final response = await SmartTollsApi().addVehicle(request);
-      debugPrint('API Response: ${response.status} - ${response.message}');
+  try {
+    final request = StVehiclesRequest(
+      licensePlate: licensePlate,
+      chassisNumber: chassisNumber,
+      engineNumber: engineNumber,
+      manufacturingYear: manufacturingYear,
+      weight: double.parse(weight),
+      idFuelTypes: idFuelTypes,
+      idVehiclesColors: idVehiclesColors,
+      idVehiclesModels: idVehiclesModels,
+      idVehiclesType: idVehiclesType,
+      idVehiclesBrand: idVehiclesBrand,
+      idCity: idCity,
+      idCountry: idCountry,
+      idPerson: personId,
+    );
 
-      if (response.isSuccess()) {
-        // Recargar la lista de vehículos después de agregar uno nuevo
-        await loadCustomerVehicles(personId);
-      } else {
-        _errorMessage = response.message ?? 'Error al agregar el vehículo';
-      }
-    } catch (e, stackTrace) {
-      debugPrint('Error en addVehicle: $e');
-      debugPrint('Stack trace: $stackTrace');
-      _errorMessage = 'Error de conexión: ${e.toString()}';
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+    final response = await SmartTollsApi().addVehicle(request);
+    debugPrint('API Response: ${response.status} - ${response.message}');
+
+    if (response.status == 409 || !response.isSuccess()) {
+      _errorMessage = response.message ?? 'Error desconocido al agregar vehículo';
+      throw _errorMessage!; // ← lanzamos solo el mensaje limpio
     }
+
+    await loadCustomerVehicles(personId);
+  } catch (e, stackTrace) {
+    debugPrint('Error en addVehicle: $e');
+    debugPrint('Stack trace: $stackTrace');
+    throw e.toString(); // ← para que la vista lo atrape tal cual
+  } finally {
+    _isLoading = false;
+    notifyListeners();
   }
+}
+
+
 
   // En VehiclesCustomerProvider
 Future<void> updateVehicle(
