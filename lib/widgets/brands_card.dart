@@ -125,4 +125,3 @@ class BrandCard extends StatelessWidget {
   }
 }
 
-// Pantalla de detalles de la marca (ejemplo)

@@ -71,11 +71,34 @@ class ProfileCustomerCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(String? date) {
-    if (date == null || date.isEmpty) return 'N/A';
+String _formatDate(String? date) {
+  if (date == null || date.isEmpty) return 'N/A';
+  try {
+    final parsedDate = DateTime.parse(date);
+    return '${parsedDate.day.toString().padLeft(2, '0')}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.year}';
+  } catch (e) {
     return date;
   }
 }
+// String _formatDate(String? date) {
+//   if (date == null || date.isEmpty) return 'N/A';
+//   try {
+//     final parsedDate = DateTime.parse(date);
+//     const meses = [
+//       'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+//       'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+//     ];
+//     final dia = parsedDate.day.toString().padLeft(2, '0');
+//     final mesLiteral = meses[parsedDate.month - 1];
+//     final anio = parsedDate.year;
+
+//     return '$dia de $mesLiteral de $anio';
+//   } catch (e) {
+//     return date;
+//   }
+}
+
+
 
 class _UserProfileCard extends StatelessWidget {
   final StPersonResponse user;

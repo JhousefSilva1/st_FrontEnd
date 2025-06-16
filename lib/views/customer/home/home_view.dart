@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -6,7 +6,7 @@ import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/widgets/menu/desktop/drawer.dart';
-import 'package:smarttolls/widgets/menu/mobile/drawerMobile.dart';
+
 
 import '../../../providers/customer/vehicle_customer_provider.dart';
 
@@ -203,15 +203,7 @@ class HomeDashboard extends StatelessWidget {
         const SizedBox(height: 16),
         Row(
           children: [
-            Expanded(
-              flex: 2,
-              child: HomeCard(
-                data: '5', // TODO: Reemplazar con datos reales de peajes frecuentes
-                icon: const Icon(Icons.route, color: AppStyle.primary, size: 30),
-                title: S.of(context).frequentTolls,
-                subtitle: S.of(context).mostUsed,
-              ),
-            ),
+
             const SizedBox(width: 16),
             Consumer<WalletProvider>(
               builder: (context, walletProvider, child) {
