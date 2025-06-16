@@ -19,7 +19,7 @@ class AddVehicleCustomerView extends StatefulWidget {
 }
 
 class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
-  final _formKey = GlobalKey<FormState>();
+  final _pageController = PageController();
   final _plateController = TextEditingController();
   final _chassisController = TextEditingController();
   final _engineController = TextEditingController();
@@ -33,6 +33,12 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
   String? _selectedTypeId;
   String? _selectedCountryId;
   String? _selectedCityId;
+
+  int _currentStep = 0;
+  final List<GlobalKey<FormState>> _stepFormKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
 
   @override
   void initState() {
@@ -63,13 +69,12 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
     _engineController.dispose();
     _yearController.dispose();
     _weightController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    
     return Scaffold(
       appBar: CustomAppBar(
         centerTitle: true,
@@ -80,109 +85,214 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: isMobile 
-                ? _buildMobileForm()
-                : _buildTabletForm(),
-          ),
+        child: Column(
+          children: [
+            _buildStepIndicator(),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildStep1(),
+                  _buildStep2(),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
-      bottomNavigationBar: _buildSubmitButton(),
+      bottomNavigationBar: _buildNavigationButtons(),
     );
   }
 
-  Widget _buildMobileForm() {
+  Widget _buildStepIndicator() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildStepCircle(1, "Información básica", _currentStep >= 0),
+          _buildStepLine(),
+          _buildStepCircle(2, "Detalles adicionales", _currentStep >= 1),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStepCircle(int stepNumber, String label, bool isActive) {
     return Column(
       children: [
-        _buildPlateField(),
-        const SizedBox(height: 16),
-        _buildChassisField(),
-        const SizedBox(height: 16),
-        _buildEngineField(),
-        const SizedBox(height: 16),
-        _buildYearField(),
-        const SizedBox(height: 16),
-        _buildWeightField(),
-        const SizedBox(height: 16),
-        _buildFuelTypeDropdown(),
-        const SizedBox(height: 16),
-        _buildColorDropdown(),
-        const SizedBox(height: 16),
-        _buildBrandDropdown(),
-        const SizedBox(height: 16),
-        _buildModelDropdown(),
-        const SizedBox(height: 16),
-        _buildTypeDropdown(),
-        const SizedBox(height: 16),
-        _buildCountryDropdown(),
-        const SizedBox(height: 16),
-        _buildCityDropdown(),
-        const SizedBox(height: 32),
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isActive ? AppStyle.primary : Colors.grey[300],
+          ),
+          child: Center(
+            child: Text(
+              stepNumber.toString(),
+              style: TextStyle(
+                color: isActive ? Colors.white : Colors.grey[600],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: isActive ? AppStyle.primary : Colors.grey[600],
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildTabletForm() {
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildStepLine() {
+    return Expanded(
+      child: Container(
+        height: 2,
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        color: Colors.grey[300],
+      ),
+    );
+  }
+
+  Widget _buildStep1() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Form(
+        key: _stepFormKeys[0],
+        child: Column(
           children: [
-            Expanded(child: _buildPlateField()),
-            const SizedBox(width: 16),
-            Expanded(child: _buildChassisField()),
+            _buildPlateField(),
+            const SizedBox(height: 16),
+            _buildChassisField(),
+            const SizedBox(height: 16),
+            _buildEngineField(),
+            const SizedBox(height: 16),
+            _buildYearField(),
+            const SizedBox(height: 16),
+            _buildWeightField(),
+            const SizedBox(height: 16),
+            _buildTypeDropdown(),
+            const SizedBox(height: 32),
           ],
         ),
-        const SizedBox(height: 16),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+
+  Widget _buildStep2() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Form(
+        key: _stepFormKeys[1],
+        child: Column(
           children: [
-            Expanded(child: _buildEngineField()),
-            const SizedBox(width: 16),
-            Expanded(child: _buildYearField()),
+            _buildFuelTypeDropdown(),
+            const SizedBox(height: 16),
+            _buildColorDropdown(),
+            const SizedBox(height: 16),
+            _buildBrandDropdown(),
+            const SizedBox(height: 16),
+            _buildModelDropdown(),
+            const SizedBox(height: 16),
+            _buildCountryDropdown(),
+            const SizedBox(height: 16),
+            _buildCityDropdown(),
+            const SizedBox(height: 32),
           ],
         ),
-        const SizedBox(height: 16),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _buildWeightField()),
-            const SizedBox(width: 16),
-            Expanded(child: _buildFuelTypeDropdown()),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _buildColorDropdown()),
-            const SizedBox(width: 16),
-            Expanded(child: _buildBrandDropdown()),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _buildModelDropdown()),
-            const SizedBox(width: 16),
-            Expanded(child: _buildTypeDropdown()),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _buildCountryDropdown()),
-            const SizedBox(width: 16),
-            Expanded(child: _buildCityDropdown()),
-          ],
-        ),
-        const SizedBox(height: 32),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildNavigationButtons() {
+    final provider = Provider.of<VehiclesCustomerProvider>(context);
+    
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          if (_currentStep > 0)
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => _previousStep(),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 50),
+                  side: const BorderSide(color: AppStyle.primary),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  S.of(context).back,
+                  style: const TextStyle(color: AppStyle.primary),
+                ),
+              ),
+            ),
+          if (_currentStep > 0) const SizedBox(width: 16),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: provider.isLoading ? null : () => _nextStep(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppStyle.primary,
+                minimumSize: const Size(0, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: _currentStep == 0
+                  ? Text(
+                      S.of(context).continueText,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : provider.isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          S.of(context).addVehicle,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _nextStep() async {
+    if (!_stepFormKeys[_currentStep].currentState!.validate()) {
+      return;
+    }
+
+    if (_currentStep < 1) {
+      setState(() => _currentStep++);
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      await _submitForm();
+    }
+  }
+
+  void _previousStep() {
+    setState(() => _currentStep--);
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 
@@ -295,7 +405,7 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
           onChanged: (value) {
             setState(() {
               _selectedBrandId = value;
-              _selectedModelId = null; // Reset model when brand changes
+              _selectedModelId = null;
               if (value != null) {
                 Provider.of<ModelProvider>(context, listen: false)
                   .loadModelsByBrand(int.parse(value));
@@ -368,7 +478,7 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
           onChanged: (value) {
             setState(() {
               _selectedCountryId = value;
-              _selectedCityId = null; // Reset city when country changes
+              _selectedCityId = null;
               if (value != null) {
                 Provider.of<CityProvider>(context, listen: false)
                   .loadCitiesByCountry(int.parse(value));
@@ -418,47 +528,17 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
     );
   }
 
-  Widget _buildSubmitButton() {
-    final provider = Provider.of<VehiclesCustomerProvider>(context);
-    
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ElevatedButton(
-        onPressed: provider.isLoading ? null : _submitForm,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppStyle.primary,
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: provider.isLoading
-            ? const CircularProgressIndicator(color: Colors.white)
-            : Text(
-                S.of(context).addVehicle,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-      ),
-    );
-  }
-
-  void _submitForm() async {
-    if (!_formKey.currentState!.validate()) return;
-
+  Future<void> _submitForm() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final personId = userProvider.personId;
     
     if (personId == null || personId == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("No se pudo identificar al usuario"),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        const SnackBar(
+          content: Text("No se pudo identificar al usuario"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       return;
     }
 
@@ -481,7 +561,6 @@ class _AddVehicleCustomerViewState extends State<AddVehicleCustomerView> {
         personId,
       );
 
-      // Si todo sale bien, regresamos a la vista anterior
       if (mounted) {
         Navigator.of(context).pop();
       }

@@ -96,6 +96,7 @@ class S {
   String get confirmDeleteRoadType => Intl.message('¿Está seguro de eliminar este tipo de vía?', name: 'confirmDeleteRoadType');
   String get confirmPassword => Intl.message('Confirmar Contraseña', name: 'confirmPassword');
   String get contactInfo => Intl.message('informaciónDeContacto', name: 'contactInfo');
+  String get continueText => Intl.message('Continuar', name: 'continueText');
   String get cost => Intl.message('Costo', name: 'cost');
   String get country => Intl.message('País', name: 'country');
   String get createAccount => Intl.message('Crear nueva cuenta en Peajes Inteligentes', name: 'createAccount');

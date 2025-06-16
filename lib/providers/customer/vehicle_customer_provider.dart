@@ -13,6 +13,9 @@ class VehiclesCustomerProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  // verificar si la matricula ya existe
+  
+
 Future<void> loadCustomerVehicles(int personId) async {
     if (personId <= 0) {
     _errorMessage = 'No se pudo identificar al usuario';
