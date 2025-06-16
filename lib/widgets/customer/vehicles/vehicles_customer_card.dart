@@ -148,22 +148,7 @@ void _showVehicleDetails(BuildContext context, StVehicleResponse vehicle) {
                 const SizedBox(height: 32),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    showEditVehicleDialog(context, vehicle); // ✅ ACTIVO
-                  },
 
-                    icon: const Icon(Icons.edit, size: 20),
-                    label: const Text('Editar vehículo'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 243, 243, 243),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),
