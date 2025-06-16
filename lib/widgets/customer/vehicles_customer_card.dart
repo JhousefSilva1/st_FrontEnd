@@ -157,7 +157,7 @@ void _showVehicleDetails(BuildContext context, StVehicleResponse vehicle) {
                     icon: const Icon(Icons.edit, size: 20),
                     label: const Text('Editar vehículo'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppStyle.primary,
+                      backgroundColor: const Color.fromARGB(255, 243, 243, 243),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
