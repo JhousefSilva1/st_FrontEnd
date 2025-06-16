@@ -198,11 +198,11 @@ class AppRouter {
             path: RechargeWalletView.routerPath,
             builder: (context, state) => const RechargeWalletView(),
           ),
-          GoRoute(
-            name: TransactionHistoryView.routerName,
-            path: TransactionHistoryView.routerPath,
-            builder: (context, state) => const TransactionHistoryView(),
-          ),
+          // GoRoute(
+          //   name: TransactionHistoryView.routerName,
+          //   path: TransactionHistoryView.routerPath,
+          //   builder: (context, state) => const TransactionHistoryView(),
+          // ),
 
           // GoRoute(
           //   name: WalletListView.routerName,

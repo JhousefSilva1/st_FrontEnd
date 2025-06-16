@@ -276,17 +276,17 @@ class _WalletState extends State<Wallet> {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () => walletProvider.goToTransactionHistory(context),
-            child: Text(
-              S.of(context).seeAll,
-              style: const TextStyle(
-                color: AppStyle.primary,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () => walletProvider.goToTransactionHistory(context),
+          //   child: Text(
+          //     S.of(context).seeAll,
+          //     style: const TextStyle(
+          //       color: AppStyle.primary,
+          //       fontSize: 16,
+          //       fontWeight: FontWeight.w700,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -341,18 +341,18 @@ class _WalletState extends State<Wallet> {
             return _buildTransactionItem(context, transaction);
           },
         ),
-        if (walletProvider.transactions.length > 6)
-          TextButton(
-            onPressed: () => walletProvider.goToTransactionHistory(context),
-            child: Text(
-              S.of(context).seeAll,
-              style: const TextStyle(
-                color: AppStyle.primary,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
+        // if (walletProvider.transactions.length > 6)
+        //   TextButton(
+        //     onPressed: () => walletProvider.goToTransactionHistory(context),
+        //     child: Text(
+        //       S.of(context).seeAll,
+        //       style: const TextStyle(
+        //         color: AppStyle.primary,
+        //         fontSize: 16,
+        //         fontWeight: FontWeight.w700,
+        //       ),
+        //     ),
+        //   ),
       ],
     );
   }

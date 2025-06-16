@@ -198,9 +198,9 @@ class WalletProvider extends ChangeNotifier {
     context.pushNamed(RechargeWalletView.routerName);
   }
   
-  void goToTransactionHistory(BuildContext context) {
-    context.pushNamed(TransactionHistoryView.routerName);
-  }
+  // void goToTransactionHistory(BuildContext context) {
+  //   context.pushNamed(TransactionHistoryView.routerName);
+  // }
 
   void goToWallet(BuildContext context) {
     context.pushNamed(WalletView.routerName);

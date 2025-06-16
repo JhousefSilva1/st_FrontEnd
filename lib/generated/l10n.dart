@@ -156,6 +156,7 @@ class S {
   String get myVehicles => Intl.message('Mis Vehículos', name: 'myVehicles');
   String get name => Intl.message('Nombre', name: 'name');
   String get next => Intl.message('Siguiente', name: 'next');
+  String get noDate => Intl.message('Sin Fecha', name: 'noDate');
   String get noTransactionsFound => Intl.message('No se Encontraron Transacciones', name: 'noTransactionsFound');
   String get noUserData => Intl.message('Sin datos de Usuario', name: 'noUserData');
   String get noVehicleSelected => Intl.message('Ningún Vehículo Seleccionado', name: 'noVehicleSelected');
@@ -239,7 +240,7 @@ class S {
   String get vehicleService => Intl.message('Servicio de Vehículo', name: 'vehicleService');
   String get vehicleType => Intl.message('Tipo de Vehículo', name: 'vehicleType');
   String get vehicles => Intl.message('Vehículos', name: 'vehicles');
-  String vehiclesCount(Object count) => Intl.message('vehículosCount', name: 'vehiclesCount', args: [count]);
+  String vehiclesCount(Object count) => Intl.message('Cantidad de vehículos ', name: 'vehiclesCount', args: [count]);
   String get wallet => Intl.message('Billetera', name: 'wallet');
   String get walletBalance => Intl.message('Saldo de Billetera', name: 'walletBalance');
   String get welcome => Intl.message('¡Bienvenido!', name: 'welcome');
@@ -249,6 +250,12 @@ class S {
   String get weight => Intl.message('Peso', name: 'weight');
   String get workstation => Intl.message('Puesto de Trabajo', name: 'workstation');
   String get year => Intl.message('Año', name: 'year');
+
+  String get toll => Intl.message('Peaje', name: 'toll');
+  String get noRecentTransactions => Intl.message('No hay transacciones recientes', name: 'noRecentTransactions');
+
+
+
 }
 
 
