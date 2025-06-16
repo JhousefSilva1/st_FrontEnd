@@ -3,7 +3,7 @@ import 'package:smarttolls/api/response/admin/st_vehicles_response.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
 
-import '../../views/customer/vehicles/vehicles_customer_view.dart';
+import '../../../views/customer/vehicles/vehicles_customer_view.dart';
 
 class VehiclesCustomerCard extends StatelessWidget {
   final StVehicleResponse vehicle;

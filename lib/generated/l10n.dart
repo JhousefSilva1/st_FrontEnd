@@ -143,6 +143,7 @@ class S {
   String get line => Intl.message('Línea', name: 'line');
   String get lines => Intl.message('Líneas', name: 'lines');
   String get locality => Intl.message('Localidad', name: 'locality');
+  String get loadingProfile => Intl.message('Cargando Perfil', name: 'loadingProfile');
   String get location => Intl.message('ubicación', name: 'location');
   String get login => Intl.message('Iniciar Sesión', name: 'login');
   String get loginToYourAccount => Intl.message('Inicie sesión en su cuenta', name: 'loginToYourAccount');

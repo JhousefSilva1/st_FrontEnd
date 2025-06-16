@@ -8,7 +8,7 @@ import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/views/customer/vehicles/add_vehicle_customer_view.dart';
-import 'package:smarttolls/widgets/customer/vehicles_customer_card.dart';
+import 'package:smarttolls/widgets/customer/vehicles/vehicles_customer_card.dart';
 import 'package:smarttolls/widgets/menu/mobile/drawerMobile.dart';
 import 'package:smarttolls/widgets/widgets.dart';
 
