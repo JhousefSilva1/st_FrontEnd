@@ -76,4 +76,10 @@ class Preferences {
   Future<void> setPersonId(int value) async {
     await _storage.write(key: keyPersonId, value: value.toString()); // Guarda como String
   }
+
+
+  Future<void> clearSession() async {
+  await _storage.deleteAll(); // Borra todo lo guardado
+}
+
 }

@@ -108,6 +108,18 @@ void goHome(BuildContext context) async {
     return isValid;
   }
 
-  
+  // logout
+  void logout(BuildContext context) async {
+  await Preferences().clearSession();
+
+  // Limpia también el estado del userProvider
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  userProvider.setUserData('', '', '', '', 0); // Valores vacíos
+
+  if (context.mounted) {
+    context.goNamed(LoginView.routerName); // Redirige al login
+  }
+}
+
 }
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:smarttolls/providers/Auth/sign_up_provider.dart';
+import 'package:smarttolls/providers/Auth/splashView.dart';
 import 'package:smarttolls/providers/customer/vehicle_customer_provider.dart';
 import 'package:smarttolls/providers/operador/tolls_operador_provider.dart';
 import 'package:smarttolls/providers/providers.dart';
@@ -198,6 +199,12 @@ class AppRouter {
             path: RechargeWalletView.routerPath,
             builder: (context, state) => const RechargeWalletView(),
           ),
+          GoRoute(
+            name: SplashView.routerName,
+            path: SplashView.routerPath,
+            builder: (context, state) => const SplashView(),
+          ),
+
           // GoRoute(
           //   name: TransactionHistoryView.routerName,
           //   path: TransactionHistoryView.routerPath,
