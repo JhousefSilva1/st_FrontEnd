@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/providers/providers.dart';
@@ -63,14 +64,26 @@ void goHome(BuildContext context) async {
 
         );
         // Redirección basada en el rol
-        if(context.mounted) {
-          if(role == 'ROLE_ADMINISTRADOR'){
-            context.goNamed(HomeAdminView.routerName);
-          } else if(role == 'ROLE_CLIENTE') {
-            context.goNamed(HomeView.routerName);
-          } else if(role == 'ROLE_OPERADOR'){
-            context.goNamed(HomeOperadorView.routerName);
-          }
+if (context.mounted) {
+  if (role == 'ROLE_ADMINISTRADOR') {
+    context.goNamed(HomeAdminView.routerName);
+
+  } else if (role == 'ROLE_CLIENTE') {
+    bool isTablet = ResponsiveBreakpoints.of(context).largerThan(MOBILE);
+    if (isTablet) {
+      _showErrorDialog(
+        context,
+        'Acceso denegado',
+        'Los clientes solo pueden iniciar sesión desde un dispositivo móvil.'
+      );
+      return;
+    }
+    context.goNamed(HomeView.routerName);
+
+  } else if (role == 'ROLE_OPERADOR') {
+    context.goNamed(HomeOperadorView.routerName);
+  }
+
         }
       } else if(response.isUnauthorized()){
         _showErrorDialog(context, 'Credenciales incorrectas', 
