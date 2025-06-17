@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smarttolls/api/api.dart';
 import 'package:smarttolls/config/preferences.dart';
 import 'package:smarttolls/providers/providers.dart';
+import 'package:smarttolls/utils/orientation_util.dart';
 import 'package:smarttolls/utils/utils.dart';
 import 'package:smarttolls/views/operador/home/home_operador_view.dart';
 import 'package:smarttolls/views/views.dart';
@@ -64,27 +65,48 @@ void goHome(BuildContext context) async {
 
         );
         // Redirección basada en el rol
-if (context.mounted) {
-  if (role == 'ROLE_ADMINISTRADOR') {
-    context.goNamed(HomeAdminView.routerName);
+          if (context.mounted) {
+            final isTablet = ResponsiveBreakpoints.of(context).largerThan(MOBILE);
+            final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
 
-  } else if (role == 'ROLE_CLIENTE') {
-    bool isTablet = ResponsiveBreakpoints.of(context).largerThan(MOBILE);
-    if (isTablet) {
-      _showErrorDialog(
-        context,
-        'Acceso denegado',
-        'Los clientes solo pueden iniciar sesión desde un dispositivo móvil.'
-      );
-      return;
-    }
-    context.goNamed(HomeView.routerName);
+            if (role == 'ROLE_ADMINISTRADOR') {
+              if (isMobile) {
+                _showErrorDialog(
+                  context,
+                  'Acceso denegado',
+                  'Los administradores solo pueden iniciar sesión desde una tablet o PC.'
+                );
+                return;
+              }
+              await OrientationUtil.setAllowAll();
+              context.goNamed(HomeAdminView.routerName);
 
-  } else if (role == 'ROLE_OPERADOR') {
-    context.goNamed(HomeOperadorView.routerName);
-  }
+            } else if (role == 'ROLE_CLIENTE') {
+              if (isTablet) {
+                _showErrorDialog(
+                  context,
+                  'Acceso denegado',
+                  'Los clientes solo pueden iniciar sesión desde un dispositivo móvil.'
+                );
+                return;
+              }
+              await OrientationUtil.setPortraitOnly();
+              context.goNamed(HomeView.routerName);
 
-        }
+            } else if (role == 'ROLE_OPERADOR') {
+              if (isMobile) {
+                _showErrorDialog(
+                  context,
+                  'Acceso denegado',
+                  'Los operadores solo pueden iniciar sesión desde una tablet o PC.'
+                );
+                return;
+              }
+              await OrientationUtil.setAllowAll();
+              context.goNamed(HomeOperadorView.routerName);
+            }
+          }
+
       } else if(response.isUnauthorized()){
         _showErrorDialog(context, 'Credenciales incorrectas', 
           'Por favor verifica tus credenciales e intenta nuevamente');

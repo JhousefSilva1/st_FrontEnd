@@ -4,6 +4,7 @@ import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/providers/providers.dart';
 import 'package:smarttolls/style/app_style.dart';
 import 'package:smarttolls/utils/assets_images.dart';
+import 'package:smarttolls/utils/logout_util.dart';
 
 class SmartTollsDrawer extends StatelessWidget {
   const SmartTollsDrawer({super.key});
@@ -57,7 +58,12 @@ class SmartTollsDrawer extends StatelessWidget {
             DrawerListTile(icon: Icons.people_outline_sharp, onTap: () => drawerProvider.goToPersonTypeAdmin(context), title: S.of(context).personType),
             DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () {}, title: S.of(context).reports),
             // const Spacer(),
-            DrawerListTile(icon: Icons.logout_rounded, onTap: () {}, title: S.of(context).logout),
+            DrawerListTile(
+  icon: Icons.logout_rounded,
+  onTap: () => showLogoutConfirmation(context),
+  title: S.of(context).logout,
+),
+
           ],
         ),
       ),
