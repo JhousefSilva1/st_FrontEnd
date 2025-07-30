@@ -30,10 +30,10 @@ class PersonTypeAdminView extends StatelessWidget {
         backgroundColor: AppStyle.primary,
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => showAddPersonTypeDialog(context),
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.add),
+          //   onPressed: () => showAddPersonTypeDialog(context),
+          // ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {

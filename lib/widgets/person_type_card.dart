@@ -52,16 +52,16 @@ class PersonTypeCard extends StatelessWidget {
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.edit, color: AppStyle.yellow),
-              onPressed: onEdit,
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete, color: AppStyle.red),
-              onPressed: onDelete,
-            ),
-          ],
+          // children: [
+          //   IconButton(
+          //     // icon: const Icon(Icons.edit, color: AppStyle.yellow),
+          //     onPressed: onEdit,
+          //   ),
+          //   IconButton(
+          //     // icon: const Icon(Icons.delete, color: AppStyle.red),
+          //     onPressed: onDelete,
+          //   ),
+          // ],
         ),
       ),
     );

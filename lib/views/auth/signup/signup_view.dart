@@ -50,7 +50,7 @@ class SignUpTabletView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Row(
       children: [
-        SmartTollsDrawer(),
+        // SmartTollsDrawer(),
         Expanded(
           flex: 2,
           child: SingleChildScrollView(
@@ -77,8 +77,9 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  final _formKey = GlobalKey<FormState>();
   
+  final _formKey = GlobalKey<FormState>();
+  int _currentStep = 0;
   // Controllers
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();

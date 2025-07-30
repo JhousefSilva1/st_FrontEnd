@@ -43,7 +43,7 @@ class SmartTollsDrawer extends StatelessWidget {
               ],
               )
             ),
-            DrawerListTile(icon: Icons.home, onTap: () => drawerProvider.goToHomeAdmin(context), title: S.of(context).home),
+            // DrawerListTile(icon: Icons.home, onTap: () => drawerProvider.goToHomeAdmin(context), title: S.of(context).home),
             DrawerListTile(icon: Icons.account_circle_rounded, onTap: () => drawerProvider.goToProfile(context), title: S.of(context).profile),
             DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehiclesAdmin(context), title: S.of(context).vehicles),
             DrawerListTile(icon: Icons.car_repair_rounded, onTap: () => drawerProvider.goToVehicleTypeAdmin(context), title: S.of(context).vehicleType),
@@ -56,7 +56,7 @@ class SmartTollsDrawer extends StatelessWidget {
             DrawerListTile(icon: Icons.business_outlined, onTap: () => drawerProvider.goToTollAdmin(context), title: S.of(context).tolls),
             DrawerListTile(icon: Icons.people, onTap: () => drawerProvider.goToGenderAdmin(context), title: S.of(context).gender),
             DrawerListTile(icon: Icons.people_outline_sharp, onTap: () => drawerProvider.goToPersonTypeAdmin(context), title: S.of(context).personType),
-            DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () {}, title: S.of(context).reports),
+            // DrawerListTile(icon: Icons.auto_graph_rounded, onTap: () {}, title: S.of(context).reports),
             // const Spacer(),
             DrawerListTile(
   icon: Icons.logout_rounded,

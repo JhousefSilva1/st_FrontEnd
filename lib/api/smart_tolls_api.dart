@@ -1161,33 +1161,39 @@ Future<StResponse<StCountryResponse>> deleteCountry(int countryId) async {
 }
 
 
-// create city
 Future<StResponse<StCityResponse>> createCity(StCityRequest cityRequest) async {
   try {
-    final response = await httpPost('$_baseUrl/city/create', getHeaders(), jsonEncode(cityRequest.toJson()));
+    final body = jsonEncode(cityRequest.toJson());
+    print(' Enviando body: $body');
+
+    final response = await httpPost(
+      '$_baseUrl/city/create',
+      getHeaders(),
+      body,
+    );
+
+    print(' Status Code: ${response.statusCode}');
+    print(' Respuesta completa: ${response.body}');
+
     if (response.statusCode >= HttpStatus.badRequest) {
-      if (response.statusCode == HttpStatus.networkConnectTimeoutError) {
-        return StResponse<StCityResponse>(status: HttpStatus.networkConnectTimeoutError);
-      }
-      try {
-        final errorJson = json.decode(response.body);
-        return StResponse<StCityResponse>(
-          status: response.statusCode,
-          message: errorJson['message'] ?? 'Error al crear la ciudad',
-          error: errorJson['error'] ?? '',
-        );
-      } catch (e) {
-        return StResponse<StCityResponse>.createEmpty();
-      }
+      final errorJson = json.decode(response.body);
+      return StResponse<StCityResponse>(
+        status: response.statusCode,
+        message: errorJson['message'] ?? 'Error al crear la ciudad',
+        error: errorJson['error'] ?? '',
+      );
     }
+
     final responseJson = json.decode(response.body);
     final cityData = StCityResponse.createEmpty().fromMap(responseJson['data']);
+
     return StResponse<StCityResponse>(
       data: cityData,
       status: response.statusCode,
       message: responseJson['message'],
     );
   } catch (e) {
+    print(' Excepción al crear ciudad: ${e.toString()}');
     return StResponse<StCityResponse>(
       status: HttpStatus.internalServerError,
       message: 'Error durante la creación de la ciudad',
@@ -1195,6 +1201,7 @@ Future<StResponse<StCityResponse>> createCity(StCityRequest cityRequest) async {
     );
   }
 }
+
 // get city by countryId
 Future<StResponse<StCityResponse>> getCitiesByCountry(int idCountry) async {
   try {

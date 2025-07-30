@@ -14,6 +14,8 @@ class CustomField extends StatelessWidget {
   final ValueChanged? onChanged;
   final GestureTapCallback? onTap;
   final Widget? prefixIcon;
+  final Widget? suffixIcon; 
+  
   final FormFieldValidator? validator;
   final double? width;
   final TextEditingController? controller; // Nuevo parámetro
@@ -32,6 +34,7 @@ class CustomField extends StatelessWidget {
     this.onChanged,
     this.onTap,
     this.prefixIcon,
+    this.suffixIcon, // 👈 NUEVO
     this.validator,
     this.width = double.infinity,
     this.controller, // Añadido al constructor
@@ -67,6 +70,7 @@ class CustomField extends StatelessWidget {
           labelStyle: const TextStyle(color: AppStyle.primary),
           labelText: hintText ?? '',
           prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon, // 👈 NUEVO
           prefixIconColor: AppStyle.primary,
         ),
         enabled: enabled,

@@ -357,7 +357,7 @@ void _startPolling() {
       _isProcessing = true;
       final provider = Provider.of<TollsOperadorProvider>(context, listen: false);
 
-      final response = await http.get(Uri.parse('http://192.168.0.10:5000/last_plate'));
+      final response = await http.get(Uri.parse('http://192.168.0.7:5000/last_plate'));
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         final rawPlate = body['plate']?.toString().trim() ?? '';
@@ -480,7 +480,7 @@ void _showAutoDialog({required String title, required String message, bool isSuc
         aspectRatio: 16/9,
         child: Stack(
           children: [
-          const ManualMjpegViewer(url: 'http://192.168.0.10:5000/video'),
+          const ManualMjpegViewer(url: 'http://192.168.0.7:5000/video'),
 
             Positioned(
               bottom: 8,
@@ -544,62 +544,75 @@ class LocationFilterSection extends StatelessWidget {
   }
 
   Widget _buildCountryDropdown(TollsOperadorProvider provider) {
-    return DropdownButtonFormField<int>(
-      decoration: const InputDecoration(
-        labelText: 'País',
-        border: OutlineInputBorder(),
+    return SizedBox(
+      width: double.infinity,
+      child: DropdownButtonFormField<int>(
+        isExpanded: true,
+        decoration: const InputDecoration(
+          labelText: 'País',
+          border: OutlineInputBorder(),
+        ),
+        value: provider.selectedCountryId,
+        items: provider.countries.map((e) => DropdownMenuItem(
+          value: e.idCountry,
+          child: Text(e.countryName ?? 'Desconocido'),
+        )).toList(),
+        onChanged: (int? value) {
+          if (value != null) {
+            provider.loadCitiesByCountry(value);
+          }
+        },
       ),
-      value: provider.selectedCountryId,
-      items: provider.countries.map((e) => DropdownMenuItem(
-        value: e.idCountry,
-        child: Text(e.countryName ?? 'Desconocido'),
-      )).toList(),
-      onChanged: (int? value) {
-        if (value != null) {
-          provider.loadCitiesByCountry(value);
-        }
-      },
     );
   }
 
   Widget _buildCityDropdown(TollsOperadorProvider provider) {
-    return DropdownButtonFormField<int>(
-      decoration: const InputDecoration(
-        labelText: 'Ciudad',
-        border: OutlineInputBorder(),
+    return SizedBox(
+      width: double.infinity,
+      child: DropdownButtonFormField<int>(
+        isExpanded: true,
+        decoration: const InputDecoration(
+          labelText: 'Ciudad',
+          border: OutlineInputBorder(),
+        ),
+        value: provider.selectedCityId,
+        items: provider.cities.map((e) => DropdownMenuItem(
+          value: e.idCity,
+          child: Text(e.cityName ?? 'Desconocido'),
+        )).toList(),
+        onChanged: (int? value) {
+          if (value != null) {
+            provider.loadPlacesByCity(value);
+          }
+        },
       ),
-      value: provider.selectedCityId,
-      items: provider.cities.map((e) => DropdownMenuItem(
-        value: e.idCity,
-        child: Text(e.cityName ?? 'Desconocido'),
-      )).toList(),
-      onChanged: (int? value) {
-        if (value != null) {
-          provider.loadPlacesByCity(value);
-        }
-      },
     );
   }
 
   Widget _buildPlaceDropdown(TollsOperadorProvider provider) {
-    return DropdownButtonFormField<int>(
-      decoration: const InputDecoration(
-        labelText: 'Lugar',
-        border: OutlineInputBorder(),
+    return SizedBox(
+      width: double.infinity,
+      child: DropdownButtonFormField<int>(
+        isExpanded: true,
+        decoration: const InputDecoration(
+          labelText: 'Lugar',
+          border: OutlineInputBorder(),
+        ),
+        value: provider.selectedPlaceId,
+        items: provider.places.map((e) => DropdownMenuItem(
+          value: e.idPlaces,
+          child: Text(e.placeName ?? 'Desconocido'),
+        )).toList(),
+        onChanged: (int? value) {
+          if (value != null) {
+            provider.selectPlace(value);
+          }
+        },
       ),
-      value: provider.selectedPlaceId,
-      items: provider.places.map((e) => DropdownMenuItem(
-        value: e.idPlaces,
-        child: Text(e.placeName ?? 'Desconocido'),
-      )).toList(),
-      onChanged: (int? value) {
-        if (value != null) {
-          provider.selectPlace(value);
-        }
-      },
     );
   }
 }
+
 
 class TollSelectionSection extends StatelessWidget {
   const TollSelectionSection({super.key});

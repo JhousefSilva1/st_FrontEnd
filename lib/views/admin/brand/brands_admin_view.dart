@@ -589,12 +589,12 @@ void showDeleteBrandDialog(BuildContext context, StBrandResponse brand) {
               try {
                 await provider.deleteBrand(brand.idBrand);
                 scaffoldMessenger.showSnackBar(
-                  SnackBar(content: Text('${brand.brandName} ${S.of(context).deletedSuccessfully}')),
+                   SnackBar(content: Text('Vehículo eliminado con éxito')),
                 );
               } catch (e) {
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(content: Text('Error al eliminar: ${e.toString()}')),
-                );
+                // scaffoldMessenger.showSnackBar(
+                //   SnackBar(content: Text('Error al eliminar: ${e.toString()}')),
+                // );
               }
             },
             child: Text(

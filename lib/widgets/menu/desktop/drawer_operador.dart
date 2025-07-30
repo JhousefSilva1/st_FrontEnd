@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smarttolls/generated/l10n.dart';
 import 'package:smarttolls/style/app_style.dart';
+import 'package:smarttolls/utils/logout_util.dart';
 
 import '../../../providers/drawer_provider.dart';
 import '../../../providers/providers.dart';
@@ -48,6 +49,13 @@ class SmartTollsOperadorDrawer extends StatelessWidget{
             DrawerListTile(icon: Icons.home_outlined, onTap:() => drawerProvider.goToHomeOperador(context), title: S.of(context).home),
             DrawerListTile(icon: Icons.account_circle_rounded, onTap: () => drawerProvider.goToProfileOperador(context), title: S.of(context).profile),
             DrawerListTile(icon: Icons.toll_sharp, onTap: () => drawerProvider.goToVehiclesOperador(context), title: S.of(context).tolls),
+                        DrawerListTile(
+  icon: Icons.logout_rounded,
+  onTap: () => showLogoutConfirmation(context),
+  title: S.of(context).logout,
+),
+
+
           ],
         ),
       ),

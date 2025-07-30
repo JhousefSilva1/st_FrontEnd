@@ -37,7 +37,7 @@ class _SplashViewState extends State<SplashView> {
 
       if (!mounted) return;
       if (role == 'ROLE_ADMINISTRADOR') {
-        context.goNamed(HomeAdminView.routerName);
+        context.goNamed(ProfileView.routerName);
       } else if (role == 'ROLE_CLIENTE') {
         context.goNamed(HomeView.routerName);
       } else if (role == 'ROLE_OPERADOR') {

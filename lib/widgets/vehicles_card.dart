@@ -158,32 +158,32 @@ class VehiclesCard extends StatelessWidget {
   Widget _buildLocationRow() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Icon(Icons.location_on, size: 20, color: AppStyle.primary),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                S.current.location,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                '${vehicle.city.cityName ?? 'N/A'}, ${vehicle.country.countryName ?? 'N/A'}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      // children: [
+      //   const Icon(Icons.location_on, size: 20, color: AppStyle.primary),
+      //   const SizedBox(width: 12),
+      //   Expanded(
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.start,
+      //       children: [
+      //         Text(
+      //           S.current.location,
+      //           style: TextStyle(
+      //             fontSize: 12,
+      //             color: Colors.grey[600],
+      //           ),
+      //         ),
+      //         const SizedBox(height: 2),
+      //         Text(
+      //           '${vehicle.city.cityName ?? 'N/A'}, ${vehicle.country.countryName ?? 'N/A'}',
+      //           style: const TextStyle(
+      //             fontSize: 14,
+      //             fontWeight: FontWeight.w500,
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ],
     );
   }
 }

@@ -26,4 +26,7 @@ class AppStyle{
   static const Color backgroundGrey = Color.fromARGB(255, 82, 117, 128);
   static const Color primaryColor = Color(0xFF1570A4);
   static const Color backgroundModern = Color(0xFFF3F4F6);
+  static const Color background = Color(0xFFF9F9F9); // fondo moderno claro
+static const Color cardShadow = Color(0xFFDADADA); // sombra suave
+
 }
